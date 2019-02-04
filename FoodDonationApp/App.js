@@ -1,40 +1,26 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import React, { Component } from 'react';  
+import { createStackNavigator, createAppContainer } from 'react-navigation';  
+import Home from './src/screens/Home';
 
-export default class App extends React.Component {
+// we will use these two screens later in our AppNavigator
+import AddItem from './src/screens/AddItem';  
+import List from './src/screens/List';
 
-  state = {
-    username: 'Hej',
-    password: 'Hejdå'
+const AppNavigator = createStackNavigator(  
+  {
+    Home,
+    AddItem,
+    List,
+  },
+  {
+    initialRouteName: 'Home'
   }
+);
 
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends Component {  
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Please enter your username</Text>
-        <TextInput
-        placeholder="Insert your username"
-        onChangeText={(username) => this.setState({username})}
-        value={this.state.username}
-        />
-        <Text>Please enter your password</Text>
-        <TextInput
-        placeholder="Insert your password"
-        onChangeText={(password) => this.setState({password})}
-        value={this.state.password}
-        />
-
-      </View>
-    );
+    return <AppContainer />;
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
