@@ -1,5 +1,4 @@
 import React from 'react';
-import DataBase from './src/components/DataBase/DataBase';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
@@ -26,8 +25,6 @@ export default class App extends React.Component {
         value={this.state.password}
         />
 
-        <DataBase/>
-        
       </View>
     );
   }
