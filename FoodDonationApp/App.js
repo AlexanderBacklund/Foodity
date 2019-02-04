@@ -1,11 +1,33 @@
 import React from 'react';
+import DataBase from './src/components/DataBase/DataBase';
 import { StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default class App extends React.Component {
+
+  state = {
+    username: 'Hej',
+    password: 'Hejdå'
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>Please enter your username</Text>
+        <TextInput
+        placeholder="Insert your username"
+        onChangeText={(username) => this.setState({username})}
+        value={this.state.username}
+        />
+        <Text>Please enter your password</Text>
+        <TextInput
+        placeholder="Insert your password"
+        onChangeText={(password) => this.setState({password})}
+        value={this.state.password}
+        />
+
+        <DataBase/>
+        
       </View>
     );
   }
