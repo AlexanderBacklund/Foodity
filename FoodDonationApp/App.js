@@ -1,6 +1,7 @@
 import React, { Component } from 'react';  
 import { createStackNavigator, createAppContainer } from 'react-navigation';  
 import Home from './src/screens/Home';
+import Login from './src/screens/Login';
 
 // we will use these two screens later in our AppNavigator
 import AddItem from './src/screens/AddItem';  
@@ -9,6 +10,7 @@ import List from './src/screens/List';
 const AppNavigator = createStackNavigator(  
   {
     Home,
+    Login,
     AddItem,
     List,
   },
