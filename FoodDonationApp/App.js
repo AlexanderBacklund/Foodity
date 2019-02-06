@@ -1,26 +1,60 @@
-import React, { Component } from 'react';  
-import { createStackNavigator, createAppContainer } from 'react-navigation';  
-import Home from './src/screens/Home';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ * @lint-ignore-every XPLATJSCOPYRIGHT1
+ */
 
-// we will use these two screens later in our AppNavigator
-import AddItem from './src/screens/AddItem';  
-import List from './src/screens/List';
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View} from 'react-native';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
-const AppNavigator = createStackNavigator(  
-  {
-    Home,
-    AddItem,
-    List,
-  },
-  {
-    initialRouteName: 'Home'
-  }
-);
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu',
+});
 
-const AppContainer = createAppContainer(AppNavigator);
-
-export default class App extends Component {  
+type Props = {};
+export default class App extends Component<Props> {
   render() {
-    return <AppContainer />;
+    return (
+      <View
+      style={styles.container}>
+        <MapView
+       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+       style={styles.map}
+       region={{
+         latitude: 59.334591,
+         longitude: 18.063240,
+         latitudeDelta: 0.015,
+         longitudeDelta: 0.0121,
+       }}
+     >
+     </MapView>
+    </View>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  }
+});
