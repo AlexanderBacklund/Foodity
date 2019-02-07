@@ -1,62 +1,71 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
 
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
   
-export async function requestLocationPermission() 
-{
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'Example App',
-        'message': 'Example App access to your location '
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the location")
-      alert("You can use the location");
-    } else {
-      console.log("location permission denied")
-      alert("Location permission denied");
-    }
-  } catch (err) {
-    console.warn(err)
-  }
-}
+
+
 
 type Props = {};
 class App extends Component<Props> {
 
+  state ={
+    focusLocation: {
+      latitude: 59.334591,
+      longitude: 18.063240,
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.0121,
+    },
+    locationChosen: false
+  }
   
-  async componentDidMount() {
-    //await requestLocationPermission()
-
-    //Instead of navigator.geolocation, just use Geolocation.
-    if (hasLocationPermission) {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                alert(position);
-            },
-            (error) => {
-                // See error code charts below.
-                console.log(error.code, error.message);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-    }
+  pickLocationHandler = event => {
+    const coords = event.nativeEvent.coordinate;
+    this.map.animateToRegion({
+      ...this.state.focusLocation,
+      latitude: coords.latitude,
+      longitude: coords.longitude
+    });
+    this.setState(prevState => {
+      return {
+        focusLocation: {
+          ...prevState.focusLocation,
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        },
+        locationChosen: true
+      };
+    });
   }
 
+
+  getLocationHandler = () => {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const coordsEvent = {
+        nativeEvent: {
+          coordinate: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude
+          }
+        }
+      };
+      this.pickLocationHandler(coordsEvent);
+    },
+  err => {
+    console.log(err);
+    alert("Fetching the Position failed, please pick one manually!");
+  })
+  }
+
+
   render() {
+    let marker = null;
+
+    if (this.state.locationChosen) {
+      marker = <MapView.Marker coordinate={this.state.focusLocation} />
+    }
     return (
       <View
       style={styles.container}>
@@ -64,13 +73,12 @@ class App extends Component<Props> {
         <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
        style={styles.map}
-       region={{
-         latitude: 59.334591,
-         longitude: 18.063240,
-         latitudeDelta: 0.015,
-         longitudeDelta: 0.0121,
-       }}
-     >
+       initialRegion={this.state.focusLocation}
+       //region={this.state.focusLocation}
+       onPress={this.pickLocationHandler}
+       ref={ref => this.map = ref}
+      >
+      {marker}
      <MapView.Marker 
             coordinate={{latitude: 59.334591, longitude: 18.063240}}
             title={"title"}
@@ -78,6 +86,12 @@ class App extends Component<Props> {
          />
          
      </MapView>
+     <View style={styles.locateButton}> 
+     <Button 
+     title="Locate me" onPress={this.getLocationHandler}/>
+     </View>
+     
+
      
     </View>
 
@@ -104,6 +118,9 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  locateButton: {
+    bottom: 50
   }
 });
 
