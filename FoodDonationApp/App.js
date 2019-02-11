@@ -246,7 +246,7 @@ componentDidMount() {
                 
                 <TouchableOpacity style={styles.reserveButton}
                 underlayColor='#fff'>
-                  <Text>Hej</Text>
+                  <Text>More info</Text>
                 </TouchableOpacity>
                 
             </View>
