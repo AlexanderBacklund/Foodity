@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
@@ -15,7 +15,7 @@ const images = [
 
 const {width, height} = Dimensions.get("window");
 
-const cardHeight = height / 4;
+const cardHeight = height / 2.8;
 const cardWidth = cardHeight - 50;
 
 type Props = {};
@@ -24,7 +24,7 @@ class App extends Component<Props> {
   state ={
     focusLocation: {
       latitude: 59.334591,
-      longitude: 18.063240,
+      longitude: 18.053240,
       latitudeDelta: 0.015,
       longitudeDelta: 0.0121,
     },
@@ -35,8 +35,8 @@ class App extends Component<Props> {
         latitude: 59.334591,
         longitude: 18.053240,
         },
-        title: "Blomkal",
-        description: "gul och god",
+        title: "Blomkål",
+        description: "Gul och smakrik.",
         image: images[0],
       },
       {
@@ -44,16 +44,16 @@ class App extends Component<Props> {
         latitude: 59.344591,
         longitude: 18.073240,
       },
-      title: "Romsas",
-      description: "God till Lax",
+      title: "Romsås",
+      description: "God till Lax.",
       image: images[1],
     },{
       coordinate: {
         latitude: 59.324591,
         longitude: 18.083240,
       },
-      title: "3",
-      description: "också bra",
+      title: "Spenatsoppa",
+      description: "Värmande.",
       image: images[2],
     },
     {
@@ -61,8 +61,8 @@ class App extends Component<Props> {
         latitude: 59.354591,
         longitude: 18.063240,
       },
-      title: "4",
-      description: "mums",
+      title: "Årets julbord 2018",
+      description: "Fortfarande smarrigt.",
       image: images[3],
     },
     ],
@@ -74,24 +74,24 @@ class App extends Component<Props> {
     },
   };
   
-  // pickLocationHandler = event => {
-  //   const coords = event.nativeEvent.coordinate;
-  //   this.map.animateToRegion({
-  //     ...this.state.focusLocation,
-  //     latitude: coords.latitude,
-  //     longitude: coords.longitude
-  //   });
-  //   this.setState(prevState => {
-  //     return {
-  //       focusLocation: {
-  //         ...prevState.focusLocation,
-  //         latitude: coords.latitude,
-  //         longitude: coords.longitude
-  //       },
-  //       locationChosen: true
-  //     };
-  //   });
-  // }
+  pickLocationHandler = event => {
+    const coords = event.nativeEvent.coordinate;
+    this.map.animateToRegion({
+      ...this.state.focusLocation,
+      latitude: coords.latitude,
+      longitude: coords.longitude
+    });
+    this.setState(prevState => {
+      return {
+        focusLocation: {
+          ...prevState.focusLocation,
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        },
+        locationChosen: true
+      };
+    });
+  }
 
 
   getLocationHandler = () => {
@@ -231,7 +231,7 @@ componentDidMount() {
           contentContainerStyle={styles.endPadding}
         >
           {this.state.markers.map((marker, index) => (
-            <View style={styles.card} key={index}>
+            <View style={styles.card} key={index} onPress>
               <Image
                 source={marker.image}
                 style={styles.cardImage}
@@ -243,15 +243,22 @@ componentDidMount() {
                   {marker.description}
                 </Text>
               </View>
+                
+                <TouchableOpacity style={styles.reserveButton}
+                underlayColor='#fff'>
+                  <Text>Hej</Text>
+                </TouchableOpacity>
+                
             </View>
           ))}
         </Animated.ScrollView>
 
-     <View style={styles.locateButton}> 
-     <Button 
-     title="Locate me" onPress={this.getLocationHandler}
-     color="#5eb56a"
-     />
+     <View style={styles.locateIcon}> 
+     <TouchableOpacity onPress={this.getLocationHandler} underlayColor={'transparent'}>
+      <Image
+        source={require('./src/images/navigationblack.png')}
+      />
+    </TouchableOpacity>
      </View>
      
 
@@ -292,12 +299,13 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: "#5eb56a",
   },
-  locateButton: {
+  locateIcon: {
     bottom: 600,
+    left: -170,
   },
   scrollView: {
     position: "absolute",
-    bottom: 30,
+    bottom: 10,
     left: 0,
     right: 0,
     paddingVertical: 10,
@@ -317,6 +325,7 @@ const styles = StyleSheet.create({
     height: cardHeight,
     width: cardWidth,
     overflow: "hidden",
+    borderRadius: 10,
   },
   cardImage: {
     flex: 3,
@@ -326,15 +335,28 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center'
+
   },
   cardtitle: {
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 5,
     fontWeight: "bold",
   },
   cardDescription: {
     fontSize: 12,
     color: "#444",
+  },
+  reserveButton: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center',
+    
+    marginTop:5,
+    
+    backgroundColor:'#5eb56a',
+    borderRadius: 10
   }
 });
 
