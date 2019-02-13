@@ -1,25 +1,59 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
-import firebase from 'firebase'
-export default class Login extends React.Component {
+import firebase from 'firebase';
+import { db } from '../Config';
+export default class SignUp extends React.Component {
+  state = { email: '', password: '', fname: '', lname: '', errorMessage: null }
+  
+  
 
-  state = { email: '', password: '', errorMessage: null }
+// let addUser = item => {  
+//   db.ref('/UsersList').push({
+//     email: item.email
+//   });
+// };
+writeUserData(email,fname,lname,res){
+  firebase.database().ref('UsersList/'+res.user.uid).set({
+      email,
+      fname,
+      lname
+  }).then((data)=>{
+      //success callback
+      this.props.navigation.navigate('Home')
+      console.log('data ' , data)
+  }).catch((error)=>{
+      //error callback
+      console.log('error ' , error)
+  })
+}
 
-  loginHandler = () => {
-    const { email, password } = this.state
+  signUpHandler = () => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Home'))
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
       .catch(error => this.setState({ errorMessage: error.message }))
-    console.log('loginHandler')
+    console.log('signUpHandler')
   }
-
 
   render() {
     return (
-        
-        <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.inputs}
+              placeholder="First Name"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={(fname) => this.setState({fname})}/>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.inputs}
+              placeholder="Last Name"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={(lname) => this.setState({lname})}/>
+        </View>
+
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Email"
@@ -35,18 +69,13 @@ export default class Login extends React.Component {
               underlineColorAndroid='transparent'
               onChangeText={(password) => this.setState({password})}/>
         </View>
-        
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={this.loginHandler}>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableHighlight>
+        {console.log(this.state)}
         {this.state.errorMessage &&
           <Text style={{ color: '#e5e53d', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
-          {/* {console.log(this.state.errorMessage)} */}
-        
-        <TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp')}>
-            <Text>Not a member? Sign up now.</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
+          <Text style={styles.signUpText}>Register</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
     );
@@ -58,10 +87,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4076ce',
+    backgroundColor: '#0e8bce',
   },
   inputContainer: {
-      borderBottomColor: '#4076ce',
+      borderBottomColor: '#0e8bce',
       backgroundColor: '#FFFFFF',
       borderRadius:30,
       borderBottomWidth: 1,
@@ -92,13 +121,10 @@ const styles = StyleSheet.create({
     width:250,
     borderRadius:30,
   },
-  registerButton: {
-    backgroundColor: 'rgba(13, 65, 168,0.4)',
+  signupButton: {
+    backgroundColor: "#c415bb",
   },
-  loginButton: {
-    backgroundColor: "#00b5ec",
-  },
-  loginText: {
+  signUpText: {
     color: 'white',
   }
 });

@@ -5,7 +5,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   TextInput,
-  AlertIOS
+  Alert
 } from 'react-native';
 
 import { db } from '../Config';
@@ -28,7 +28,7 @@ export default class AddItem extends Component {
   };
   handleSubmit = () => {
     addItem(this.state.name);
-    AlertIOS.alert('Item saved successfully');
+    Alert.alert('Item saved successfully');
   };
 
   render() {
