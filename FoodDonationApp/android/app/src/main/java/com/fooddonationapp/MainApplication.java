@@ -9,7 +9,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
-
+import com.devfd.RNGeocoder.RNGeocoderPackage; // <--- import 
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +23,8 @@ public class MainApplication extends Application implements ReactApplication {
         return Arrays.<ReactPackage>asList(
                 new MainReactPackage(),
                 new MapsPackage(),
-                new RNFusedLocationPackage()
+                new RNFusedLocationPackage(),
+                new RNGeocoderPackage()
 
         );
     }
@@ -50,5 +51,5 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
   }
 
-  
+
 }

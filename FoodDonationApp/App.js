@@ -3,50 +3,19 @@ import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, D
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
-import firebase from 'firebase';
-
 
 import Maps from './src/components/maps/maps/Maps';
-
+import LocationGeo from './src/components/maps/locationGeo/LocationGeo';
 
 console.disableYellowBox = true;
 
-var config = {
-  databaseURL: "https://food-donation-bcce1.firebaseio.com",
-  projectId: "food-donation-bcce1",
-};
-firebase.initializeApp(config);
-
 type Props = {};
 class App extends Component<Props> {
- 
-writeUserData(email,fname,lname){
-  firebase.database().ref('UsersList/').push({
-      email,
-      fname,
-      lname
-  }).then((data)=>{
-      //success callback  
-      console.log('data ' , data)
-  }).catch((error)=>{
-      //error callback
-      console.log('error ' , error)
-  })
-}
-
-readUserData() {
-  firebase.database().ref('items/').once('value', function (snapshot) {
-      console.log(snapshot.val())
-  });
-}
   render() {
     return (
       <View style={styles.container}>
-        <Maps/>
-     <Button title={"write"} onPress={this.writeUserData("aexdfdsfsd@gmail.com", "Alefx", "Backlufnd")}> 
-           </Button>
-           
-           </View> 
+        <LocationGeo/>
+      </View>
     );
   }
 }
@@ -82,7 +51,7 @@ const styles = StyleSheet.create({
     bottom: 600,
     left: -170,
   },
-  
+
 });
 
-export default App; 
+export default App;

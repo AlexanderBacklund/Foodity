@@ -139,6 +139,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-maps')
     compile project(':react-native-geolocation-service')
+    compile project(':react-native-geocoder')  
 
 }
 
