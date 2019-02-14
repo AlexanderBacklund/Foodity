@@ -3,20 +3,42 @@ import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, D
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 import Maps from './src/components/maps/maps/Maps';
 import LocationGeo from './src/components/maps/locationGeo/LocationGeo';
+import Home from './src/screens/Home';
+import Browse from './src/screens/Browse';
+import Account from './src/screens/Account';
+import Discover from './src/screens/Discover';
+import Orders from './src/screens/Orders';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 
 console.disableYellowBox = true;
 
-type Props = {};
-class App extends Component<Props> {
+const AppNavigator = createStackNavigator(
+  {
+    Home,
+    Maps,
+    LocationGeo,
+    Browse,
+    Account,
+    Discover,
+    Orders
+  },
+  {
+    initialRouteName: 'Discover'
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Login/>
+        <Maps/>
       </View>
     );
   }
@@ -55,5 +77,3 @@ const styles = StyleSheet.create({
   },
 
 });
-
-export default App;
