@@ -1,44 +1,50 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
-import { db } from '../Config';
-export default class SignUp extends React.Component {
-  state = { email: '', password: '', fname: '', lname: '', errorMessage: null }
-  
-  
-
-// let addUser = item => {  
-//   db.ref('/UsersList').push({
-//     email: item.email
-//   });
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
+//   authDomain: "food-donation-bcce1.firebaseapp.com",
+//   databaseURL: "https://food-donation-bcce1.firebaseio.com",
+//   projectId: "food-donation-bcce1",
+//   storageBucket: "food-donation-bcce1.appspot.com",
+//   messagingSenderId: "474995894111",
 // };
-writeUserData(email,fname,lname,res){
-  firebase.database().ref('UsersList/'+res.user.uid).set({
-      email,
-      fname,
-      lname
-  }).then((data)=>{
-      //success callback
-      this.props.navigation.navigate('Home')
-      console.log('data ' , data)
-  }).catch((error)=>{
-      //error callback
-      console.log('error ' , error)
-  })
-}
 
-  signUpHandler = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
-      .catch(error => this.setState({ errorMessage: error.message }))
-    console.log('signUpHandler')
+// const app = firebase.initializeApp(firebaseConfig);
+
+export default class Login extends React.Component {
+
+  state = { email: '', password: '', errorMessage: null }
+
+  writeUserData(email,fname,lname,res){
+    firebase.database().ref('UsersList/'+res.user.uid).set({
+        email,
+        fname,
+        lname
+    }).then((data)=>{
+        //success callback
+        // this.props.navigation.navigate('Home')
+        console.log('data ' , data)
+    }).catch((error)=>{
+        //error callback
+        console.log('error ' , error)
+    })
   }
+  
+    signUpHandler = () => {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
+        .catch(error => this.setState({ errorMessage: error.message }))
+      console.log('signUpHandler')
+    }
+
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        
+        <KeyboardAvoidingView style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="First Name"
@@ -71,7 +77,7 @@ writeUserData(email,fname,lname,res){
         </View>
         {console.log(this.state)}
         {this.state.errorMessage &&
-          <Text style={{ color: '#e5e53d', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
+          <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
@@ -85,9 +91,10 @@ writeUserData(email,fname,lname,res){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0e8bce',
+    backgroundColor: '#5eb56a',
   },
   inputContainer: {
       borderBottomColor: '#0e8bce',

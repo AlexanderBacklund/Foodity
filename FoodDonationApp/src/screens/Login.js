@@ -1,6 +1,17 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
-import firebase from 'firebase'
+import firebase from 'firebase';
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
+//   authDomain: "food-donation-bcce1.firebaseapp.com",
+//   databaseURL: "https://food-donation-bcce1.firebaseio.com",
+//   projectId: "food-donation-bcce1",
+//   storageBucket: "food-donation-bcce1.appspot.com",
+//   messagingSenderId: "474995894111",
+// };
+
+// const app = firebase.initializeApp(firebaseConfig);
+
 export default class Login extends React.Component {
 
   state = { email: '', password: '', errorMessage: null }
@@ -10,7 +21,7 @@ export default class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('Home'))
+      .then(() => Alert.alert('Logged In'))
       .catch(error => this.setState({ errorMessage: error.message }))
     console.log('loginHandler')
   }
@@ -40,12 +51,12 @@ export default class Login extends React.Component {
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
         {this.state.errorMessage &&
-          <Text style={{ color: '#e5e53d', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
+          <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
           {/* {console.log(this.state.errorMessage)} */}
         
-        <TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp')}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.props.navigation.navigate()}>
             <Text>Not a member? Sign up now.</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
@@ -56,9 +67,10 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4076ce',
+    backgroundColor: '#5eb56a',
   },
   inputContainer: {
       borderBottomColor: '#4076ce',
