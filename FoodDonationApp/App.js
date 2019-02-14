@@ -12,11 +12,12 @@ import Browse from './src/screens/Browse';
 import Account from './src/screens/Account';
 import Discover from './src/screens/Discover';
 import Orders from './src/screens/Orders';
-
+import Login from './src/screens/Login';
+import SignUp from './src/screens/SignUp';
 
 console.disableYellowBox = true;
 
-const AppNavigator = createStackNavigator(  
+const AppNavigator = createStackNavigator(
   {
     Home,
     Maps,
@@ -33,22 +34,15 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {  
-  render() {
-    return <AppContainer />;
-  }
-}
-
-/*type Props = {};
-class App extends Component<Props> {
+export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <AppContainer/>
+        <Maps/>
       </View>
     );
   }
-}*/
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -83,5 +77,3 @@ const styles = StyleSheet.create({
   },
 
 });
-
-//export default App;
