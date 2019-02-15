@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
+
 import Cards from './../card/Cards';
 
 const images = [
