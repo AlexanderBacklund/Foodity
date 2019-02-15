@@ -98,18 +98,9 @@ writeUserData(email,fname,lname){
   render() {
     
 
-    // firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-    //   console.log(snapshot.val())
-    //firebase.database().ref('/Restaurants/').once('value').then(function(snapshot) {
-      //this.setState({ stores: snapshot.val() })
-      //const add = snapshot.child("address").val();
-      //console.log(add);
-      //this.address = userObj.address;
-    //});
+     firebase.database().ref('Restaurants/').once('value', function (snapshot) {
+       console.log(snapshot.val())
 
-    firebase.database().ref('/Restaurants/address').equalTo("Jumkilsgatan 14A").on('value', snapshot => {
-      this.setState({ DisplayAddress: snapshot.val().address });
-      //console.log(this.state.DisplayAddress);
     });
     
 
