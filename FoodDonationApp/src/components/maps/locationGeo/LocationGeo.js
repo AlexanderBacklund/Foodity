@@ -76,24 +76,24 @@ writeUserData(email,fname,lname){
     this.setState({ address: text })
   }
 
-  // getData() {
-  // Geocoder.from("Jumkilsgatan 14A")
-  //       .then(json => {
-  //           var location = json.results[0].geometry.location;
-  //           console.log(location);
-  //       })
-  //       .catch(error => console.warn(error));
-  //     }
-
-      getData() {
-
-        Geocoder.from("Jumkilsgatan 14A")
+  getData() {
+  Geocoder.from("Jumkilsgatan 14A")
         .then(json => {
-          var addressComponent2 = json.results[0].address_components;
-          console.log(addressComponent2);
+            var location = json.results[0].geometry.location;
+            console.log(location);
         })
         .catch(error => console.warn(error));
       }
+
+      // getData() {
+
+      //   Geocoder.from("Jumkilsgatan 14A")
+      //   .then(json => {
+      //     var addressComponent2 = json.results[0].address_components;
+      //     console.log(addressComponent2);
+      //   })
+      //   .catch(error => console.warn(error));
+      // }
 
   render() {
     
