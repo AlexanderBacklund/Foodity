@@ -25,10 +25,12 @@ const AppNavigator = createStackNavigator(
     Browse,
     Account,
     Discover,
-    Orders
+    Orders,
+    SignUp,
+    Login
   },
   {
-    initialRouteName: 'Discover'
+    initialRouteName: 'Login'
   }
 );
 
@@ -36,11 +38,7 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Maps/>
-      </View>
-    );
+    return <AppContainer/>;
   }
 }
 

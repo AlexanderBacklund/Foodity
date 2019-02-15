@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
+import SignUp from './SignUp';
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -56,7 +57,7 @@ export default class Login extends React.Component {
           </Text>}
           {/* {console.log(this.state.errorMessage)} */}
         
-        <TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.props.navigation.navigate()}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp')}>
             <Text>Not a member? Sign up now.</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
