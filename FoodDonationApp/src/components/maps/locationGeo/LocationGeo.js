@@ -4,6 +4,8 @@ import Geocoder from 'react-native-geocoding';
 import Geocode from "react-geocode";
 import firebase from 'firebase';
 
+Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
+
 var config = {
   databaseURL: "https://food-donation-bcce1.firebaseio.com",
   projectId: "food-donation-bcce1",
@@ -16,7 +18,8 @@ constructor() {
   this.state={
     name:"",
     desc:"",
-    address:""
+    address:"",
+    address1:""
   }
 }
 
@@ -55,6 +58,12 @@ writeUserData(email,fname,lname){
     });
   }
 
+  // firebaseApp.database().ref('/users/' + userId).on('value', (snapshot) => {
+  //   const userObj = snapshot.val();
+  //   this.name = userObj.name;
+  //   this.avatar = userObj.avatar;
+  // });
+
   handleName = (text) => {
       this.setState({ name: text })
   }
@@ -67,24 +76,43 @@ writeUserData(email,fname,lname){
     this.setState({ address: text })
   }
 
-  getData() {
-    Geocoder.init("AIzaSyBNiGg5coYRTxHRZyPR8V1-EC28MpDtpqg"); // use a valid API key
-    Geocoder.from(41.89, 12.49)
-      .then(json => {
-      	var addressComponent = json.results[0].address_components[0];
-    		Alert.alert(addressComponent.long_name);
-    	})
-    	.catch(error => console.warn(error));
+  // getData() {
+  // Geocoder.from("Jumkilsgatan 14A")
+  //       .then(json => {
+  //           var location = json.results[0].geometry.location;
+  //           console.log(location);
+  //       })
+  //       .catch(error => console.warn(error));
+  //     }
 
-    Geocoder.from("marmorvägen Uppsala")
-    .then(json => {
-    	var addressComponent2 = json.results[0].address_components[0];
-      console.log(addressComponent2);
-    })
-    .catch(error => console.warn(error));
-  }
+      getData() {
+
+        Geocoder.from("Jumkilsgatan 14A")
+        .then(json => {
+          var addressComponent2 = json.results[0].address_components;
+          console.log(addressComponent2);
+        })
+        .catch(error => console.warn(error));
+      }
 
   render() {
+    
+
+    // firebase.database().ref('Restaurants/').once('value', function (snapshot) {
+    //   console.log(snapshot.val())
+    //firebase.database().ref('/Restaurants/').once('value').then(function(snapshot) {
+      //this.setState({ stores: snapshot.val() })
+      //const add = snapshot.child("address").val();
+      //console.log(add);
+      //this.address = userObj.address;
+    //});
+
+    firebase.database().ref('/Restaurants/address').equalTo("Jumkilsgatan 14A").on('value', snapshot => {
+      this.setState({ DisplayAddress: snapshot.val().address });
+      //console.log(this.state.DisplayAddress);
+    });
+    
+
 
     return(
       <View style = {styles.container}>
