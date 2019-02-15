@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {ScrollView, Button, View, Text, StyleSheet } from 'react-native';
 import {Footer, Icon, Container} from 'native-base'
  
+import Maps from './../components/maps/maps/Maps';
+
 import MyFooter from './MyFooter.js'
 import MyHeader from './MyHeader'
  
@@ -23,6 +25,7 @@ export default class Home extends React.Component {
           onPress={() => {this.props.navigation.navigate('List')}}
         />
         </ScrollView>
+        <Maps/>
         </View>
         <View>
          <MyFooter navigation={this.props.navigation} />
