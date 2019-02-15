@@ -98,12 +98,44 @@ writeUserData(email,fname,lname){
   render() {
     
 
-     firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-       console.log(snapshot.val())
+    //  firebase.database().ref('Restaurants/').once('value', function (snapshot) {
+    //    console.log(snapshot.val())
 
-    });
+    // });
+    // firebase.database().ref('Restaurants/').once('value', (request) => {
+    //   results = firebase.database().ref.orderByChild('address').equalTo(uniqueID).limitToFirst(1).get();
+    //   firstItem = results.push();
+
+    //   console.log(results);
+    // });
+
+    firebase.database().ref('Restaurants/').once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+          var childKey = childSnapshot.key;
+          var childData = childSnapshot.val().address;
+          //console.log(childKey);
+          console.log(childData);
+
+          Geocoder.from(childData)
+          .then(json => {
+            var location = json.results[0].geometry.location;
+            console.log(location);
+        })
+        .catch(error => console.warn(error));
+       });
+       
+ });
+      // Geocoder.from( { 'address': currentUserAddress}, function(results, status) {
+      //   if (status == google.maps.GeocoderStatus.OK) {
+      //     var latitude = results[0].geometry.location.latitude;
+      //     var longitude = results[0].geometry.location.longitude;
+      //     var latlng = new LatLng(latitude, longitude);
+      //     var userAddress = new LatLng(currentUserAddress)
+      //     console.log(userAddress);
+      //   } 
+      // }); 
     
-
+    //});
 
     return(
       <View style = {styles.container}>
