@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
 import SignUp from './SignUp';
+import Browse from './Browse';
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -22,8 +23,9 @@ export default class Login extends React.Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => Alert.alert('Logged In'))
-      .catch(error => this.setState({ errorMessage: error.message }))
+      .then(() =>{ Alert.alert('Logged In')
+      this.props.navigation.navigate('Browse')
+      }).catch(error => this.setState({ errorMessage: error.message }))
     console.log('loginHandler')
   }
 

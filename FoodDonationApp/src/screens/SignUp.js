@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
+import Browse from './Browse';
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -23,7 +24,7 @@ export default class Login extends React.Component {
         lname
     }).then((data)=>{
         //success callback
-        // this.props.navigation.navigate('Home')
+        this.props.navigation.navigate('Browse')
         console.log('data ' , data)
     }).catch((error)=>{
         //error callback
