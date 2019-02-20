@@ -20,8 +20,7 @@ export default class MyFooter extends React.Component {
         DiscoverColor : 'blue',
       })
     }
-   
- 
+
  
  
  
