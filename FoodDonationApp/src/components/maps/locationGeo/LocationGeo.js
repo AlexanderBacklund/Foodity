@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {TextInput, Alert, Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import Geocoder from 'react-native-geocoding';
-import Geocode from "react-geocode";
 import firebase from 'firebase';
 
 Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
@@ -19,20 +18,29 @@ constructor() {
     name:"",
     desc:"",
     address:"",
-    address1:""
+    allResturantDataArray: [],
+    lng:"",
+    lat:""
   }
+  
 }
 
 writeToRestaurant() {
   var name = this.state.name;
   var desc = this.state.desc;
   var address = this.state.address;
+  
+  var lat = this.state.lat;
+  var lng = this.state.lng;
   firebase.database().ref('Restaurants/').push({
       name,
       desc,
-      address
+      address,
+      lat,
+      lng
+
     }).then((data) =>{
-      console.log('successfully added new restaurant')
+      console.log('Successfully added new restaurant')
     }).catch((error) =>{
       console.log('error', error)
     })
@@ -52,17 +60,11 @@ writeUserData(email,fname,lname){
   })
 }
 
-  readRestaurantData() {
-    firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-      console.log(snapshot.val())
-    });
-  }
-
-  // firebaseApp.database().ref('/users/' + userId).on('value', (snapshot) => {
-  //   const userObj = snapshot.val();
-  //   this.name = userObj.name;
-  //   this.avatar = userObj.avatar;
-  // });
+  // readRestaurantData() {
+  //   firebase.database().ref('Restaurants/').once('value', function (snapshot) {
+  //     console.log(snapshot.val())
+  //   });
+  // }
 
   handleName = (text) => {
       this.setState({ name: text })
@@ -74,68 +76,37 @@ writeUserData(email,fname,lname){
 
   handleAddress = (text) => {
     this.setState({ address: text })
+    this.getData(text);
   }
 
-  getData() {
-  Geocoder.from("Jumkilsgatan 14A")
+  getData(address) {
+  Geocoder.from(address)
         .then(json => {
-            var location = json.results[0].geometry.location;
-            console.log(location);
+            var lat = json.results[0].geometry.location.lat;
+            var lng = json.results[0].geometry.location.lng;
+            this.setState({lat: lat, lng: lng});
         })
         .catch(error => console.warn(error));
       }
 
-      // getData() {
-
-      //   Geocoder.from("Jumkilsgatan 14A")
-      //   .then(json => {
-      //     var addressComponent2 = json.results[0].address_components;
-      //     console.log(addressComponent2);
-      //   })
-      //   .catch(error => console.warn(error));
-      // }
-
-  render() {
-    
-
-    //  firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-    //    console.log(snapshot.val())
-
-    // });
-    // firebase.database().ref('Restaurants/').once('value', (request) => {
-    //   results = firebase.database().ref.orderByChild('address').equalTo(uniqueID).limitToFirst(1).get();
-    //   firstItem = results.push();
-
-    //   console.log(results);
-    // });
-
-    firebase.database().ref('Restaurants/').once('value', function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-          var childKey = childSnapshot.key;
-          var childData = childSnapshot.val().address;
-          //console.log(childKey);
-          console.log(childData);
-
-          Geocoder.from(childData)
-          .then(json => {
-            var location = json.results[0].geometry.location;
-            console.log(location);
+    componentDidMount() {
+      let allResturant = [];
+      firebase.database().ref('Restaurants/').once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var childKey = childSnapshot.key;
+            childData = childSnapshot.val();
+            allResturant.push(childData);
+          });
+          this.setState ( {
+            allResturantDataArray: allResturant
         })
-        .catch(error => console.warn(error));
-       });
-       
- });
-      // Geocoder.from( { 'address': currentUserAddress}, function(results, status) {
-      //   if (status == google.maps.GeocoderStatus.OK) {
-      //     var latitude = results[0].geometry.location.latitude;
-      //     var longitude = results[0].geometry.location.longitude;
-      //     var latlng = new LatLng(latitude, longitude);
-      //     var userAddress = new LatLng(currentUserAddress)
-      //     console.log(userAddress);
-      //   } 
-      // }); 
-    
-    //});
+          
+        }.bind(this));
+        
+        
+
+    }
+  render() {
 
     return(
       <View style = {styles.container}>
@@ -160,9 +131,9 @@ writeUserData(email,fname,lname){
           placeholderTextColor = "#9a73ef"
           autoCapitalize = "none"
           onChangeText = {this.handleAddress}/>
-
+          
         <Button title={"Add a restaurant"} onPress={() => this.writeToRestaurant()}></Button>
-        <Button title={"Click me"} onPress={() => {this.getData()}}></Button>
+        <Button title={"Show all restaurants in console"} onPress={() => {console.log(this.state.allResturantDataArray)}}></Button>
         </View>
 
     );
