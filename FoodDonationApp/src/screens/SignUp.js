@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
-import Browse from './Browse';
+import Loading from './Loading';
+import Login from './Login'
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -13,7 +14,7 @@ import Browse from './Browse';
 
 // const app = firebase.initializeApp(firebaseConfig);
 
-export default class Login extends React.Component {
+export default class SignUp extends React.Component {
 
   state = { email: '', password: '', errorMessage: null }
 
@@ -24,7 +25,7 @@ export default class Login extends React.Component {
         lname
     }).then((data)=>{
         //success callback
-        this.props.navigation.navigate('Browse')
+        this.props.navigation.navigate('Loading')
         console.log('data ' , data)
     }).catch((error)=>{
         //error callback
