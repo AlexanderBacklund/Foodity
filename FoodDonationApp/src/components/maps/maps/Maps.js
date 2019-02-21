@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 //import firebase from 'firebase';
-import Cards from './../card/Cards';
+
 import Firebase from './../../../config/FirebaseConfig';
 
 const images = [
@@ -133,21 +133,23 @@ class Maps extends Component {
         // We should just debounce the event listener here
         this.animation.addListener(({ value }) => {
           let index = Math.floor(value / cardWidth + 0.3); // animate 30% away from landing on the next item
-          if (index >= this.state.markers.length) {
-            index = this.state.markers.length - 1;
+          
+          if (index >= this.state.resturantData.length) {
+            index = this.state.resturantData.length - 1;
           }
           if (index <= 0) {
             index = 0;
           }
-          
+          console.log(this.state.resturantData[index])
           clearTimeout(this.regionTimeout);
           this.regionTimeout = setTimeout(() => {
             if (this.index !== index) {
               this.index = index;
-              const { coordinate } = this.state.markers[index];
+              const coordinate  = this.state.resturantData[index];
               this.map.animateToRegion(
                 {
-                  ...coordinate,
+                  latitude: coordinate.lat, 
+                  longitude: coordinate.lng,
                   latitudeDelta: this.state.region.latitudeDelta,
                   longitudeDelta: this.state.region.longitudeDelta,
                 },
@@ -168,7 +170,7 @@ class Maps extends Component {
             marker = <MapView.Marker coordinate={this.state.focusLocation} />
           }
           
-          const interpolations = this.state.markers.map((marker, index) => {
+          const interpolations = this.state.resturantData.map((marker, index) => {
             const inputRange = [
               (index - 1) * cardWidth,
               index * cardWidth,
@@ -217,7 +219,48 @@ class Maps extends Component {
                
            </MapView>
       
-           <Cards data={this.state.resturantData}/>
+           <Animated.ScrollView
+          horizontal
+          scrollEventThrottle={1}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={cardWidth}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: this.animation,
+                  },
+                },
+              },
+            ],
+            { useNativeDriver: true }
+          )}
+          style={styles.scrollView}
+          contentContainerStyle={styles.endPadding}
+        >
+          {this.state.resturantData.map((marker, index) => (
+            <View style={styles.card} key={index} onPress>
+              <Image
+                source={marker.image}
+                style={styles.cardImage}
+                resizeMode="cover"
+              />
+              <View style={styles.textContent}>
+                <Text numberOfLines={1} style={styles.cardtitle}>{marker.name}</Text>
+                <Text numberOfLines={1} style={styles.cardDescription}>
+                  {marker.desc}
+                </Text>
+              </View>
+                
+                <TouchableOpacity style={styles.reserveButton}
+                underlayColor='#fff'>
+                  <Text>More info</Text>
+                </TouchableOpacity>
+                
+            </View>
+          ))}
+        </Animated.ScrollView>
       
            <View style={styles.locateIcon}> 
            <TouchableOpacity onPress={this.getLocationHandler} underlayColor={'transparent'}>
@@ -270,6 +313,116 @@ class Maps extends Component {
           bottom: 600,
           left: -170,
         },
+        scrollView: {
+  position: "absolute",
+  bottom: 10,
+  left: 0,
+  right: 0,
+  paddingVertical: 10,
+},
+endPadding: {
+  paddingRight: width - cardWidth,
+},
+card: {
+  padding: 10,
+  elevation: 2,
+  backgroundColor: "#FFF",
+  marginHorizontal: 10,
+  shadowColor: "#000",
+  shadowRadius: 5,
+  shadowOpacity: 0.3,
+  shadowOffset: { x: 2, y: -2 },
+  height: cardHeight,
+  width: cardWidth,
+  overflow: "hidden",
+  borderRadius: 10,
+},
+cardImage: {
+  flex: 3,
+  width: "100%",
+  height: "100%",
+  alignSelf: "center",
+},
+textContent: {
+  flex: 1,
+  justifyContent: 'center', 
+  alignItems: 'center'
+
+},
+cardtitle: {
+  fontSize: 14,
+  marginTop: 5,
+  fontWeight: "bold",
+},
+cardDescription: {
+  fontSize: 12,
+  color: "#444",
+},
+reserveButton: {
+  flex: 1,
+  justifyContent: 'center', 
+  alignItems: 'center',
+  
+  marginTop:5,
+  
+  backgroundColor:'#5eb56a',
+  borderRadius: 10
+},
+scrollView: {
+  position: "absolute",
+  bottom: 10,
+  left: 0,
+  right: 0,
+  paddingVertical: 10,
+},
+endPadding: {
+  paddingRight: width - cardWidth,
+},
+card: {
+  padding: 10,
+  elevation: 2,
+  backgroundColor: "#FFF",
+  marginHorizontal: 10,
+  shadowColor: "#000",
+  shadowRadius: 5,
+  shadowOpacity: 0.3,
+  shadowOffset: { x: 2, y: -2 },
+  height: cardHeight,
+  width: cardWidth,
+  overflow: "hidden",
+  borderRadius: 10,
+},
+cardImage: {
+  flex: 3,
+  width: "100%",
+  height: "100%",
+  alignSelf: "center",
+},
+textContent: {
+  flex: 1,
+  justifyContent: 'center', 
+  alignItems: 'center'
+
+},
+cardtitle: {
+  fontSize: 14,
+  marginTop: 5,
+  fontWeight: "bold",
+},
+cardDescription: {
+  fontSize: 12,
+  color: "#444",
+},
+reserveButton: {
+  flex: 1,
+  justifyContent: 'center', 
+  alignItems: 'center',
+  
+  marginTop:5,
+  
+  backgroundColor:'#5eb56a',
+  borderRadius: 10
+}
         
       });
 
