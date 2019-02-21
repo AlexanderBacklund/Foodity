@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
+import {CheckBox, StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
 import Loading from './Loading';
-import Login from './Login'
+import Login from './Login';
+import RestaurantMyMeals from './RestaurantMyMeals';
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -14,9 +15,48 @@ import Login from './Login'
 
 // const app = firebase.initializeApp(firebaseConfig);
 
-export default class SignUp extends React.Component {
+export default class RestaurantAddMeals extends React.Component {
 
-  state = { email: '', password: '', errorMessage: null }
+
+
+
+constructor(props) {
+    super(props);
+    this.state = {
+        Name: '',
+        Decription: '',
+        Weight: 0,
+        Picture: '',
+        Portions: 0,
+        Taken: false,
+        errorMessage: null
+    }
+    this.writeFoodData = this.writeFoodData.bind(this);
+}
+
+
+  writeFoodData(Name, Decription, Weight, Picture, Portions, Taken) {
+    firebase.database().ref('FoodList/').push({
+        Name,
+        Decription,
+        Weight,
+        Picture,
+        Portions,
+        Taken
+
+    }).then((data)=>{
+        this.props.navigation.navigate('RestaurantMyMeals')
+    }).catch((error)=>{
+        console.log('error' , error)
+    })
+   }
+
+    addFoodHandler = () => {
+
+      this.writeFoodData(this.state.Name,this.state.Decription,This.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)
+
+    }
+
 
   writeUserData(email,fname,lname,res){
     firebase.database().ref('UsersList/'+res.user.uid).set({
@@ -32,7 +72,7 @@ export default class SignUp extends React.Component {
         console.log('error ' , error)
     })
   }
-  
+
     signUpHandler = () => {
       firebase
         .auth()
@@ -45,50 +85,53 @@ export default class SignUp extends React.Component {
 
   render() {
     return (
-        
+
         <KeyboardAvoidingView style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="First Name"
+              placeholder="Name of food"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(fname) => this.setState({fname})}/>
+              onChangeText={(Name) => this.setState({Name})}/>
         </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Last Name"
-              keyboardType="email-address"
+              placeholder="Amount of portions"
+              keyboardType="number-pad"
               underlineColorAndroid='transparent'
-              onChangeText={(lname) => this.setState({lname})}/>
+              onChangeText={(Amount) => this.setState({Amount})}/>
         </View>
 
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Email"
+              placeholder="Decription"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(email) => this.setState({email})}/>
+              onChangeText={(Decription) => this.setState({Decription})}/>
         </View>
-        
+
+
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Password"
-              secureTextEntry={true}
+              placeholder="Weight"
+              keyboardType="number-pad"
               underlineColorAndroid='transparent'
-              onChangeText={(password) => this.setState({password})}/>
+              onChangeText={(Weight) => this.setState({Weight})}/>
         </View>
         {console.log(this.state)}
         {this.state.errorMessage &&
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
-          <Text style={styles.signUpText}>Register</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() =>this.writeFoodData(this.state.Name,this.state.Decription,this.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)}>
+          <Text style={styles.signUpText}>Add food</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

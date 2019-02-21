@@ -14,6 +14,11 @@ import Discover from './src/screens/Discover';
 import Orders from './src/screens/Orders';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
+import RestaurantAddMeal from './src/screens/RestaurantAddMeal' ;
+import RestaurantHistory from './src/screens/RestaurantHistory' ;
+import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
+import RestaurantProfile from './src/screens/RestaurantProfile' ;
+import Loading from './src/screens/Loading' ;
 
 console.disableYellowBox = true;
 
@@ -27,10 +32,15 @@ const AppNavigator = createStackNavigator(
     Discover,
     Orders,
     SignUp,
-    Login
+    Login,
+    RestaurantAddMeal,
+    RestaurantHistory,
+    RestaurantMyMeals,
+    RestaurantProfile,
+    Loading
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: 'RestaurantMyMeals'
   }
 );
 
