@@ -17,6 +17,7 @@
     "react-native-geocoding": "^0.3.0",
     "react-native-geolocation-service": "^2.0.0",
     "react-native-gesture-handler": "^1.0.15",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-maps": "^0.23.0",
     "react-navigation": "^3.2.3"
   },
