@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-
+//import firebase from 'firebase';
 import Cards from './../card/Cards';
+import Firebase from './../../../config/FirebaseConfig';
 
 const images = [
     {uri: "https://icase.azureedge.net/imagevaultfiles/id_124661/cf_259/blomkalsris-med-solrosfron-719531-liten.jpg"},
@@ -18,11 +19,10 @@ const images = [
   
 
 class Maps extends Component {
-
         state ={
           focusLocation: {
-            latitude: 59.334591,
-            longitude: 18.053240,
+            latitude: 59.838601,
+            longitude: 17.6113775,
             latitudeDelta: 0.015,   
             longitudeDelta: 0.0121,
           },
@@ -70,6 +70,7 @@ class Maps extends Component {
             latitudeDelta: 0.04864195044303443,
             longitudeDelta: 0.040142817690068,
           },
+             resturantData: [],
         }
       
         pickLocationHandler = event => {
@@ -109,18 +110,25 @@ class Maps extends Component {
           alert("Fetching the Position failed, please pick one manually!");
         })
         }
-      
-      //   updateRestaurantPosition(restaurantPosition){
-      //     this.setState({restaurantPosition})
-      //   const restaurant = firebase.database().ref('restaurant/' + this.restaurantId)
-      //   restaurant.update({restaurantPosition})
-      // }
-      
+            
       componentWillMount() {
         this.index = 0;
         this.animation = new Animated.Value(0);
+        let allResturant = [];
+        Firebase.database().ref('Restaurants/').once('value', function(snapshot) {
+          snapshot.forEach(function(childSnapshot) {
+              var childKey = childSnapshot.key;
+              childData = childSnapshot.val();
+              allResturant.push(childData);  
+            });
+            this.setState ( {
+              resturantData: allResturant
+          })
+          }.bind(this));
       }
       componentDidMount() {
+
+        
         // We should detect when scrolling has stopped then animate
         // We should just debounce the event listener here
         this.animation.addListener(({ value }) => {
@@ -131,7 +139,7 @@ class Maps extends Component {
           if (index <= 0) {
             index = 0;
           }
-      
+          
           clearTimeout(this.regionTimeout);
           this.regionTimeout = setTimeout(() => {
             if (this.index !== index) {
@@ -148,17 +156,18 @@ class Maps extends Component {
             }
           }, 10);
         });
+
       }
       
         render() {
-      
+          
           
           let marker = null;
       
           if (this.state.locationChosen) {
             marker = <MapView.Marker coordinate={this.state.focusLocation} />
           }
-      
+          
           const interpolations = this.state.markers.map((marker, index) => {
             const inputRange = [
               (index - 1) * cardWidth,
@@ -189,10 +198,12 @@ class Maps extends Component {
              onPress={this.pickLocationHandler}
              ref={ref => this.map = ref}
             >
-            {marker}
-            {this.state.markers.map((marker, index) => {
+            
+            {this.state.resturantData.map((marker, index) => {
               return (
-                <MapView.Marker key={index} coordinate={marker.coordinate}>
+                <MapView.Marker key={index} coordinate={{latitude: marker.lat, longitude: marker.lng}}>
+                
+                
                 <Animated.View style={styles.markerWrap}>
                   <View >
                   <Image source={require('./../../../images/FoodityIcon2.png')} style={{width: 50, height: 50}}/>
@@ -206,7 +217,7 @@ class Maps extends Component {
                
            </MapView>
       
-           <Cards/>
+           <Cards data={this.state.resturantData}/>
       
            <View style={styles.locateIcon}> 
            <TouchableOpacity onPress={this.getLocationHandler} underlayColor={'transparent'}>

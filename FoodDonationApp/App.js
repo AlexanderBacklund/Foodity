@@ -11,10 +11,23 @@ console.disableYellowBox = true;
 
 type Props = {};
 class App extends Component<Props> {
+  constructor(){
+    super()
+    this.state = {allRestaurantDataArray: [lat= 10, lng=19]}
+  };
+
+  changeRestaurantData = (newData) => {
+    this.setState({
+      allRestaurantDataArray: newData
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <LocationGeo/>
+        
+        <Maps/>
+        
       </View>
     );
   }

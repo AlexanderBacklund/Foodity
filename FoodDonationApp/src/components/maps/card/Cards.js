@@ -90,7 +90,7 @@ class Cards extends Component {
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}
         >
-          {this.state.markers.map((marker, index) => (
+          {this.props.data.map((marker, index) => (
             <View style={styles.card} key={index} onPress>
               <Image
                 source={marker.image}
@@ -98,9 +98,9 @@ class Cards extends Component {
                 resizeMode="cover"
               />
               <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                <Text numberOfLines={1} style={styles.cardtitle}>{marker.name}</Text>
                 <Text numberOfLines={1} style={styles.cardDescription}>
-                  {marker.description}
+                  {marker.desc}
                 </Text>
               </View>
                 

@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 import {TextInput, Alert, Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import Geocoder from 'react-native-geocoding';
-import firebase from 'firebase';
+//import firebase from 'firebase';
+import Firebase from './../../../config/FirebaseConfig';
 
 Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
-
-var config = {
-  databaseURL: "https://food-donation-bcce1.firebaseio.com",
-  projectId: "food-donation-bcce1",
-};
-firebase.initializeApp(config);
 
 class LocationGeo extends Component {
 constructor() {
@@ -32,7 +27,7 @@ writeToRestaurant() {
   
   var lat = this.state.lat;
   var lng = this.state.lng;
-  firebase.database().ref('Restaurants/').push({
+  Firebase.database().ref('Restaurants/').push({
       name,
       desc,
       address,
@@ -47,7 +42,7 @@ writeToRestaurant() {
 }
 
 writeUserData(email,fname,lname){
-  firebase.database().ref('UsersList/').push({
+  Firebase.database().ref('UsersList/').push({
       email,
       fname,
       lname
@@ -59,12 +54,6 @@ writeUserData(email,fname,lname){
       console.log('error ' , error)
   })
 }
-
-  // readRestaurantData() {
-  //   firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-  //     console.log(snapshot.val())
-  //   });
-  // }
 
   handleName = (text) => {
       this.setState({ name: text })
@@ -88,26 +77,9 @@ writeUserData(email,fname,lname){
         })
         .catch(error => console.warn(error));
       }
-
-    componentDidMount() {
-      let allResturant = [];
-      firebase.database().ref('Restaurants/').once('value', function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var childKey = childSnapshot.key;
-            childData = childSnapshot.val();
-            allResturant.push(childData);
-          });
-          this.setState ( {
-            allResturantDataArray: allResturant
-        })
-          
-        }.bind(this));
-        
-        
-
-    }
+    
   render() {
-
+    
     return(
       <View style = {styles.container}>
 
