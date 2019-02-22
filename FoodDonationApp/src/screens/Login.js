@@ -18,10 +18,10 @@ export default class Login extends React.Component {
       .signInWithEmailAndPassword(email, password)
       .then(() =>{ var user = firebase.auth().currentUser; 
         // If email verification is commented out in SignUp.js, then if condition should be (user.emailVerified==true) else it should be (user.emailVerified==false). Just for testing.
-        if (user.emailVerified==false) {
+        if (user.emailVerified==true) {
           this.setState({ errorMessage: "Email not verified. Please click in the verification link sent to your email address." })
         } else {
-          this.props.navigation.navigate('Browse')
+          this.props.navigation.navigate('Loading')
         }
         var db = firebase.database().ref('UsersList/'+user.uid);
         db.once('value').then( function (snap) {

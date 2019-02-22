@@ -24,10 +24,10 @@ export default class Signup extends React.Component {
     }).then((data)=>{
         //success callback
 
-        this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('Loading')
         var user = firebase.auth().currentUser;
         // Comment out the following block of code to enable verification email.
-        // user.sendEmailVerification().then(function() { 
+        // user.sendEmailVerification().then(function() {
         //   // Email sent.
         // }).catch(function(error) {
         //   // An error happened.
