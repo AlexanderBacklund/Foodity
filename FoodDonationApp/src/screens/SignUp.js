@@ -1,32 +1,38 @@
 import React from 'react';
-import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
+import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView,ScrollView} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import firebase from 'firebase';
 import Loading from './Loading';
-import Login from './Login'
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
-//   authDomain: "food-donation-bcce1.firebaseapp.com",
-//   databaseURL: "https://food-donation-bcce1.firebaseio.com",
-//   projectId: "food-donation-bcce1",
-//   storageBucket: "food-donation-bcce1.appspot.com",
-//   messagingSenderId: "474995894111",
-// };
+import Browse from './Browse';
 
-// const app = firebase.initializeApp(firebaseConfig);
 
-export default class SignUp extends React.Component {
+export default class Signup extends React.Component {
 
-  state = { email: '', password: '', errorMessage: null }
-
-  writeUserData(email,fname,lname,res){
+  state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null }
+  
+        
+  writeUserData(email,fname,lname,orgname,typeOfUser,address,description,res){
     firebase.database().ref('UsersList/'+res.user.uid).set({
         email,
         fname,
-        lname
+        lname,
+        orgname,
+        typeOfUser,
+        address,
+        description
+        
     }).then((data)=>{
         //success callback
-        this.props.navigation.navigate('Loading')
-        console.log('data ' , data)
+
+        this.props.navigation.navigate('Login')
+        var user = firebase.auth().currentUser;
+        // Comment out the following block of code to enable verification email.
+        // user.sendEmailVerification().then(function() { 
+        //   // Email sent.
+        // }).catch(function(error) {
+        //   // An error happened.
+        // });
+        console.log('data ' , res)
     }).catch((error)=>{
         //error callback
         console.log('error ' , error)
@@ -37,7 +43,7 @@ export default class SignUp extends React.Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
+        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,this.state.orgname,this.props.navigation.getParam('text'),this.state.address,this.state.description,res))
         .catch(error => this.setState({ errorMessage: error.message }))
       console.log('signUpHandler')
     }
@@ -46,7 +52,14 @@ export default class SignUp extends React.Component {
   render() {
     return (
         
-        <KeyboardAvoidingView style={styles.container}>
+        // <KeyboardAvoidingView style={styles.container}>
+        <KeyboardAwareScrollView
+      style={{ backgroundColor: '#5eb56a' }}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      contentContainerStyle={styles.container}
+      scrollEnabled={true}
+    >
+    <View style={{height: '25%'}}></View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="First Name"
@@ -61,7 +74,28 @@ export default class SignUp extends React.Component {
               underlineColorAndroid='transparent'
               onChangeText={(lname) => this.setState({lname})}/>
         </View>
-
+        
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.inputs}
+              placeholder="Organisation Name"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={(orgname) => this.setState({orgname})}/>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.inputs}
+              placeholder="Address"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={(address) => this.setState({address})}/>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput style={styles.inputs}
+              placeholder="Description"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={(description) => this.setState({description})}/>
+        </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Email"
@@ -69,7 +103,6 @@ export default class SignUp extends React.Component {
               underlineColorAndroid='transparent'
               onChangeText={(email) => this.setState({email})}/>
         </View>
-        
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Password"
@@ -77,6 +110,7 @@ export default class SignUp extends React.Component {
               underlineColorAndroid='transparent'
               onChangeText={(password) => this.setState({password})}/>
         </View>
+        {console.log(this.props.navigation.getParam('text', 'nothing sent'))}
         {console.log(this.state)}
         {this.state.errorMessage &&
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
@@ -85,7 +119,8 @@ export default class SignUp extends React.Component {
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
           <Text style={styles.signUpText}>Register</Text>
         </TouchableHighlight>
-      </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+      
     );
   }
 }
@@ -101,11 +136,11 @@ const styles = StyleSheet.create({
   inputContainer: {
       borderBottomColor: '#0e8bce',
       backgroundColor: '#FFFFFF',
-      borderRadius:30,
+      borderRadius:10,
       borderBottomWidth: 1,
-      width:250,
+      width:'80%',
       height:45,
-      marginBottom:20,
+      marginBottom:5,
       flexDirection: 'row',
       alignItems:'center'
   },
@@ -131,6 +166,7 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   signupButton: {
+    marginTop: 20,
     backgroundColor: "#c415bb",
   },
   signUpText: {
