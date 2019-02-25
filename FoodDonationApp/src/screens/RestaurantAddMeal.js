@@ -64,36 +64,6 @@ constructor(props) {
     })
    }
 
-    addFoodHandler = () => {
-
-      this.writeFoodData(this.state.Name,this.state.Decription,This.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken, this.state.Restaurant)
-
-    }
-
-
-  writeUserData(email,fname,lname,res){
-    firebase.database().ref('UsersList/'+res.user.uid).set({
-        email,
-        fname,
-        lname
-    }).then((data)=>{
-        //success callback
-        this.props.navigation.navigate('Loading')
-        console.log('data ' , data)
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-    })
-  }
-
-    signUpHandler = () => {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
-        .catch(error => this.setState({ errorMessage: error.message }))
-      console.log('signUpHandler')
-    }
 
 
   render() {
