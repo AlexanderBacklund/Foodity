@@ -29,20 +29,33 @@ constructor(props) {
         Picture: '',
         Portions: 0,
         Taken: false,
+        Restaurant: '',
         errorMessage: null
     }
     this.writeFoodData = this.writeFoodData.bind(this);
 }
 
+    componentDidMount() {
 
-  writeFoodData(Name, Decription, Weight, Picture, Portions, Taken) {
+          var myUid = firebase.auth().currentUser.uid;
+          this.setState({
+            Restaurant : myUid
+          });
+          //firebase.database().ref('UsersList/' + myUid).once('value').then(function(snapshot){
+           //     this.props.navigation.navigate((snapshot.val().lname === 'Progress') ? 'Discover' : 'RestaurantMyMeals')
+          }
+
+
+
+  writeFoodData(Name, Decription, Weight, Picture, Portions, Taken, Restaurant) {
     firebase.database().ref('FoodList/').push({
         Name,
         Decription,
         Weight,
         Picture,
         Portions,
-        Taken
+        Taken,
+        Restaurant
 
     }).then((data)=>{
         this.props.navigation.navigate('RestaurantMyMeals')
@@ -53,7 +66,7 @@ constructor(props) {
 
     addFoodHandler = () => {
 
-      this.writeFoodData(this.state.Name,this.state.Decription,This.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)
+      this.writeFoodData(this.state.Name,this.state.Decription,This.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken, this.state.Restaurant)
 
     }
 
@@ -123,7 +136,7 @@ constructor(props) {
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() =>this.writeFoodData(this.state.Name,this.state.Decription,this.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() =>this.writeFoodData(this.state.Name,this.state.Decription,this.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken, this.state.Restaurant)}>
           <Text style={styles.signUpText}>Add food</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
