@@ -36,6 +36,7 @@ class Maps extends Component {
           },
              resturantData: [],
              isModalVisible: false,
+             currentPressedRestaurant: 0
         }
 
         pickLocationHandler = event => {
@@ -231,20 +232,24 @@ class Maps extends Component {
                 </TouchableOpacity>
 
             <Modal isVisible={this.state.isModalVisible}
-                   backdropOpacity={Platform.OS === 'android'? 0.2 : 0.7}>
+                backdropColor={"rgb(57, 249, 0)"}
+                backdropOpacity={0.6}
+                animationIn="zoomInDown"
+                animationOut="zoomOutUp"
+                animationInTiming={1000}
+                animationOutTiming={1000}
+                backdropTransitionInTiming={1000}
+                backdropTransitionOutTiming={1000}>
 
-              <View style={styles.modalView}>
-              <Text>Hello!</Text>
-              <Image
-              style = {{width: 250, height: 250}}
-              source={images[2]}/>
-              <Text numberOfLines={1} style={styles.cardDescription}>{marker.desc}</Text>
-
-            <TouchableOpacity onPress={this._toggleModal}>
-              <Text>Hide me!</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+                <View style={styles.modalView}>
+                    <Text>Hello!</Text>
+                    <Text numberOfLines={2  } style={styles.cardDescription}>{marker.lname}</Text>
+                    <Text style={styles.cardDescription}>{marker.desciption}</Text>
+                    <TouchableOpacity onPress={this._toggleModal}>
+                        <Text>Hide me!</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
 
 
             </View>
