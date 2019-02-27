@@ -3,7 +3,7 @@ import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, D
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
-
+import MyFooter from './../../../screens/MyFooter.js'
 import Firebase from './../../../config/FirebaseConfig';
 
 const images = [
@@ -261,7 +261,7 @@ class Maps extends Component {
 
 
 
-
+        <MyFooter navigation={this.props.navigation} />
           </View>
 
 
@@ -271,154 +271,107 @@ class Maps extends Component {
         }
       }
 
-      const styles = StyleSheet.create({
-        container: {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        },
-        map: {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-        },
-        markerWrap: {
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        marker: {
-          width: 24,
-          height: 24,
-          borderRadius: 24,
-          backgroundColor: "#5eb56a",
-        },
-        locateIcon: {
-          bottom: 600,
-          left: -170,
-        },
-        scrollView: {
-  position: "absolute",
-  bottom: 10,
-  left: 0,
-  right: 0,
-  paddingVertical: 10,
-},
-endPadding: {
-  paddingRight: width - cardWidth,
-},
-card: {
-  padding: 10,
-  elevation: 2,
-  backgroundColor: "#FFF",
-  marginHorizontal: 10,
-  shadowColor: "#000",
-  shadowRadius: 5,
-  shadowOpacity: 0.3,
-  shadowOffset: { x: 2, y: -2 },
-  height: cardHeight,
-  width: cardWidth,
-  overflow: "hidden",
-  borderRadius: 10,
-},
-cardImage: {
-  flex: 3,
-  width: "100%",
-  height: "100%",
-  alignSelf: "center",
-},
-textContent: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center'
+const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
 
-},
-cardtitle: {
-  fontSize: 14,
-  marginTop: 5,
-  fontWeight: "bold",
-},
-cardDescription: {
-  fontSize: 12,
-  color: "#444",
-},
-reserveButton: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    },
 
-  marginTop:5,
+    markerWrap: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
 
-  backgroundColor:'#5eb56a',
-  borderRadius: 10
-},
-scrollView: {
-  position: "absolute",
-  bottom: 10,
-  left: 0,
-  right: 0,
-  paddingVertical: 10,
-},
-endPadding: {
-  paddingRight: width - cardWidth,
-},
-card: {
-  padding: 10,
-  elevation: 2,
-  backgroundColor: "#FFF",
-  marginHorizontal: 10,
-  shadowColor: "#000",
-  shadowRadius: 5,
-  shadowOpacity: 0.3,
-  shadowOffset: { x: 2, y: -2 },
-  height: cardHeight,
-  width: cardWidth,
-  overflow: "hidden",
-  borderRadius: 10,
-},
-cardImage: {
-  flex: 3,
-  width: "100%",
-  height: "100%",
-  alignSelf: "center",
-},
-textContent: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center'
+    marker: {
+        width: 24,
+        height: 24,
+        borderRadius: 24,
+        backgroundColor: "#5eb56a",
+    },
 
-},
-cardtitle: {
-  fontSize: 14,
-  marginTop: 5,
-  fontWeight: "bold",
-},
-cardDescription: {
-  fontSize: 12,
-  color: "#444",
-},
-reserveButton: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
+    locateIcon: {
+        bottom: 600,
+        left: -170,
+    },
 
-  marginTop:5,
+    scrollView: {
+        position: "absolute",
+        bottom: 50,
+        left: 0,
+        right: 0,
+        paddingVertical: 10,
+    },
 
-  backgroundColor:'#5eb56a',
-  borderRadius: 10,
+    endPadding: {
+        paddingRight: width - cardWidth,
+    },
 
-},
-modalView: {
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center'
-}
+    card: {
+        padding: 10,
+        elevation: 2,
+        backgroundColor: "#FFF",
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: { x: 2, y: -2 },
+        height: cardHeight,
+        width: cardWidth,
+        overflow: "hidden",
+        borderRadius: 10,
+    },
 
-      });
+    cardImage: {
+        flex: 3,
+        width: "100%",
+        height: "100%",
+        alignSelf: "center",
+    },
+
+    textContent: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    cardtitle: {
+        fontSize: 14,
+        marginTop: 5,
+        fontWeight: "bold",
+    },
+
+    cardDescription: {
+        fontSize: 12,
+        color: "#444",
+    },
+
+    reserveButton: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:5,
+        backgroundColor:'#5eb56a',
+        borderRadius: 10
+    },
+
+    modalView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});
 
       export default Maps;
