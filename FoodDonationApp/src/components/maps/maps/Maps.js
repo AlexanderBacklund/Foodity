@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 //import firebase from 'firebase';
+import Modal from "react-native-modal";
+
 
 import Firebase from './../../../config/FirebaseConfig';
 
@@ -15,7 +17,7 @@ const images = [
   const {width, height} = Dimensions.get("window");
   
   const cardHeight = height / 2.8;
-  const cardWidth = cardHeight - 50;
+  const cardWidth = width - 50;
   
 
 class Maps extends Component {
@@ -27,43 +29,6 @@ class Maps extends Component {
             longitudeDelta: 0.0121,
           },
           locationChosen: false,
-          markers: [
-            {
-              coordinate: {
-              latitude: 59.334591,
-              longitude: 18.053240,
-              },
-              title: "Blomkål",
-              description: "Gul och smakrik.",
-              image: images[0],
-            },
-            {
-              coordinate: {
-              latitude: 59.344591,
-              longitude: 18.073240,
-            },
-            title: "Romsås",
-            description: "God till Lax.",
-            image: images[1],
-          },{
-            coordinate: {
-              latitude: 59.324591,
-              longitude: 18.083240,
-            },
-            title: "Spenatsoppa",
-            description: "Värmande.",
-            image: images[2],
-          },
-          {
-            coordinate: {
-              latitude: 59.354591,
-              longitude: 18.063240,
-            },
-            title: "Årets julbord 2018",
-            description: "Fortfarande smarrigt.",
-            image: images[3],
-          },
-          ],
           region: {
             latitude: 45.52220671242907,
             longitude: -122.6653281029795,
@@ -71,6 +36,7 @@ class Maps extends Component {
             longitudeDelta: 0.040142817690068,
           },
              resturantData: [],
+             isModalVisible: false,
         }
       
         pickLocationHandler = event => {
@@ -110,6 +76,11 @@ class Maps extends Component {
           alert("Fetching the Position failed, please pick one manually!");
         })
         }
+
+        _toggleModal = () =>
+        this.setState({
+          isModalVisible: !this.state.isModalVisible
+        })
             
       componentWillMount() {
         this.index = 0;
@@ -140,7 +111,7 @@ class Maps extends Component {
           if (index <= 0) {
             index = 0;
           }
-          console.log(this.state.resturantData[index])
+          
           clearTimeout(this.regionTimeout);
           this.regionTimeout = setTimeout(() => {
             if (this.index !== index) {
@@ -254,10 +225,29 @@ class Maps extends Component {
               </View>
                 
                 <TouchableOpacity style={styles.reserveButton}
-                underlayColor='#fff'>
+                underlayColor='#fff'
+                onPress={this._toggleModal}
+                >
                   <Text>More info</Text>
                 </TouchableOpacity>
                 
+            <Modal isVisible={this.state.isModalVisible}
+                   backdropOpacity={Platform.OS === 'android'? 0.2 : 0.7}>
+                   
+              <View style={styles.modalView}>
+              <Text>Hello!</Text>
+              <Image 
+              style = {{width: 250, height: 250}}
+              source={images[2]}/>
+              <Text numberOfLines={1} style={styles.cardDescription}>{marker.desc}</Text>
+              
+            <TouchableOpacity onPress={this._toggleModal}>
+              <Text>Hide me!</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        
+
             </View>
           ))}
         </Animated.ScrollView>
@@ -421,7 +411,13 @@ reserveButton: {
   marginTop:5,
   
   backgroundColor:'#5eb56a',
-  borderRadius: 10
+  borderRadius: 10,
+  
+},
+modalView: {
+  flex: 1, 
+  alignItems: 'center', 
+  justifyContent: 'center'
 }
         
       });
