@@ -1,18 +1,10 @@
 import React, {Component} from 'react';
 import {TextInput, Alert, Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import Geocoder from 'react-native-geocoding';
-import Geocode from "react-geocode";
-import firebase from 'firebase';
+//import firebase from 'firebase';
+import Firebase from './../../../config/FirebaseConfig';
 
-var config = {
-  apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
-    authDomain: "food-donation-bcce1.firebaseapp.com",
-    databaseURL: "https://food-donation-bcce1.firebaseio.com",
-    projectId: "food-donation-bcce1",
-    storageBucket: "food-donation-bcce1.appspot.com",
-    messagingSenderId: "474995894111",
-};
-firebase.initializeApp(config);
+Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
 
 class LocationGeo extends Component {
 constructor() {
@@ -20,27 +12,37 @@ constructor() {
   this.state={
     name:"",
     desc:"",
-    address:""
+    address:"",
+    allResturantDataArray: [],
+    lng:"",
+    lat:""
   }
+
 }
 
 writeToRestaurant() {
   var name = this.state.name;
   var desc = this.state.desc;
   var address = this.state.address;
-  firebase.database().ref('Restaurants/').push({
+
+  var lat = this.state.lat;
+  var lng = this.state.lng;
+  Firebase.database().ref('Restaurants/').push({
       name,
       desc,
-      address
+      address,
+      lat,
+      lng
+
     }).then((data) =>{
-      console.log('successfully added new restaurant')
+      console.log('Successfully added new restaurant')
     }).catch((error) =>{
       console.log('error', error)
     })
 }
 
 writeUserData(email,fname,lname){
-  firebase.database().ref('UsersList/').push({
+  Firebase.database().ref('UsersList/').push({
       email,
       fname,
       lname
@@ -53,12 +55,6 @@ writeUserData(email,fname,lname){
   })
 }
 
-  readRestaurantData() {
-    firebase.database().ref('Restaurants/').once('value', function (snapshot) {
-      console.log(snapshot.val())
-    });
-  }
-
   handleName = (text) => {
       this.setState({ name: text })
   }
@@ -69,24 +65,18 @@ writeUserData(email,fname,lname){
 
   handleAddress = (text) => {
     this.setState({ address: text })
+    this.getData(text);
   }
 
-  getData() {
-    Geocoder.init("AIzaSyBNiGg5coYRTxHRZyPR8V1-EC28MpDtpqg"); // use a valid API key
-    Geocoder.from(41.89, 12.49)
-      .then(json => {
-      	var addressComponent = json.results[0].address_components[0];
-    		Alert.alert(addressComponent.long_name);
-    	})
-    	.catch(error => console.warn(error));
-
-    Geocoder.from("marmorvägen Uppsala")
-    .then(json => {
-    	var addressComponent2 = json.results[0].address_components[0];
-      console.log(addressComponent2);
-    })
-    .catch(error => console.warn(error));
-  }
+  getData(address) {
+  Geocoder.from(address)
+        .then(json => {
+            var lat = json.results[0].geometry.location.lat;
+            var lng = json.results[0].geometry.location.lng;
+            this.setState({lat: lat, lng: lng});
+        })
+        .catch(error => console.warn(error));
+      }
 
   render() {
 
@@ -115,7 +105,7 @@ writeUserData(email,fname,lname){
           onChangeText = {this.handleAddress}/>
 
         <Button title={"Add a restaurant"} onPress={() => this.writeToRestaurant()}></Button>
-        <Button title={"Click me"} onPress={() => {this.getData()}}></Button>
+        <Button title={"Show all restaurants in console"} onPress={() => {console.log(this.state.allResturantDataArray)}}></Button>
         </View>
 
     );
