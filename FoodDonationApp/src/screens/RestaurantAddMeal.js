@@ -24,63 +24,47 @@ constructor(props) {
     super(props);
     this.state = {
         Name: '',
-        Decription: '',
+        Description: '',
         Weight: 0,
         Picture: '',
         Portions: 0,
         Taken: false,
+        Restaurant: '',
         errorMessage: null
     }
     this.writeFoodData = this.writeFoodData.bind(this);
 }
 
+    componentDidMount() {
 
-  writeFoodData(Name, Decription, Weight, Picture, Portions, Taken) {
+          var myUid = firebase.auth().currentUser.uid;
+          this.setState({
+            Restaurant : myUid
+          });
+          //firebase.database().ref('UsersList/' + myUid).once('value').then(function(snapshot){
+           //     this.props.navigation.navigate((snapshot.val().lname === 'Progress') ? 'Discover' : 'RestaurantMyMeals')
+          }
+
+
+
+  writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
     firebase.database().ref('FoodList/').push({
         Name,
-        Decription,
+        Description,
         Weight,
         Picture,
         Portions,
-        Taken
+        Taken,
+        Restaurant
 
     }).then((data)=>{
         this.props.navigation.navigate('RestaurantMyMeals')
+
     }).catch((error)=>{
         console.log('error' , error)
     })
    }
 
-    addFoodHandler = () => {
-
-      this.writeFoodData(this.state.Name,this.state.Decription,This.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)
-
-    }
-
-
-  writeUserData(email,fname,lname,res){
-    firebase.database().ref('UsersList/'+res.user.uid).set({
-        email,
-        fname,
-        lname
-    }).then((data)=>{
-        //success callback
-        this.props.navigation.navigate('Loading')
-        console.log('data ' , data)
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-    })
-  }
-
-    signUpHandler = () => {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,res))
-        .catch(error => this.setState({ errorMessage: error.message }))
-      console.log('signUpHandler')
-    }
 
 
   render() {
@@ -104,10 +88,10 @@ constructor(props) {
 
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Decription"
+              placeholder="Description"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(Decription) => this.setState({Decription})}/>
+              onChangeText={(Description) => this.setState({Description})}/>
         </View>
 
 
@@ -123,7 +107,7 @@ constructor(props) {
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() =>this.writeFoodData(this.state.Name,this.state.Decription,this.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken)}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() =>this.writeFoodData(this.state.Name,this.state.Description,this.state.Weight,this.state.Picture,this.state.Portions, this.state.Taken, this.state.Restaurant)}>
           <Text style={styles.signUpText}>Add food</Text>
         </TouchableHighlight>
       </KeyboardAvoidingView>
