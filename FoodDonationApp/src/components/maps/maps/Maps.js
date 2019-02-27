@@ -4,7 +4,6 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
 
-
 import Firebase from './../../../config/FirebaseConfig';
 
 const images = [
@@ -13,19 +12,19 @@ const images = [
     {uri: "https://icase.azureedge.net/imagevaultfiles/id_109160/cf_259/kramig-soppa-med-broccoli-palsternacka-och-adelost.png"},
     {uri: "https://icase.azureedge.net/imagevaultfiles/id_86557/cf_259/jultallrik-med-sill-717057.png"}
   ]
-  
+
   const {width, height} = Dimensions.get("window");
-  
+
   const cardHeight = height / 2.8;
   const cardWidth = width - 50;
-  
+
 
 class Maps extends Component {
         state ={
           focusLocation: {
             latitude: 59.838601,
             longitude: 17.6113775,
-            latitudeDelta: 0.015,   
+            latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           },
           locationChosen: false,
@@ -38,7 +37,7 @@ class Maps extends Component {
              resturantData: [],
              isModalVisible: false,
         }
-      
+
         pickLocationHandler = event => {
           const coords = event.nativeEvent.coordinate;
           this.map.animateToRegion({
@@ -57,8 +56,8 @@ class Maps extends Component {
             };
           });
         }
-      
-      
+
+
         getLocationHandler = () => {
           navigator.geolocation.getCurrentPosition(pos => {
             const coordsEvent = {
@@ -81,7 +80,7 @@ class Maps extends Component {
         this.setState({
           isModalVisible: !this.state.isModalVisible
         })
-            
+
       componentWillMount() {
         this.index = 0;
         this.animation = new Animated.Value(0);
@@ -90,7 +89,7 @@ class Maps extends Component {
           snapshot.forEach(function(childSnapshot) {
               var childKey = childSnapshot.key;
               childData = childSnapshot.val();
-              allResturant.push(childData);  
+              allResturant.push(childData);
             });
             this.setState ( {
               resturantData: allResturant
@@ -99,19 +98,19 @@ class Maps extends Component {
       }
       componentDidMount() {
 
-        
+
         // We should detect when scrolling has stopped then animate
         // We should just debounce the event listener here
         this.animation.addListener(({ value }) => {
           let index = Math.floor(value / cardWidth + 0.3); // animate 30% away from landing on the next item
-          
+
           if (index >= this.state.resturantData.length) {
             index = this.state.resturantData.length - 1;
           }
           if (index <= 0) {
             index = 0;
           }
-          
+
           clearTimeout(this.regionTimeout);
           this.regionTimeout = setTimeout(() => {
             if (this.index !== index) {
@@ -119,7 +118,7 @@ class Maps extends Component {
               const coordinate  = this.state.resturantData[index];
               this.map.animateToRegion(
                 {
-                  latitude: coordinate.lat, 
+                  latitude: coordinate.lat,
                   longitude: coordinate.lng,
                   latitudeDelta: this.state.region.latitudeDelta,
                   longitudeDelta: this.state.region.longitudeDelta,
@@ -131,16 +130,16 @@ class Maps extends Component {
         });
 
       }
-      
+
         render() {
-          
-          
+
+
           let marker = null;
-      
+
           if (this.state.locationChosen) {
             marker = <MapView.Marker coordinate={this.state.focusLocation} />
           }
-          
+
           const interpolations = this.state.resturantData.map((marker, index) => {
             const inputRange = [
               (index - 1) * cardWidth,
@@ -151,7 +150,7 @@ class Maps extends Component {
               inputRange,
               outputRange: [1, 2.5, 1],
               extrapolate: "clamp",
-            }); 
+            });
             const opacity = this.animation.interpolate({
               inputRange,
               outputRange: [0.35, 1, 0.35],
@@ -171,25 +170,25 @@ class Maps extends Component {
              onPress={this.pickLocationHandler}
              ref={ref => this.map = ref}
             >
-            
+
             {this.state.resturantData.map((marker, index) => {
               return (
                 <MapView.Marker key={index} coordinate={{latitude: marker.lat, longitude: marker.lng}}>
-                
-                
+
+
                 <Animated.View style={styles.markerWrap}>
                   <View >
                   <Image source={require('./../../../images/FoodityIcon2.png')} style={{width: 50, height: 50}}/>
                   </View>
                 </Animated.View>
-      
+
                 </MapView.Marker>
               )
             })}
-      
-               
+
+
            </MapView>
-      
+
            <Animated.ScrollView
           horizontal
           scrollEventThrottle={1}
@@ -223,55 +222,55 @@ class Maps extends Component {
                   {marker.desc}
                 </Text>
               </View>
-                
+
                 <TouchableOpacity style={styles.reserveButton}
                 underlayColor='#fff'
                 onPress={this._toggleModal}
                 >
                   <Text>More info</Text>
                 </TouchableOpacity>
-                
+
             <Modal isVisible={this.state.isModalVisible}
                    backdropOpacity={Platform.OS === 'android'? 0.2 : 0.7}>
-                   
+
               <View style={styles.modalView}>
               <Text>Hello!</Text>
-              <Image 
+              <Image
               style = {{width: 250, height: 250}}
               source={images[2]}/>
               <Text numberOfLines={1} style={styles.cardDescription}>{marker.desc}</Text>
-              
+
             <TouchableOpacity onPress={this._toggleModal}>
               <Text>Hide me!</Text>
             </TouchableOpacity>
           </View>
         </Modal>
-        
+
 
             </View>
           ))}
         </Animated.ScrollView>
-      
-           <View style={styles.locateIcon}> 
+
+           <View style={styles.locateIcon}>
            <TouchableOpacity onPress={this.getLocationHandler} underlayColor={'transparent'}>
             <Image
               source={require('./../../../images/navigationblack.png')}
             />
           </TouchableOpacity>
            </View>
-      
-           
-      
-           
+
+
+
+
           </View>
-      
-          
-      
-          
+
+
+
+
           );
         }
       }
-      
+
       const styles = StyleSheet.create({
         container: {
           position: 'absolute',
@@ -335,7 +334,7 @@ cardImage: {
 },
 textContent: {
   flex: 1,
-  justifyContent: 'center', 
+  justifyContent: 'center',
   alignItems: 'center'
 
 },
@@ -350,11 +349,11 @@ cardDescription: {
 },
 reserveButton: {
   flex: 1,
-  justifyContent: 'center', 
+  justifyContent: 'center',
   alignItems: 'center',
-  
+
   marginTop:5,
-  
+
   backgroundColor:'#5eb56a',
   borderRadius: 10
 },
@@ -390,7 +389,7 @@ cardImage: {
 },
 textContent: {
   flex: 1,
-  justifyContent: 'center', 
+  justifyContent: 'center',
   alignItems: 'center'
 
 },
@@ -405,21 +404,21 @@ cardDescription: {
 },
 reserveButton: {
   flex: 1,
-  justifyContent: 'center', 
+  justifyContent: 'center',
   alignItems: 'center',
-  
+
   marginTop:5,
-  
+
   backgroundColor:'#5eb56a',
   borderRadius: 10,
-  
+
 },
 modalView: {
-  flex: 1, 
-  alignItems: 'center', 
+  flex: 1,
+  alignItems: 'center',
   justifyContent: 'center'
 }
-        
+
       });
 
       export default Maps;

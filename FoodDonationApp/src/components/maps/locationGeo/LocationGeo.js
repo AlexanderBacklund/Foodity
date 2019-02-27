@@ -17,14 +17,14 @@ constructor() {
     lng:"",
     lat:""
   }
-  
+
 }
 
 writeToRestaurant() {
   var name = this.state.name;
   var desc = this.state.desc;
   var address = this.state.address;
-  
+
   var lat = this.state.lat;
   var lng = this.state.lng;
   Firebase.database().ref('Restaurants/').push({
@@ -77,9 +77,9 @@ writeUserData(email,fname,lname){
         })
         .catch(error => console.warn(error));
       }
-    
+
   render() {
-    
+
     return(
       <View style = {styles.container}>
 
@@ -103,7 +103,7 @@ writeUserData(email,fname,lname){
           placeholderTextColor = "#9a73ef"
           autoCapitalize = "none"
           onChangeText = {this.handleAddress}/>
-          
+
         <Button title={"Add a restaurant"} onPress={() => this.writeToRestaurant()}></Button>
         <Button title={"Show all restaurants in console"} onPress={() => {console.log(this.state.allResturantDataArray)}}></Button>
         </View>
