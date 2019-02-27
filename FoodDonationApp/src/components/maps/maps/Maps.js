@@ -81,22 +81,22 @@ class Maps extends Component {
           isModalVisible: !this.state.isModalVisible
         })
 
-      componentWillMount() {
-        this.index = 0;
-        this.animation = new Animated.Value(0);
-        let allResturant = [];
-        Firebase.database().ref('Restaurants/').once('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-              var childKey = childSnapshot.key;
-              childData = childSnapshot.val();
-              allResturant.push(childData);
-            });
-            this.setState ( {
-              resturantData: allResturant
-          })
-          }.bind(this));
-      }
-      componentDidMount() {
+        async componentWillMount() {
+            this.index = 0;
+            this.animation = new Animated.Value(0);
+            let allResturant = [];
+            await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
+              snapshot.forEach(function(childSnapshot) {
+                  var childKey = childSnapshot.key;
+                  childData = childSnapshot.val();
+                  allResturant.push(childData);
+                });
+                this.setState ( {
+                  resturantData: allResturant
+              })
+              }.bind(this));
+          }
+          componentDidMount() {
 
 
         // We should detect when scrolling has stopped then animate
@@ -217,9 +217,9 @@ class Maps extends Component {
                 resizeMode="cover"
               />
               <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.name}</Text>
+                <Text numberOfLines={1} style={styles.cardtitle}>{marker.fname}</Text>
                 <Text numberOfLines={1} style={styles.cardDescription}>
-                  {marker.desc}
+                  {marker.description}
                 </Text>
               </View>
 

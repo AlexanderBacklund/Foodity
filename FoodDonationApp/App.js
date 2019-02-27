@@ -40,7 +40,7 @@ const AppNavigator = createStackNavigator(
     Loading
   },
   {
-    initialRouteName: 'Maps'
+    initialRouteName: 'Login'
   }
 );
 
