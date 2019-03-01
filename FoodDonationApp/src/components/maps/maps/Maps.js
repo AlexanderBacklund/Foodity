@@ -88,13 +88,17 @@ class Maps extends Component {
             let allResturant = [];
             await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
+                  console.log(childSnapshot.val())
+                 if (childSnapshot.val().typeOfUser === 'Restaurant'){
                   var childKey = childSnapshot.key;
                   childData = childSnapshot.val();
                   allResturant.push(childData);
+              }
                 });
                 this.setState ( {
                   resturantData: allResturant
               })
+
               }.bind(this));
           }
           componentDidMount() {
