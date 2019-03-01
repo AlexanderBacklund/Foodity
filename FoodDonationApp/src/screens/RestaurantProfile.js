@@ -3,11 +3,12 @@ import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from
 import RestaurantFooterFooter from './RestaurantFooter';
 import MyHeader from './MyHeader';
 import firebase from '../config/FirebaseConfig';
+import Geocoder from 'react-native-geocoding';
 
 export default class RestaurantProfile extends Component {
   
 
-  state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: ''}, items: []};
+  state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
 
   componentDidMount() {
     var user = firebase.auth().currentUser.uid;
@@ -37,7 +38,22 @@ export default class RestaurantProfile extends Component {
         console.log('error ' , error)
     })
   }
+  handleAddress = (text) => {
+    this.setState({currentData: {...this.state.currentData, address: text}})
+    this.getData(text);
+  }
 
+  getData(address) {
+    Geocoder.from(address)
+          .then(json => {
+              var lat = json.results[0].geometry.location.lat;
+              var lng = json.results[0].geometry.location.lng;
+              this.setState({currentData: {...this.state.currentData, lat: lat}});
+              this.setState({currentData: {...this.state.currentData, lng: lng}});
+              
+          })
+          .catch(error => console.warn(error));
+        }
   render() {
     return (
       <View style={styles.container}>
@@ -77,7 +93,7 @@ export default class RestaurantProfile extends Component {
                 placeholder={this.state.items.address}
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
-                onChangeText={(address) => this.setState({currentData: {...this.state.currentData, address: address}})}/>
+                onChangeText={this.handleAddress}/>
           </View>
           <Text>Description</Text>
           <View style={styles.inputContainer}>
