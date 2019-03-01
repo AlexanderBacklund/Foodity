@@ -2,30 +2,37 @@ import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView,ScrollView} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import firebase from 'firebase';
+import Geocoder from 'react-native-geocoding';
 import Loading from './Loading';
 import Browse from './Browse';
+
+import Firebase from './../config/FirebaseConfig';
 
 
 export default class Signup extends React.Component {
 
-  state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null }
+  state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null, lat: '',
+  lng: '' }
   
         
-  writeUserData(email,fname,lname,orgname,typeOfUser,address,description,res){
-    firebase.database().ref('UsersList/'+res.user.uid).set({
+  writeUserData(email,fname,lname,orgname,typeOfUser,address,description, lat, lng, res){
+    Firebase.database().ref('UsersList/'+res.user.uid).set({
         email,
         fname,
         lname,
         orgname,
         typeOfUser,
         address,
-        description
+        description,
+        lat,
+        lng
+        
         
     }).then((data)=>{
         //success callback
 
         this.props.navigation.navigate('Loading')
-        var user = firebase.auth().currentUser;
+        var user = Firebase.auth().currentUser;
         // Comment out the following block of code to enable verification email.
         // user.sendEmailVerification().then(function() {
         //   // Email sent.
@@ -40,13 +47,37 @@ export default class Signup extends React.Component {
   }
   
     signUpHandler = () => {
-      firebase
+      Firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,this.state.fname,this.state.lname,this.state.orgname,this.props.navigation.getParam('text'),this.state.address,this.state.description,res))
+        .then((res) => this.writeUserData(this.state.email,
+          this.state.fname,
+          this.state.lname,
+          this.state.orgname,
+          this.props.navigation.getParam('text'),
+          this.state.address,
+          this.state.description,
+          this.state.lat,
+          this.state.lng,
+          res))
         .catch(error => this.setState({ errorMessage: error.message }))
       console.log('signUpHandler')
     }
+
+    handleAddress = (text) => {
+      this.setState({ address: text })
+      this.getData(text);
+    }
+
+    getData(address) {
+      Geocoder.from(address)
+            .then(json => {
+                var lat = json.results[0].geometry.location.lat;
+                var lng = json.results[0].geometry.location.lng;
+                this.setState({lat: lat, lng: lng});
+            })
+            .catch(error => console.warn(error));
+          }
 
 
   render() {
@@ -87,7 +118,7 @@ export default class Signup extends React.Component {
               placeholder="Address"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(address) => this.setState({address})}/>
+              onChangeText={this.handleAddress}/>
         </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
