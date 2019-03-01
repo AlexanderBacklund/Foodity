@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView,ScrollView} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import firebase from 'firebase';
+import firebase from '../config/FirebaseConfig';
 import Loading from './Loading';
 import Browse from './Browse';
 
