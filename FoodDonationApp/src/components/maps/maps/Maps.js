@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import { Button, Card } from 'react-native-elements';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
 import MyFooter from './../../../screens/MyFooter.js'
@@ -15,7 +16,7 @@ const images = [
 
   const {width, height} = Dimensions.get("window");
 
-  const cardHeight = height / 2.8;
+  const cardHeight = height / 3.5;
   const cardWidth = width - 50;
 
 
@@ -282,32 +283,27 @@ class Maps extends Component {
            </View>
 
            <Modal isVisible={this.state.isModalVisible}
-                backdropColor={"rgb(57, 249, 0)"}
-                backdropOpacity={0.8}
                 animationIn="zoomInDown"
                 animationOut="zoomOutUp"
                 animationInTiming={1000}
                 animationOutTiming={1000}
                 backdropTransitionInTiming={1000}
                 backdropTransitionOutTiming={1000}>
-
-                <View style={styles.modalView}>
-                    <Text>Hello!</Text>
+                <View style={styles.modalContent}>
                     <Text> {this.state.currentPressedRestaurant.fname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.lname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.description} </Text>
                     {this.state.currentPressedRestaurantsFood.map((marker, index) => (
-                        <View style={styles.textContent}>
-                        <Text numberOfLines={1} style={styles.cardtitle}>{marker.Name}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>
-                        {marker.Description}
-                </Text>
-              </View>
+                        <View style={styles.modalCard}>
+                        <Card title={marker.Name}>
+                            <Text>{marker.Description}</Text>
+                            <Button title="Edit" />
+                        </Card>
+                        </View>
                     ))}
+                    <Button title="Hide Modal" onPress={() => this._toggleModal(0, 0)} type="outline"
+                    style={backgroundColor= "#000000"}/>
 
-
-
-                    <TouchableOpacity onPress={() => this._toggleModal(0, 0)}>
-                        <Text>Hide me!</Text>
-                    </TouchableOpacity>
                 </View>
             </Modal>
 
@@ -384,7 +380,20 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 10,
     },
-
+    card: {
+        padding: 10,
+        elevation: 2,
+        backgroundColor: "#FFF",
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: { x: 2, y: -2 },
+        height: cardHeight,
+        width: cardWidth,
+        overflow: "hidden",
+        borderRadius: 10,
+    },
     cardImage: {
         flex: 3,
         width: "100%",
@@ -422,7 +431,24 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    modalContent: {
+        backgroundColor: "rgba(230, 245, 223, 1)",
+        padding: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+    },
+    modalCard: {
+        padding: 10,
+        //elevation: 2,
+        marginHorizontal: 10,
+        height: cardHeight,
+        width: cardWidth,
+        overflow: "hidden",
+        borderRadius: 10,
+    },
 });
 
       export default Maps;

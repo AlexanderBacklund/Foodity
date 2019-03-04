@@ -51,7 +51,7 @@ export default class MyFooter extends React.Component {
                 <Button
                 title="Account"
                 color = {this.state.AccountColor}
-                onPress={() => {this.setState({AccountColor : 'black'}), this.props.navigation.navigate('Account')}}
+                onPress={() => {this.setState({AccountColor : 'black'}), this.props.navigation.navigate('CharityProfile')}}
               />
             </Footer>
           </View>

@@ -17,6 +17,7 @@ import RestaurantAddMeal from './src/screens/RestaurantAddMeal' ;
 import RestaurantHistory from './src/screens/RestaurantHistory' ;
 import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
 import RestaurantProfile from './src/screens/RestaurantProfile' ;
+import CharityProfile from './src/screens/CharityProfile' ;
 import Loading from './src/screens/Loading' ;
 
 console.disableYellowBox = true;
@@ -35,6 +36,7 @@ const AppNavigator = createStackNavigator(
     RestaurantHistory,
     RestaurantMyMeals,
     RestaurantProfile,
+    CharityProfile,
     Loading
   },
   {
