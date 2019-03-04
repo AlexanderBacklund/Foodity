@@ -1,16 +1,16 @@
 import React, { Component } from 'react';  
-import {ScrollView, View, Text, StyleSheet } from 'react-native';  
+import {ScrollView, View, Text, StyleSheet } from 'react-native';
 import MyFooter from './MyFooter';
 import MyHeader from './MyHeader';
- 
- 
- 
- 
-export default class Browse extends Component {  
- 
- 
- 
- 
+
+
+
+
+export default class Browse extends Component {
+
+
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -25,10 +25,10 @@ export default class Browse extends Component {
     );
   }
 }
- 
- 
- 
-const styles = StyleSheet.create({  
+
+
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',

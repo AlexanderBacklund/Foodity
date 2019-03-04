@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
-import firebase from '../config/FirebaseConfig';
+
+import Firebase from './../config/FirebaseConfig';
+
 import SignUp from './SignUp';
 import Loading from './Loading';
 import Browse from './Browse';
@@ -12,17 +14,17 @@ export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }
   loginHandler = () => {
     const { email, password } = this.state
-    firebase
+    Firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() =>{ var user = firebase.auth().currentUser; 
+      .then(() =>{ var user = Firebase.auth().currentUser; 
         // If email verification is commented out in SignUp.js, then if condition should be (user.emailVerified==true) else it should be (user.emailVerified==false). Just for testing.
         if (user.emailVerified==true) {
           this.setState({ errorMessage: "Email not verified. Please click in the verification link sent to your email address." })
         } else {
           this.props.navigation.navigate('Loading')
         }
-        var db = firebase.database().ref('UsersList/'+user.uid);
+        var db = Firebase.database().ref('UsersList/'+user.uid);
         db.once('value').then( function (snap) {
           console.log((snap.val().typeOfUser)=="Restaurant"); // Check type of user
           console.log(user.emailVerified); 

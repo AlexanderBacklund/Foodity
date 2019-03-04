@@ -8,7 +8,7 @@ var config = {
     storageBucket: "food-donation-bcce1.appspot.com",
     messagingSenderId: "474995894111",
   };
+
     
 const Firebase = firebase.initializeApp(config);
-
 export default Firebase;

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {ScrollView, Button, View, Text, StyleSheet } from 'react-native';
 import {Footer, Icon, Container} from 'native-base'
- 
+
 import Maps from './../components/maps/maps/Maps';
 
 import MyFooter from './MyFooter.js'
 import MyHeader from './MyHeader'
- 
+
 export default class Home extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
@@ -34,8 +34,8 @@ export default class Home extends React.Component {
     );
   }
 }
- 
- 
+
+
 const styles = StyleSheet.create({
   container:{
     flex:1,
