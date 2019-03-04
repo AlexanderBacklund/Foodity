@@ -1,13 +1,13 @@
 import React from 'react';
 import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
-import firebase from 'firebase';
+
 import Firebase from './../config/FirebaseConfig';
+
 import SignUp from './SignUp';
 import Loading from './Loading';
 import Browse from './Browse';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Input } from 'react-native-elements';
-
 
 export default class Login extends React.Component {
 
