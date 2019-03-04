@@ -35,8 +35,11 @@ class Maps extends Component {
             longitudeDelta: 0.040142817690068,
           },
              resturantData: [],
+             foodData: [],
+             allRestaurantKeys: [],
              isModalVisible: false,
-             currentPressedRestaurant: 0
+             currentPressedRestaurant: 0,
+             currentPressedRestaurantsFood: []
         }
 
         pickLocationHandler = event => {
@@ -77,33 +80,62 @@ class Maps extends Component {
         })
         }
 
-        _toggleModal = () =>
+        checkIfRestaurantHaveFood = (index) => {
+            let foodList = []
+            let currentKey = this.state.allRestaurantKeys[index]
+            this.state.foodData.map((marker) => {
+                if(marker.Restaurant === currentKey) {
+                    foodList.push(marker);
+                };
+            });
+            return foodList;
+        }
+
+        async _toggleModal(modalRestData, index) {
+            let foods = await this.checkIfRestaurantHaveFood(index)
+
         this.setState({
-          isModalVisible: !this.state.isModalVisible
+          isModalVisible: !this.state.isModalVisible,
+          currentPressedRestaurant: modalRestData,
+          currentPressedRestaurantsFood: foods
         })
+    }
 
         async componentWillMount() {
             this.index = 0;
             this.animation = new Animated.Value(0);
             let allResturant = [];
-            await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
-              snapshot.forEach(function(childSnapshot) {
-                  console.log(childSnapshot.val())
-                 if (childSnapshot.val().typeOfUser === 'Restaurant'){
-                  var childKey = childSnapshot.key;
-                  childData = childSnapshot.val();
-                  allResturant.push(childData);
-              }
+            let allFood = [];
+            let tempList = ["TEST"]
+            let allRestaurantKeysTemp = []
+            await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    childData = childSnapshot.val();
+                    allFood.push(childData);
                 });
                 this.setState ( {
-                  resturantData: allResturant
-              })
+                  foodData: allFood
+                })
+            }.bind(this));
 
-              }.bind(this));
-          }
-          componentDidMount() {
+            await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    if (childSnapshot.val().typeOfUser === 'Restaurant'){
+                        var childKey = childSnapshot.key;
+                        childData = childSnapshot.val();
+                        allResturant.push(childData);
+                        allRestaurantKeysTemp.push(childKey)
+                    }
+                });
+                this.setState ( {
+                  resturantData: allResturant,
+                  allRestaurantKeys: allRestaurantKeysTemp
+                })
+            }.bind(this));
+        }
 
-
+        componentDidMount() {
         // We should detect when scrolling has stopped then animate
         // We should just debounce the event listener here
         this.animation.addListener(({ value }) => {
@@ -230,30 +262,11 @@ class Maps extends Component {
 
                 <TouchableOpacity style={styles.reserveButton}
                 underlayColor='#fff'
-                onPress={this._toggleModal}
+                onPress={() => this._toggleModal(marker, index)}
                 >
                   <Text>More info</Text>
                 </TouchableOpacity>
 
-            <Modal isVisible={this.state.isModalVisible}
-                backdropColor={"rgb(57, 249, 0)"}
-                backdropOpacity={0.6}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={1000}
-                animationOutTiming={1000}
-                backdropTransitionInTiming={1000}
-                backdropTransitionOutTiming={1000}>
-
-                <View style={styles.modalView}>
-                    <Text>Hello!</Text>
-                    <Text numberOfLines={2  } style={styles.cardDescription}>{marker.lname}</Text>
-                    <Text style={styles.cardDescription}>{marker.desciption}</Text>
-                    <TouchableOpacity onPress={this._toggleModal}>
-                        <Text>Hide me!</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
 
 
             </View>
@@ -268,6 +281,35 @@ class Maps extends Component {
           </TouchableOpacity>
            </View>
 
+           <Modal isVisible={this.state.isModalVisible}
+                backdropColor={"rgb(57, 249, 0)"}
+                backdropOpacity={0.8}
+                animationIn="zoomInDown"
+                animationOut="zoomOutUp"
+                animationInTiming={1000}
+                animationOutTiming={1000}
+                backdropTransitionInTiming={1000}
+                backdropTransitionOutTiming={1000}>
+
+                <View style={styles.modalView}>
+                    <Text>Hello!</Text>
+                    <Text> {this.state.currentPressedRestaurant.fname} </Text>
+                    {this.state.currentPressedRestaurantsFood.map((marker, index) => (
+                        <View style={styles.textContent}>
+                        <Text numberOfLines={1} style={styles.cardtitle}>{marker.Name}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>
+                        {marker.Description}
+                </Text>
+              </View>
+                    ))}
+
+
+
+                    <TouchableOpacity onPress={() => this._toggleModal(0, 0)}>
+                        <Text>Hide me!</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
 
 
         <MyFooter navigation={this.props.navigation} />

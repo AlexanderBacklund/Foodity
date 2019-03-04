@@ -6,7 +6,6 @@ import {PermissionsAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 import Maps from './src/components/maps/maps/Maps';
-import LocationGeo from './src/components/maps/locationGeo/LocationGeo';
 import Home from './src/screens/Home';
 import Browse from './src/screens/Browse';
 import Account from './src/screens/Account';
@@ -26,7 +25,6 @@ const AppNavigator = createStackNavigator(
   {
     Home,
     Maps,
-    LocationGeo,
     Browse,
     Account,
     Discover,
