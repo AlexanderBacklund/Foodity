@@ -83,7 +83,7 @@ constructor(props) {
               placeholder="Amount of portions"
               keyboardType="number-pad"
               underlineColorAndroid='transparent'
-              onChangeText={(Amount) => this.setState({Amount})}/>
+              onChangeText={(Portions) => this.setState({Portions})}/>
         </View>
 
         <View style={styles.inputContainer}>
