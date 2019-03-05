@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import { Button, Card, Slider } from 'react-native-elements';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
 import MyFooter from './../../../screens/MyFooter.js'
@@ -15,28 +16,34 @@ const images = [
 
   const {width, height} = Dimensions.get("window");
 
-  const cardHeight = height / 2.8;
+  const cardHeight = height / 3.5;
   const cardWidth = width - 50;
 
 
 class Maps extends Component {
         state ={
-          focusLocation: {
-            latitude: 59.838601,
-            longitude: 17.6113775,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          },
-          locationChosen: false,
-          region: {
-            latitude: 45.52220671242907,
-            longitude: -122.6653281029795,
-            latitudeDelta: 0.04864195044303443,
-            longitudeDelta: 0.040142817690068,
-          },
-             resturantData: [],
-             isModalVisible: false,
-             currentPressedRestaurant: 0
+            focusLocation: {
+                latitude: 59.838601,
+                longitude: 17.6113775,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+            },
+            locationChosen: false,
+            region: {
+                latitude: 45.52220671242907,
+                longitude: -122.6653281029795,
+                latitudeDelta: 0.04864195044303443,
+                longitudeDelta: 0.040142817690068,
+            },
+            resturantData: [],
+            allRestaurantKeys: [],
+            foodData: [],
+            allItemsKeys: [],
+            isModalVisible: false,
+            currentPressedRestaurant: 0,
+            currentPressedRestaurantsFood: [],
+            value: 0,
+            slideValue: 0,
         }
 
         pickLocationHandler = event => {
@@ -77,33 +84,75 @@ class Maps extends Component {
         })
         }
 
-        _toggleModal = () =>
-        this.setState({
-          isModalVisible: !this.state.isModalVisible
-        })
+        _handleModalPress = (currentValue, value, currentKey) => {
+            let newPortions = currentValue = value
+            console.log(newPortions);
+            console.log(currentKey)
+        //    var foodListRef = Firebase.database().ref('FoodList/')
+        //    foodListRef.update({Portions : newPortions})
+        }
+
+
+        checkIfRestaurantHaveFood = (index) => {
+            let foodList = []
+            let currentKey = this.state.allRestaurantKeys[index]
+            this.state.foodData.map((marker) => {
+                if(marker.Restaurant === currentKey) {
+                    foodList.push(marker);
+                };
+            });
+            return foodList;
+        }
+
+        async _toggleModal(modalRestData, index) {
+            let foods = await this.checkIfRestaurantHaveFood(index)
+            this.setState({
+              isModalVisible: !this.state.isModalVisible,
+              currentPressedRestaurant: modalRestData,
+              currentPressedRestaurantsFood: foods,
+              value: 0
+            })
+        }
+
 
         async componentWillMount() {
             this.index = 0;
             this.animation = new Animated.Value(0);
             let allResturant = [];
-            await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
-              snapshot.forEach(function(childSnapshot) {
-                  console.log(childSnapshot.val())
-                 if (childSnapshot.val().typeOfUser === 'Restaurant'){
-                  var childKey = childSnapshot.key;
-                  childData = childSnapshot.val();
-                  allResturant.push(childData);
-              }
+            let allFood = [];
+            let allItemsKeysTemp = []
+            let allRestaurantKeysTemp = []
+            await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    childData = childSnapshot.val();
+                    allItemsKeysTemp.push(childKey)
+                    allFood.push(childData);
                 });
                 this.setState ( {
-                  resturantData: allResturant
-              })
+                  foodData: allFood,
+                  allItemsKeys: allItemsKeysTemp
 
-              }.bind(this));
-          }
-          componentDidMount() {
+                })
+            }.bind(this));
 
+            await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
+                snapshot.forEach(function(childSnapshot) {
+                    if (childSnapshot.val().typeOfUser === 'Restaurant'){
+                        var childKey = childSnapshot.key;
+                        childData = childSnapshot.val();
+                        allResturant.push(childData);
+                        allRestaurantKeysTemp.push(childKey)
+                    }
+                });
+                this.setState ( {
+                  resturantData: allResturant,
+                  allRestaurantKeys: allRestaurantKeysTemp
+                })
+            }.bind(this));
+        }
 
+        componentDidMount() {
         // We should detect when scrolling has stopped then animate
         // We should just debounce the event listener here
         this.animation.addListener(({ value }) => {
@@ -230,30 +279,11 @@ class Maps extends Component {
 
                 <TouchableOpacity style={styles.reserveButton}
                 underlayColor='#fff'
-                onPress={this._toggleModal}
+                onPress={() => this._toggleModal(marker, index)}
                 >
                   <Text>More info</Text>
                 </TouchableOpacity>
 
-            <Modal isVisible={this.state.isModalVisible}
-                backdropColor={"rgb(57, 249, 0)"}
-                backdropOpacity={0.6}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={1000}
-                animationOutTiming={1000}
-                backdropTransitionInTiming={1000}
-                backdropTransitionOutTiming={1000}>
-
-                <View style={styles.modalView}>
-                    <Text>Hello!</Text>
-                    <Text numberOfLines={2  } style={styles.cardDescription}>{marker.lname}</Text>
-                    <Text style={styles.cardDescription}>{marker.desciption}</Text>
-                    <TouchableOpacity onPress={this._toggleModal}>
-                        <Text>Hide me!</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
 
 
             </View>
@@ -268,6 +298,38 @@ class Maps extends Component {
           </TouchableOpacity>
            </View>
 
+           <Modal isVisible={this.state.isModalVisible}
+                animationIn="zoomInDown"
+                animationOut="zoomOutUp"
+                animationInTiming={1000}
+                animationOutTiming={1000}
+                backdropTransitionInTiming={1000}
+                backdropTransitionOutTiming={1000}>
+                <View style={styles.modalContent}>
+                    <Text> {this.state.currentPressedRestaurant.fname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.lname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.description} </Text>
+                    {this.state.currentPressedRestaurantsFood.map((marker, index) => (
+                    <View style={styles.modalCard}>
+                        <Card style={styles.card} title={marker.Name}>
+                            <Text style={styles.modalText}>{marker.Description}</Text>
+                            <Text style={styles.modalText}>Total ammount of portions: {marker.Portions}</Text>
+                            <Slider
+                                value={0}
+                                maximumValue={marker.Portions}
+                                step={1}
+                                onValueChange={value => {this.setState({ value: value })}}
+                                />
+                            <Text>Portions: {this.state.value}</Text>
+                            <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker.Portions, this.state.value, this.state.allItemsKeys[index])}/>
+                        </Card>
+                        </View>
+                    ))}
+                    <Button title="Hide Modal" onPress={() => this._toggleModal(0, 0)} type="outline"
+                    style={backgroundColor= "#000000"}/>
+
+                </View>
+            </Modal>
 
 
         <MyFooter navigation={this.props.navigation} />
@@ -329,6 +391,7 @@ const styles = StyleSheet.create({
     },
 
     card: {
+        flex:1,
         padding: 10,
         elevation: 2,
         backgroundColor: "#FFF",
@@ -342,7 +405,6 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 10,
     },
-
     cardImage: {
         flex: 3,
         width: "100%",
@@ -380,6 +442,31 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    modalContent: {
+        backgroundColor: "rgba(230, 245, 223, 1)",
+        padding: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+    },
+    modalCard: {
+        padding: 10,
+        //elevation: 2,
+        marginHorizontal: 10,
+        height: cardHeight,
+        width: cardWidth,
+        overflow: "hidden",
+        borderRadius: 10,
+    },
+    modalText: {
+        fontSize: 14,
+        color: "#444",
+        justifyContent: 'center',
+        textAlign: 'center',
+        paddingBottom: 7,
+
     }
 });
 

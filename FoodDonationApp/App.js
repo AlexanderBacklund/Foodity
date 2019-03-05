@@ -6,7 +6,6 @@ import {PermissionsAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 import Maps from './src/components/maps/maps/Maps';
-import LocationGeo from './src/components/maps/locationGeo/LocationGeo';
 import Home from './src/screens/Home';
 import Browse from './src/screens/Browse';
 import Account from './src/screens/Account';
@@ -18,6 +17,7 @@ import RestaurantAddMeal from './src/screens/RestaurantAddMeal' ;
 import RestaurantHistory from './src/screens/RestaurantHistory' ;
 import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
 import RestaurantProfile from './src/screens/RestaurantProfile' ;
+import CharityProfile from './src/screens/CharityProfile' ;
 import Loading from './src/screens/Loading' ;
 
 console.disableYellowBox = true;
@@ -26,7 +26,6 @@ const AppNavigator = createStackNavigator(
   {
     Home,
     Maps,
-    LocationGeo,
     Browse,
     Account,
     Discover,
@@ -37,6 +36,7 @@ const AppNavigator = createStackNavigator(
     RestaurantHistory,
     RestaurantMyMeals,
     RestaurantProfile,
+    CharityProfile,
     Loading
   },
   {
