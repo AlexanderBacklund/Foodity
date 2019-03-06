@@ -3,9 +3,9 @@ import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,Key
 
 import Firebase from './../config/FirebaseConfig';
 
-import SignUp from './SignUp';
-import Loading from './Loading';
-import Browse from './Browse';
+import SignUp from './../components/SignUp';
+import Loading from './../components/Loading';
+import Browse from './CharityView/Browse';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Input } from 'react-native-elements';
 

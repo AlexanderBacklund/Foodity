@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet } from 'react-native';
-import RestaurantFooterFooter from './RestaurantFooter';
-import MyHeader from './MyHeader';
+import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
+import MyHeader from './../../components/MyHeader';
 
 
 

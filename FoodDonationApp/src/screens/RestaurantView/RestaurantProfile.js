@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
-import RestaurantFooterFooter from './RestaurantFooter';
-import MyHeader from './MyHeader';
-import firebase from '../config/FirebaseConfig';
+import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
+import MyHeader from './../../components/MyHeader';
+import firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 
 export default class RestaurantProfile extends Component {

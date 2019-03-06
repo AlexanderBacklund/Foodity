@@ -1,12 +1,11 @@
 import React, { Component } from 'react';  
 import {ScrollView, View, Text, StyleSheet } from 'react-native';  
-import MyFooter from './MyFooter';
-import MyHeader from './MyHeader';
+import MyFooter from './../../components/CharityComponents/MyFooter';
+import MyHeader from './../../components/MyHeader'
  
  
  
- 
-export default class Account extends Component {  
+export default class Orders extends Component {  
  
  
   render() {
@@ -14,7 +13,7 @@ export default class Account extends Component {
       <View style={styles.container}>
       <MyHeader/>
         <ScrollView>
-          <Text>in Account</Text>
+          <Text>In order</Text>
         </ScrollView>
         <View>
           <MyFooter navigation={this.props.navigation}/>

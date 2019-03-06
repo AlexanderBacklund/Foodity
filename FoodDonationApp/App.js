@@ -5,28 +5,25 @@ import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-import Maps from './src/components/maps/maps/Maps';
-import LocationGeo from './src/components/maps/locationGeo/LocationGeo';
-import Home from './src/screens/Home';
-import Browse from './src/screens/Browse';
-import Account from './src/screens/Account';
-import Discover from './src/screens/Discover';
-import Orders from './src/screens/Orders';
+import Maps from './src/components/CharityComponents/Maps';
+import Browse from './src/screens/CharityView/Browse';
+import Account from './src/screens/CharityView/Account';
+import Discover from './src/screens/CharityView/Discover';
+import Orders from './src/screens/CharityView/Orders';
 import Login from './src/screens/Login';
-import SignUp from './src/screens/SignUp';
-import RestaurantAddMeal from './src/screens/RestaurantAddMeal' ;
-import RestaurantHistory from './src/screens/RestaurantHistory' ;
-import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
-import RestaurantProfile from './src/screens/RestaurantProfile' ;
-import Loading from './src/screens/Loading' ;
+import SignUp from './src/components/SignUp';
+import RestaurantAddMeal from './src/components/RestaurantComponents/RestaurantAddMeal' ;
+import RestaurantHistory from './src/screens/RestaurantView/RestaurantHistory' ;
+import RestaurantMyMeals from './src/screens/RestaurantView/RestaurantMyMeals' ;
+import RestaurantProfile from './src/screens/RestaurantView/RestaurantProfile' ;
+import RestaurantEditMeal from './src/components/RestaurantComponents/RestaurantEditMeal';
+import Loading from './src/components/Loading' ;
 
 console.disableYellowBox = true;
 
 const AppNavigator = createStackNavigator(
   {
-    Home,
     Maps,
-    LocationGeo,
     Browse,
     Account,
     Discover,
@@ -37,6 +34,7 @@ const AppNavigator = createStackNavigator(
     RestaurantHistory,
     RestaurantMyMeals,
     RestaurantProfile,
+    RestaurantEditMeal,
     Loading
   },
   {

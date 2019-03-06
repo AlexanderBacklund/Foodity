@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import firebase from 'firebase';
 import Geocoder from 'react-native-geocoding';
 import Loading from './Loading';
-import Browse from './Browse';
+import Browse from './../screens/CharityView/Browse';
 
 import Firebase from './../config/FirebaseConfig';
 
