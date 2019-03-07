@@ -7,8 +7,8 @@ import Loading from './Loading';
 import Browse from './../screens/CharityView/Browse';
 
 import Firebase from './../config/FirebaseConfig';
-
-
+// Fix for geocoder. Should go in config file.
+Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
 export default class Signup extends React.Component {
 
   state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null, lat: '',
@@ -66,10 +66,13 @@ export default class Signup extends React.Component {
 
     handleAddress = (text) => {
       this.setState({ address: text })
+      // console.log("inside handleAddress:",text);
       this.getData(text);
     }
 
     getData(address) {
+      // console.log("inside geocoder:",address);
+      // console.log("state:",this.state);
       Geocoder.from(address)
             .then(json => {
                 var lat = json.results[0].geometry.location.lat;
