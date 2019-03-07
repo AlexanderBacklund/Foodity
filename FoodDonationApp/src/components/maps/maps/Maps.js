@@ -44,6 +44,8 @@ class Maps extends Component {
             currentPressedRestaurantsFood: [],
             value: 0,
             slideValue: 0,
+            food: {},
+            restaurant: {}
         }
 
         pickLocationHandler = event => {
@@ -84,20 +86,18 @@ class Maps extends Component {
         })
         }
 
-        _handleModalPress = (currentValue, value, currentKey) => {
-            let newPortions = currentValue = value
-            console.log(newPortions);
-            console.log(currentKey)
-        //    var foodListRef = Firebase.database().ref('FoodList/')
-        //    foodListRef.update({Portions : newPortions})
+        _handleModalPress = (item, value) => {
+            let newPortions = item['data'].Portions - value
+            var foodListRef = Firebase.database().ref('FoodList/' + item['key'])
+            foodListRef.update({Portions : newPortions})
         }
 
 
         checkIfRestaurantHaveFood = (index) => {
             let foodList = []
             let currentKey = this.state.allRestaurantKeys[index]
-            this.state.foodData.map((marker) => {
-                if(marker.Restaurant === currentKey) {
+            this.state.food.map((marker) => {
+                if(marker['data'].Restaurant === currentKey) {
                     foodList.push(marker);
                 };
             });
@@ -122,8 +122,15 @@ class Maps extends Component {
             let allFood = [];
             let allItemsKeysTemp = []
             let allRestaurantKeysTemp = []
+            var food = {}
+            var testFoodList = []
             await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
+                    food = {
+                        data: childSnapshot.val(),
+                        key:  childSnapshot.key
+                    }
+                    testFoodList.push(food)
                     var childKey = childSnapshot.key;
                     childData = childSnapshot.val();
                     allItemsKeysTemp.push(childKey)
@@ -131,14 +138,21 @@ class Maps extends Component {
                 });
                 this.setState ( {
                   foodData: allFood,
-                  allItemsKeys: allItemsKeysTemp
-
+                  allItemsKeys: allItemsKeysTemp,
+                  food:testFoodList
                 })
             }.bind(this));
 
             await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
+                var restaurantTemp = {};
+                var listRestaurant = []
                 snapshot.forEach(function(childSnapshot) {
                     if (childSnapshot.val().typeOfUser === 'Restaurant'){
+                        restaurantTemp = {
+                            data: childSnapshot.val(),
+                            key: childSnapshot.key
+                        }
+                        listRestaurant.push(restaurantTemp)
                         var childKey = childSnapshot.key;
                         childData = childSnapshot.val();
                         allResturant.push(childData);
@@ -147,7 +161,8 @@ class Maps extends Component {
                 });
                 this.setState ( {
                   resturantData: allResturant,
-                  allRestaurantKeys: allRestaurantKeysTemp
+                  allRestaurantKeys: allRestaurantKeysTemp,
+                  restaurant: listRestaurant
                 })
             }.bind(this));
         }
@@ -311,17 +326,17 @@ class Maps extends Component {
                     <Text> {this.state.currentPressedRestaurant.description} </Text>
                     {this.state.currentPressedRestaurantsFood.map((marker, index) => (
                     <View style={styles.modalCard}>
-                        <Card style={styles.card} title={marker.Name}>
-                            <Text style={styles.modalText}>{marker.Description}</Text>
-                            <Text style={styles.modalText}>Total ammount of portions: {marker.Portions}</Text>
+                        <Card style={styles.card} title={marker['data'].Name}>
+                            <Text style={styles.modalText}>{marker['data'].Description}</Text>
+                            <Text style={styles.modalText}>Total ammount of portions: {marker['data'].Portions}</Text>
                             <Slider
                                 value={0}
-                                maximumValue={marker.Portions}
+                                maximumValue={marker['data'].Portions}
                                 step={1}
                                 onValueChange={value => {this.setState({ value: value })}}
                                 />
                             <Text>Portions: {this.state.value}</Text>
-                            <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker.Portions, this.state.value, this.state.allItemsKeys[index])}/>
+                            <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker, this.state.value)}/>
                         </Card>
                         </View>
                     ))}
