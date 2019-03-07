@@ -90,8 +90,45 @@ class Maps extends Component {
         let newPortions = item['data'].Portions - value
         var foodListRef = Firebase.database().ref('FoodList/' + item['key'])
         foodListRef.update({Portions : newPortions})
+        console.log(Firebase.auth().currentUser.uid)
+        this.addPartOfFood(item, value)
         this.loadFood()
     }
+
+    addPartOfFood = (item, value) => {
+        Firebase.database().ref('BookedFood/').push({
+            Name: item['data'].Name,
+            Description: item['data'].Description,
+            Weight: item['data'].Weight,
+            Picture: item['data'].Picture,
+            Portions: value,
+            Taken: !item['data'].Taken,
+            Restaurant: Firebase.auth().currentUser.uid
+        }).then((data) => {
+            console.log('Success')
+        }).catch((error) => {
+            console.log('error', error)
+        })
+    }
+
+writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
+    firebase.database().ref('FoodList/').push({
+        Name,
+        Description,
+        Weight,
+        Picture,
+        Portions,
+        Taken,
+        Restaurant
+
+    }).then((data)=>{
+        this.props.navigation.navigate('RestaurantMyMeals')
+
+    }).catch((error)=>{
+        console.log('error' , error)
+    })
+   }
+
 
 
     checkIfRestaurantHaveFood = (index) => {
