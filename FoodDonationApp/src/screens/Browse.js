@@ -32,7 +32,7 @@ export default class Browse extends Component {
 
     componentWillMount() {
         let geoOptions = {
-            enableHighAccuracy: true,
+            //enableHighAccuracy: true,
             timeOut: 20000,
         };
         this.setState({ready:false, error: null });
