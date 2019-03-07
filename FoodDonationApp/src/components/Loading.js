@@ -1,15 +1,9 @@
 import React from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import firebase from 'firebase'
-import Discover from './../screens/CharityView/Discover'
 import RestaurantMyMeals from './../screens/RestaurantView/RestaurantMyMeals'
 
-
-
-
 export default class Loading extends React.Component {
-
-
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
           var myUid = firebase.auth().currentUser.uid;

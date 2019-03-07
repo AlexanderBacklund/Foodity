@@ -111,23 +111,23 @@ class Maps extends Component {
         })
     }
 
-writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
-    firebase.database().ref('FoodList/').push({
-        Name,
-        Description,
-        Weight,
-        Picture,
-        Portions,
-        Taken,
-        Restaurant
+    writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
+        firebase.database().ref('FoodList/').push({
+            Name,
+            Description,
+            Weight,
+            Picture,
+            Portions,
+            Taken,
+            Restaurant
 
-    }).then((data)=>{
-        this.props.navigation.navigate('RestaurantMyMeals')
+        }).then((data)=>{
+            this.props.navigation.navigate('RestaurantMyMeals')
 
-    }).catch((error)=>{
-        console.log('error' , error)
-    })
-   }
+        }).catch((error)=>{
+            console.log('error' , error)
+        })
+       }
 
 
 

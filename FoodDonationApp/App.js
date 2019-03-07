@@ -8,7 +8,6 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Maps from './src/components/CharityComponents/Maps';
 import Browse from './src/screens/CharityView/Browse';
 import CharityProfile from './src/screens/CharityView/CharityProfile';
-import Discover from './src/screens/CharityView/Discover';
 import Orders from './src/screens/CharityView/Orders';
 import Login from './src/screens/Login';
 import SignUp from './src/components/SignUp';
@@ -25,7 +24,6 @@ const AppNavigator = createStackNavigator(
   {
     Maps,
     Browse,
-    Discover,
     Orders,
     SignUp,
     Login,
