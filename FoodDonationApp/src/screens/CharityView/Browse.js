@@ -4,8 +4,8 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
-import MyFooter from './MyFooter.js'
-import Firebase from './../config/FirebaseConfig';
+import MyFooter from './../../components/CharityComponents/MyFooter.js'
+import Firebase from './../../config/FirebaseConfig';
 
 export default class Browse extends Component {
     constructor() {

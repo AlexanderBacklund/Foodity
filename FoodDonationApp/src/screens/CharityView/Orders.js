@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
-import RestaurantFooterFooter from './MyFooter';
-import MyHeader from './MyHeader';
-import RestaurantAddMeal from './RestaurantAddMeal';
+import MyFooter from './../../components/CharityComponents/MyFooter.js'
 import firebase from 'firebase';
 import {List, ListItem, ListView, Card} from 'react-native-elements';
 
 
-export default class RestaurantMyMeals extends Component {
+export default class Orders extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -95,7 +93,7 @@ export default class RestaurantMyMeals extends Component {
         </ScrollView>
 
         <View>
-          <RestaurantFooterFooter navigation={this.props.navigation}/>
+          <MyFooter navigation={this.props.navigation}/>
         </View>
       </View>
     );

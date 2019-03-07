@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {ScrollView, Button, View, Text, StyleSheet } from 'react-native';
 import {Footer, Icon, Container} from 'native-base'
-
-import Maps from './../components/maps/maps/Maps';
-
-import MyFooter from './MyFooter.js'
-import MyHeader from './MyHeader'
+import Maps from './../../components/CharityComponents/Maps';
+import MyFooter from './../../components/CharityComponents/MyFooter.js'
+import MyHeader from './../../components/MyHeader'
 
 export default class Home extends React.Component {
   render() {

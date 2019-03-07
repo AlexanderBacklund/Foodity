@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
-import RestaurantFooterFooter from './RestaurantFooter';
-import MyHeader from './MyHeader';
-import RestaurantAddMeal from './RestaurantAddMeal';
+import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
+import MyHeader from './../../components/MyHeader';
+import RestaurantAddMeal from './../../components/RestaurantComponents/RestaurantAddMeal';
 import firebase from 'firebase';
 import {List, ListItem, ListView, Card} from 'react-native-elements';
 
@@ -15,6 +15,7 @@ export default class RestaurantMyMeals extends Component {
             refreshing: false,
         }
         this.myFood = this.myFood.bind(this);
+
 
 
 }
@@ -34,7 +35,10 @@ export default class RestaurantMyMeals extends Component {
             snapshot.forEach(function(childSnapshot){
 
                var validItem = (childSnapshot.val().Restaurant === myUid)
-               var data = childSnapshot.val()
+               var data = {
+                   data : childSnapshot.val(),
+                   key :childSnapshot.key
+               }
                {validItem ? (
                   tempList.push(data)
                   //this.state.ListOfFood.push(data)
@@ -45,7 +49,6 @@ export default class RestaurantMyMeals extends Component {
             }.bind(this));
 
             this.setState({ListOfFood: tempList});
-            console.log(this.state.ListOfFood);
             this.forceUpdate();
          }.bind(this))
 
@@ -60,25 +63,22 @@ export default class RestaurantMyMeals extends Component {
         return(
 
             <Card
-                title={food.Name}
+                title={food.data.Name}
                 >
-                <Text>{food.Description}</Text>
+                <Text>{food.data.Description}</Text>
+                <Text>{food.key}</Text>
                 <Button
                 title="Edit"
+                onPress={() => {this.props.navigation.navigate('RestaurantEditMeal', {food}) }}
                 >
                 </Button>
 
 
 
             </Card>
-          /*<View key={i}>
-            <Text>{food.Name}</Text>
-            <View>
-              <Text>{food.Weight}</Text>
-            </View>
-          </View>*/
+
         );
-      });
+      }.bind(this));
     }
 
 

@@ -4,8 +4,8 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
-import MyFooter from './../../../screens/MyFooter.js'
-import Firebase from './../../../config/FirebaseConfig';
+import MyFooter from './MyFooter.js'
+import Firebase from './../../config/FirebaseConfig';
 
 const images = [
     {uri: "https://icase.azureedge.net/imagevaultfiles/id_124661/cf_259/blomkalsris-med-solrosfron-719531-liten.jpg"},

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
-import CharityFooter from './MyFooter';
-import MyHeader from './MyHeader';
-import firebase from '../config/FirebaseConfig';
+import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
+import MyHeader from './../../components/MyHeader';
+import firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 
 export default class RestaurantProfile extends Component {
-
+  
 
   state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
 
@@ -21,7 +21,7 @@ export default class RestaurantProfile extends Component {
     })
   }
   writeUserData = () => {
-
+        
   console.log(this.state.items);
   console.log(this.state.currentData);
     var user = firebase.auth().currentUser;
@@ -50,7 +50,7 @@ export default class RestaurantProfile extends Component {
               var lng = json.results[0].geometry.location.lng;
               this.setState({currentData: {...this.state.currentData, lat: lat}});
               this.setState({currentData: {...this.state.currentData, lng: lng}});
-
+              
           })
           .catch(error => console.warn(error));
         }
@@ -60,12 +60,12 @@ export default class RestaurantProfile extends Component {
       <MyHeader />
         <ScrollView>
           <Text>In RestaurantProfile</Text>
-
+          
          <View style={styles.container2}>
          <Text>First Name</Text>
           <View style={styles.inputContainer}>
             <TextInput style={styles.inputs}
-
+            
                 placeholder={this.state.items.fname}
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
@@ -117,7 +117,7 @@ export default class RestaurantProfile extends Component {
         </View>
         </ScrollView>
         <View>
-          <CharityFooter navigation={this.props.navigation}/>
+          <RestaurantFooterFooter navigation={this.props.navigation}/>
         </View>
       </View>
     );

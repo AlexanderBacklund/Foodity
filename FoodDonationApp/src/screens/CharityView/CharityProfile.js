@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
-import RestaurantFooterFooter from './RestaurantFooter';
-import MyHeader from './MyHeader';
-import firebase from '../config/FirebaseConfig';
+import CharityFooter from './../../components/CharityComponents/MyFooter.js'
+import Firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 
 export default class RestaurantProfile extends Component {
-  
+
 
   state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
 
   componentDidMount() {
-    var user = firebase.auth().currentUser.uid;
-    let itemsRef = firebase.database().ref('UsersList/'+user);
+    var user = Firebase.auth().currentUser.uid;
+    let itemsRef = Firebase.database().ref('UsersList/'+user);
     itemsRef.on('value', snapshot => {
       let data = snapshot.val();
       let items = data;
@@ -21,11 +20,11 @@ export default class RestaurantProfile extends Component {
     })
   }
   writeUserData = () => {
-        
+
   console.log(this.state.items);
   console.log(this.state.currentData);
-    var user = firebase.auth().currentUser;
-    firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
+    var user = Firebase.auth().currentUser;
+    Firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
       .then((data)=>{
       this.state.items = this.state.items
       // this.setState({currentData: this.state.currentData})
@@ -50,22 +49,19 @@ export default class RestaurantProfile extends Component {
               var lng = json.results[0].geometry.location.lng;
               this.setState({currentData: {...this.state.currentData, lat: lat}});
               this.setState({currentData: {...this.state.currentData, lng: lng}});
-              
+
           })
           .catch(error => console.warn(error));
         }
   render() {
     return (
       <View style={styles.container}>
-      <MyHeader />
         <ScrollView>
-          <Text>In RestaurantProfile</Text>
-          
          <View style={styles.container2}>
          <Text>First Name</Text>
           <View style={styles.inputContainer}>
             <TextInput style={styles.inputs}
-            
+
                 placeholder={this.state.items.fname}
                 keyboardType="email-address"
                 underlineColorAndroid='transparent'
@@ -117,7 +113,7 @@ export default class RestaurantProfile extends Component {
         </View>
         </ScrollView>
         <View>
-          <RestaurantFooterFooter navigation={this.props.navigation}/>
+          <CharityFooter navigation={this.props.navigation}/>
         </View>
       </View>
     );
