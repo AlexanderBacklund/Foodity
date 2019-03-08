@@ -58,7 +58,7 @@ constructor(props) {
 
             <Text style={styles.title}>Edit item</Text>
                 <View>
-                    <Card title={"Name:" + "  " + this.props.navigation.state.params.food.data.Name} >
+                    <Card title={this.props.navigation.state.params.food.data.Name} >
                         <TextInput
                             placeholder="New name"
                             keyboardType="default"
@@ -69,7 +69,7 @@ constructor(props) {
                 </View>
 
                 <View>
-                    <Card title={"Description:" + "  " + this.props.navigation.state.params.food.data.Description} >
+                    <Card title={this.props.navigation.state.params.food.data.Description} >
                         <TextInput
                             placeholder="New Description"
                             keyboardType="default"
@@ -80,7 +80,7 @@ constructor(props) {
                 </View>
 
                 <View>
-                    <Card title={"Portions:" + "  " + this.props.navigation.state.params.food.data.Portions} >
+                    <Card title={ this.props.navigation.state.params.food.data.Portions  + "  " + "portions"} >
                         <TextInput
                             placeholder="New amount"
                             keyboardType="number-pad"
@@ -90,7 +90,7 @@ constructor(props) {
                     </Card>
                 </View>
                 <View>
-                    <Card title={"Portions:" + "  " + this.props.navigation.state.params.food.data.Portions} >
+                    <Card title={this.props.navigation.state.params.food.data.Weight  +"g per portion"} >
                         <TextInput
                             placeholder="New weight"
                             keyboardType="number-pad"

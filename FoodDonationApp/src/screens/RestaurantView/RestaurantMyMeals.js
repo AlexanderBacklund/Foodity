@@ -66,7 +66,6 @@ export default class RestaurantMyMeals extends Component {
                 title={food.data.Name}
                 >
                 <Text>{food.data.Description}</Text>
-                <Text>{food.key}</Text>
                 <Button
                 title="Edit"
                 onPress={() => {this.props.navigation.navigate('RestaurantEditMeal', {food}) }}
@@ -93,7 +92,7 @@ export default class RestaurantMyMeals extends Component {
      <View style={styles.container}>
       <MyHeader />
       <Button
-         title = 'Add new food'
+         title = 'Add meal'
          onPress={() => {this.props.navigation.navigate('RestaurantAddMeal') }}
          >
       </Button>
