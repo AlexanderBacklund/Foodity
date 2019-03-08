@@ -91,11 +91,10 @@ export default class Orders extends Component {
 
          {this.myFood()}
         </ScrollView>
+            <MyFooter navigation={this.props.navigation}/>
 
-        <View>
-          <MyFooter navigation={this.props.navigation}/>
         </View>
-      </View>
+
     );
   }
 }
