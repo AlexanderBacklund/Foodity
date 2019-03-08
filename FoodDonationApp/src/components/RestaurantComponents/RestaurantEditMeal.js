@@ -90,7 +90,7 @@ constructor(props) {
                     </Card>
                 </View>
                 <View>
-                    <Card title={"Portions:" + "  " + this.props.navigation.state.params.food.data.Portions} >
+                    <Card title={"Weight:" + "  " + this.props.navigation.state.params.food.data.Weight} >
                         <TextInput
                             placeholder="New weight"
                             keyboardType="number-pad"
