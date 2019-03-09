@@ -13,8 +13,6 @@ export default class Orders extends Component {
             refreshing: false,
         }
         this.myFood = this.myFood.bind(this);
-//        this.handleCancelOrder = this.handleCancelOrder.bind(this);
-//        this.handleCompleteOrder = this.handleCompleteOrder.bind(this);
     }
 
     _onRefresh = () => {
@@ -23,7 +21,6 @@ export default class Orders extends Component {
             this.setState({refreshing:false})
         });
     }
-
 
     componentDidMount() {
          var myUid = Firebase.auth().currentUser.uid;
@@ -38,22 +35,11 @@ export default class Orders extends Component {
                    }
                    tempList.push(food)
                }
-//               var validItem = (childSnapshot.val().Restaurant === myUid)
-
-               // {validItem ? (
-               //    tempList.push(data)
-               //    //this.state.ListOfFood.push(data)
-               // )
-               // :(
-               //  null
-               // )}
             }.bind(this));
 
             this.setState({ListOfFood: tempList});
             this.forceUpdate();
          }.bind(this))
-
-
     }
 
     async _handleCancelOrder(food) {
@@ -69,9 +55,7 @@ export default class Orders extends Component {
 
     _handleCompleteOrder = food => {
         Firebase.database().ref('BookedFood/').child('' + food.key).remove()
-        console.log(this.state.myFood)
     }
-
 
     myFood = () => {
         if (this.state.ListOfFood.length != 0) {
@@ -103,14 +87,13 @@ export default class Orders extends Component {
                 }>
 
          {this.myFood()}
+
         </ScrollView>
         <MyFooter navigation={this.props.navigation}/>
     </View>
     );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
