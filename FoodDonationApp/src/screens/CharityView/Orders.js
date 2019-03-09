@@ -54,6 +54,11 @@ export default class Orders extends Component {
     }
 
     _handleCompleteOrder = food => {
+        Firebase.database().ref('History/').push({
+            user: Firebase.auth().currentUser.uid,
+            food: food,
+            Portions: food['data'].Portions
+        })
         Firebase.database().ref('BookedFood/').child('' + food.key).remove()
     }
 
@@ -122,6 +127,6 @@ const styles = StyleSheet.create({
     },
     ButtonR: {
         flex: 2,
-        backgroundColor: "rgb(201, 18, 18)"
+        color: "rgb(201, 18, 18)"
     }
 });
