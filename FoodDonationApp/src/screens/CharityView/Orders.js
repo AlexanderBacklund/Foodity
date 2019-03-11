@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
+import {ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
 import MyFooter from './../../components/CharityComponents/MyFooter.js'
-import firebase from 'firebase';
-import {List, ListItem, ListView, Card} from 'react-native-elements';
+import Firebase from './../../config/FirebaseConfig';
+import {List, ListItem, ListView, Card, Button} from 'react-native-elements';
 
 
 export default class Orders extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             ListOfFood: [],
             refreshing: false,
         }
         this.myFood = this.myFood.bind(this);
-
-
-}
+    }
 
     _onRefresh = () => {
     this.setState({refreshing:true});
@@ -24,45 +22,58 @@ export default class Orders extends Component {
         });
     }
 
-
     componentDidMount() {
-         var myUid = firebase.auth().currentUser.uid;
-         firebase.database().ref('BookedFood/').on('value', function(snapshot){
+         var myUid = Firebase.auth().currentUser.uid;
+         Firebase.database().ref('BookedFood/').on('value', function(snapshot){
             var tempList = [];
             snapshot.forEach(function(childSnapshot){
-
-               var validItem = (childSnapshot.val().Restaurant === myUid)
                var data = childSnapshot.val()
-               {validItem ? (
-                  tempList.push(data)
-                  //this.state.ListOfFood.push(data)
-               )
-               :(
-                null
-               )}
+               if (data.Restaurant === myUid) {
+                   food = {
+                       key : childSnapshot.key,
+                       data : data
+                   }
+                   tempList.push(food)
+               }
             }.bind(this));
 
             this.setState({ListOfFood: tempList});
-            console.log(this.state.ListOfFood);
             this.forceUpdate();
          }.bind(this))
-
-
     }
 
+    async _handleCancelOrder(food) {
+        Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).update({Portions: await this.currentQTY(food)});
+        Firebase.database().ref('BookedFood/').child('' + food.key).remove()
+    }
 
+    currentQTY(food): Promise<number> {
+        return (
+            Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).once('value').then(snapshot => snapshot.val().Portions + food['data'].Portions)
+        )
+    }
 
+    _handleCompleteOrder = food => {
+        Firebase.database().ref('History/').push({
+            user: Firebase.auth().currentUser.uid,
+            food: food,
+            Portions: food['data'].Portions
+        })
+        Firebase.database().ref('BookedFood/').child('' + food.key).remove()
+    }
 
-    myFood() {
+    myFood = () => {
         if (this.state.ListOfFood.length != 0) {
-            return this.state.ListOfFood.map(function(food, i){
-            return(
-                <Card title={food.Name}>
-                    <Text style={styles.Text}>Descriptions: {food.Description}</Text>
-                    <Text style={styles.Text}>Portions: {food.Portions}</Text>
-                </Card>
-                );
-            });
+            return this.state.ListOfFood.map((food, i) => {
+                return(
+                    <Card title={food['data'].Name}>
+                        <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
+                        <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
+                        <Button style={styles.ButtonR} raised="True" title="Cancel" type="outline" onPress={() => this._handleCancelOrder(food)}/>
+                        <Button style={styles.ButtonG} raised="True" title="Complete" type="outline" onPress={() => this._handleCompleteOrder(food)}/>
+                    </Card>
+                )
+                });
         } else {
             return(
                 <Text style={styles.TextNoFood}> You have no booked food please go in to Discover page to book food</Text>
@@ -70,36 +81,24 @@ export default class Orders extends Component {
         }
     }
 
-
-
-
-
   render() {
-
-
-
     return (
      <View style={styles.container}>
         <ScrollView
             RefreshControl={
                 <RefreshControl
                     refreshing={this.state.refreshing}
-                    _onRefresh={this._onRefresh}
-                />
-            }
-            >
+                    _onRefresh={this._onRefresh}/>
+                }>
 
          {this.myFood()}
+
         </ScrollView>
-            <MyFooter navigation={this.props.navigation}/>
-
-        </View>
-
+        <MyFooter navigation={this.props.navigation}/>
+    </View>
     );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -121,5 +120,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
+    },
+    ButtonG: {
+        flex:2,
+        color: "rgb(22, 195, 60)"
+    },
+    ButtonR: {
+        flex: 2,
+        color: "rgb(201, 18, 18)"
     }
 });

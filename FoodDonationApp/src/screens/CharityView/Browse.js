@@ -147,7 +147,7 @@ export default class Browse extends Component {
             lat: this.state.where.lat,
             lng: this.state.where.lng
        }
-       console.log(currentPosition)
+//       console.log(currentPosition)
         var hyp = Math.sqrt(Math.pow((currentPosition.lat - coordinates.lat),2) + Math.pow((currentPosition.lng - coordinates.lng),2))
         return(hyp)
     }

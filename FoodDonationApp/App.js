@@ -9,6 +9,7 @@ import Maps from './src/components/CharityComponents/Maps';
 import Browse from './src/screens/CharityView/Browse';
 import CharityProfile from './src/screens/CharityView/CharityProfile';
 import Orders from './src/screens/CharityView/Orders';
+import CharityHistory from './src/screens/CharityView/CharityHistory';
 import Login from './src/screens/Login';
 import SignUp from './src/components/SignUp';
 import RestaurantAddMeal from './src/components/RestaurantComponents/RestaurantAddMeal' ;
@@ -33,7 +34,8 @@ const AppNavigator = createStackNavigator(
     RestaurantProfile,
     CharityProfile,
     RestaurantEditMeal,
-    Loading
+    Loading,
+    CharityHistory
   },
   {
     initialRouteName: 'Login'
