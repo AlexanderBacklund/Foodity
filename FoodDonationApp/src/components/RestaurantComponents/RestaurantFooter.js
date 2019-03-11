@@ -80,7 +80,7 @@ export default class RestaurantFooter extends React.Component {
                 <Button
                 title="Sign out"
                 color = {this.state.Profile}
-                onPress={() => {this.signOutUser()}}
+                //onPress={() => {this.signOutUser()}}
               />
             </Footer>
           </View>
