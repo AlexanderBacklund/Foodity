@@ -22,11 +22,10 @@ export default class CharityHistory extends Component {
         await Firebase.database().ref('History/').once('value', function(snapshot){
             var myUid = Firebase.auth().currentUser.uid;
             var tempPortions = 0;
-            console.log(snapshot.val())
             snapshot.forEach(function(childSnapshot){
                 var data = childSnapshot.val()
                 if(data.user === myUid) {
-                    tempPortions = tempPortions + data.Portions
+                    tempPortions = (tempPortions + data.Portions)
                 }
             })
             this.setState({
