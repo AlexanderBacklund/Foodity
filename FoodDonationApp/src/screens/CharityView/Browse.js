@@ -113,15 +113,17 @@ export default class Browse extends Component {
         var listOfNewWayOfRepItem = []
         try {
             tempFoodList.map((foodItem,index) => {
-                var tempCoord = this.getCoordinatesForItem(foodItem['data'], tempRestaurantList)
-                var hyp = this.pythagoras(tempCoord)
-                newWayOfRepFoodItem = {
-                    key: foodItem.key,
-                    data: foodItem.data,
-                    coordinates: tempCoord,
-                    hyponusa: hyp
+                if(foodItem['data'].Portions > 0) {
+                    var tempCoord = this.getCoordinatesForItem(foodItem['data'], tempRestaurantList)
+                    var hyp = this.pythagoras(tempCoord)
+                    newWayOfRepFoodItem = {
+                        key: foodItem.key,
+                        data: foodItem.data,
+                        coordinates: tempCoord,
+                        hyponusa: hyp
+                    }
+                    listOfNewWayOfRepItem.push(newWayOfRepFoodItem)
                 }
-                listOfNewWayOfRepItem.push(newWayOfRepFoodItem)
         })
         listOfNewWayOfRepItem.sort(function(a, b){return a.hyponusa-b.hyponusa})
         this.setState ({

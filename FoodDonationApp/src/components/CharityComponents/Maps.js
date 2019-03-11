@@ -138,11 +138,16 @@ class Maps extends Component {
         var testFoodList = []
         await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-                food = {
-                    data: childSnapshot.val(),
-                    key:  childSnapshot.key
+                let data = childSnapshot.val()
+
+                if(data.Portions > 0) {
+
+                    food = {
+                        data: childSnapshot.val(),
+                        key:  childSnapshot.key
+                    }
+                    testFoodList.push(food)
                 }
-                testFoodList.push(food)
             });
             this.setState ( {
               food:testFoodList
