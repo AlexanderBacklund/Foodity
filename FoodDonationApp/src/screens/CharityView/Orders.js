@@ -28,7 +28,7 @@ export default class Orders extends Component {
             var tempList = [];
             snapshot.forEach(function(childSnapshot){
                var data = childSnapshot.val()
-               if (data.Restaurant === myUid) {
+               if (data.Charity === myUid) {
                    food = {
                        key : childSnapshot.key,
                        data : data
