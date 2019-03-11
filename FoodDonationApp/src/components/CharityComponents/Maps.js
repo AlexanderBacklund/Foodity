@@ -104,7 +104,8 @@ class Maps extends Component {
             Picture: item['data'].Picture,
             Portions: value,
             Taken: !item['data'].Taken,
-            Restaurant: Firebase.auth().currentUser.uid,
+            Restaurant: item['data'].Restaurant,
+            Charity: Firebase.auth().currentUser.uid,
             FromWhatOrder: item.key
         }).then((data) => {
             console.log('Success')
