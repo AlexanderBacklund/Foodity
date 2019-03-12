@@ -243,6 +243,7 @@ containerTwo: {
   justifyContent: 'center',
   alignItems: 'center',
   marginBottom:20,
+  marginTop:20,
   
   height: 45,
   // width:250,

@@ -59,8 +59,6 @@ export default class Login extends React.Component {
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              placeholderTextColor= '#848987'
-              selectionColor= '#848987'
               onChangeText={(email) => this.setState({email})}/>
         </View>
         
