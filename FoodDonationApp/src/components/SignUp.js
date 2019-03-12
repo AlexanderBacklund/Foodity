@@ -103,6 +103,8 @@ export default class Signup extends React.Component {
               placeholder="First Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor= '#848987'
+              selectionColor= '#848987'
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -172,8 +174,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#6FDB88',
   },
   inputContainer: {
-      borderBottomColor: '#0e8bce',
-      backgroundColor: '#FFFFFF',
+      borderBottomColor: '#848987',
+      backgroundColor: '#6FDB88',
       borderRadius:10,
       borderBottomWidth: 1,
       width:'80%',
@@ -201,11 +203,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom:20,
     width:250,
-    borderRadius:30,
+    borderRadius:10,
   },
   signupButton: {
     marginTop: 20,
-    backgroundColor: "#c415bb",
+    backgroundColor: "#5BB26F",
   },
   signUpText: {
     color: 'white',

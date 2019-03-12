@@ -55,6 +55,8 @@ export default class Login extends React.Component {
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor= '#848987'
+              selectionColor= '#848987'
               onChangeText={(email) => this.setState({email})}/>
         </View>
         
@@ -85,10 +87,10 @@ export default class Login extends React.Component {
 
           <View style={styles.containerTwo}>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Restaurant' })}>
-            <Text>Restaurant</Text>
+            <Text style={styles.loginText}>Restaurant</Text>
         </TouchableHighlight>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Charity' })}>
-            <Text>Charity</Text>
+            <Text style={styles.loginText}>Charity</Text>
         </TouchableHighlight>
         </View>
       </KeyboardAvoidingView>
@@ -118,8 +120,8 @@ const styles = StyleSheet.create({
     
   },
   inputContainer: {
-      borderBottomColor: '#4076ce',
-      backgroundColor: '#FFFFFF',
+      borderBottomColor: '#848987',
+      backgroundColor: '#6FDB88',
       borderRadius:10,
       borderBottomWidth: 1,
       width:250,
@@ -150,16 +152,17 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   registerButton: {
-    backgroundColor: 'rgba(13, 65, 168,0.4)',
+    backgroundColor: '#5BB26F',
     width:'30%',
     height:40,
-    borderRadius:30,
+    borderRadius:10,
     justifyContent: 'center',
     alignItems: 'center',
     margin:15,
   },
   loginButton: {
-    backgroundColor: "#00b5ec",
+    backgroundColor: "#5BB26F",
+    borderRadius:10
   },
   loginText: {
     color: 'white',
