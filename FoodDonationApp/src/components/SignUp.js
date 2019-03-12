@@ -5,12 +5,16 @@ import firebase from 'firebase';
 import Geocoder from 'react-native-geocoding';
 import Loading from './Loading';
 import Browse from './../screens/CharityView/Browse';
+import HideWithKeyboard from 'react-native-hide-with-keyboard';
+
 
 import Firebase from './../config/FirebaseConfig';
 // Fix for geocoder. Should go in config file.
 Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
 export default class Signup extends React.Component {
-
+  static navigationOptions = {
+    header: null,
+    };
   state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null, lat: '',
   lng: '' }
   
@@ -93,9 +97,14 @@ export default class Signup extends React.Component {
       scrollEnabled={true}
     >
     
+    <View style={styles.logocontainer}>
+      <HideWithKeyboard>
         <Image style={styles.logo}
-          source={require('./../../images/FoodityWhite.png')}>
+        source={require('./../../images/FoodityWhite.png')}>
         </Image>
+        </HideWithKeyboard>
+      </View>
+      
     
     <View style={{height: '0%'}}></View>
         <View style={styles.inputContainer}>
@@ -103,7 +112,6 @@ export default class Signup extends React.Component {
               placeholder="First Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              placeholderTextColor= '#848987'
               selectionColor= '#848987'
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
@@ -156,9 +164,14 @@ export default class Signup extends React.Component {
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
+          <View style={styles.containerTwo}>
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
           <Text style={styles.signUpText}>Register</Text>
         </TouchableHighlight>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.signUpText}>Back</Text>
+        </TouchableHighlight>
+        </View>
         </KeyboardAwareScrollView>
       
     );
@@ -179,13 +192,13 @@ const styles = StyleSheet.create({
       borderRadius:10,
       borderBottomWidth: 1,
       width:'80%',
-      height:45,
+      height:38,
       marginBottom:5,
       flexDirection: 'row',
       alignItems:'center'
   },
   inputs:{
-      height:45,
+      height:40,
       marginLeft:16,
       borderBottomColor: '#FFFFFF',
       flex:1,
@@ -197,14 +210,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonContainer: {
-    height:45,
-    flexDirection: 'row',
+    backgroundColor: '#5BB26F',
+    width:'30%',
+    height:40,
+    borderRadius:10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:10,
+    margin:15,
   },
+  
   signupButton: {
     marginTop: 20,
     backgroundColor: "#5BB26F",
@@ -217,11 +231,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
 },
 logo: {
     width: 128,
     height: 70,
-    marginBottom:'5%'
-}
+},
+containerTwo: {
+  // flex: 1,
+  // flexDirection: 'row',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom:20,
+  
+  height: 45,
+  // width:250,
+  borderRadius:30,
+  backgroundColor: '#6FDB88',
+},
 });

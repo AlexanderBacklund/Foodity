@@ -8,6 +8,8 @@ import Loading from './../components/Loading';
 import Browse from './CharityView/Browse';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Input } from 'react-native-elements';
+import HideWithKeyboard from 'react-native-hide-with-keyboard';
+
 
 export default class Login extends React.Component {
   static navigationOptions = {
@@ -44,9 +46,11 @@ export default class Login extends React.Component {
       
         <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logocontainer}>
+        <HideWithKeyboard>
         <Image style={styles.logo}
         source={require('./../../images/FoodityWhite.png')}>
         </Image>
+        </HideWithKeyboard>
       </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
@@ -117,7 +121,6 @@ const styles = StyleSheet.create({
     // width:250,
     borderRadius:30,
     backgroundColor: '#6FDB88',
-    
   },
   inputContainer: {
       borderBottomColor: '#848987',
@@ -125,13 +128,13 @@ const styles = StyleSheet.create({
       borderRadius:10,
       borderBottomWidth: 1,
       width:250,
-      height:45,
+      height:40,
       marginBottom:20,
       flexDirection: 'row',
       alignItems:'center'
   },
   inputs:{
-      height:45,
+      height:40,
       marginLeft:16,
       borderBottomColor: '#FFFFFF',
       flex:1,
