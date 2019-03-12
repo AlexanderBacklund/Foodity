@@ -18,11 +18,13 @@ import RestaurantMyMeals from './src/screens/RestaurantView/RestaurantMyMeals' ;
 import RestaurantProfile from './src/screens/RestaurantView/RestaurantProfile' ;
 import RestaurantEditMeal from './src/components/RestaurantComponents/RestaurantEditMeal';
 import Loading from './src/components/Loading' ;
+import Splash from './src/screens/Splash' ;
 
 console.disableYellowBox = true;
 
 const AppNavigator = createStackNavigator(
   {
+    Splash,
     Maps,
     Browse,
     Orders,
@@ -38,7 +40,7 @@ const AppNavigator = createStackNavigator(
     CharityHistory
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: 'Splash'
   }
 );
 

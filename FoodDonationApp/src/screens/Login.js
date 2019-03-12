@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
   },
   containerTwo: {
     // flex: 1,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     height: 45,
     // width:250,
     borderRadius:30,
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
     
   },
   inputContainer: {

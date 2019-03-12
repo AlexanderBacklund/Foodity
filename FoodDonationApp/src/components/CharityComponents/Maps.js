@@ -47,6 +47,9 @@ class Maps extends Component {
         food: {},
         restaurant: {},
     }
+    static navigationOptions = {
+      header: null,
+      };
 
     pickLocationHandler = event => {
       const coords = event.nativeEvent.coordinate;
