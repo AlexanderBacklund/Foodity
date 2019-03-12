@@ -85,7 +85,6 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-        
         // <KeyboardAvoidingView style={styles.container}>
         <KeyboardAwareScrollView
       style={{ backgroundColor: '#5eb56a' }}
@@ -93,7 +92,12 @@ export default class Signup extends React.Component {
       contentContainerStyle={styles.container}
       scrollEnabled={true}
     >
-    <View style={{height: '25%'}}></View>
+    
+        <Image style={styles.logo}
+          source={require('./../../images/FoodityWhite.png')}>
+        </Image>
+    
+    <View style={{height: '0%'}}></View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="First Name"
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
   },
   inputContainer: {
       borderBottomColor: '#0e8bce',
@@ -205,5 +209,17 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     color: 'white',
-  }
+  },
+  logocontainer: {
+    backgroundColor: '#6FDB88',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+},
+logo: {
+    width: 128,
+    height: 70,
+    marginBottom:'5%'
+}
 });

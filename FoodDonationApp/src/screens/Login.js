@@ -10,7 +10,9 @@ import Browse from './CharityView/Browse';
 import { Input } from 'react-native-elements';
 
 export default class Login extends React.Component {
-
+  static navigationOptions = {
+    header: null,
+    };
   state = { email: '', password: '', errorMessage: null }
   loginHandler = () => {
     const { email, password } = this.state
@@ -39,8 +41,13 @@ export default class Login extends React.Component {
 
   render() {
     return (
-        
+      
         <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.logocontainer}>
+        <Image style={styles.logo}
+        source={require('./../../images/FoodityWhite.png')}>
+        </Image>
+      </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Email"
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
   },
   containerTwo: {
     // flex: 1,
@@ -107,7 +114,7 @@ const styles = StyleSheet.create({
     height: 45,
     // width:250,
     borderRadius:30,
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
     
   },
   inputContainer: {
@@ -156,5 +163,16 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: 'white',
-  }
+  },
+  logocontainer: {
+    backgroundColor: '#6FDB88',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+logo: {
+    width: 128,
+    height: 70,
+    marginBottom: 3,
+}
 });
