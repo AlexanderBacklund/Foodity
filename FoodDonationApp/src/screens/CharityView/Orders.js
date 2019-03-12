@@ -43,22 +43,34 @@ export default class Orders extends Component {
     }
 
     async _handleCancelOrder(food) {
-        Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).update({Portions: await this.currentQTY(food)});
+        Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).update({Portions: await this.newAmountOfFood(food)});
         Firebase.database().ref('BookedFood/').child('' + food.key).remove()
     }
 
-    currentQTY(food): Promise<number> {
+    newAmountOfFood(food): Promise<number> {
         return (
             Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).once('value').then(snapshot => snapshot.val().Portions + food['data'].Portions)
         )
     }
 
-    _handleCompleteOrder = food => {
+    currentAmountOfFood(food): Promise<number> {
+        return (
+            Firebase.database().ref('FoodList/' + food['data'].FromWhatOrder).once('value').then(snapshot => snapshot.val().Portions)
+        )
+    }
+
+    async _handleCompleteOrder(food) {
         Firebase.database().ref('History/').push({
             user: Firebase.auth().currentUser.uid,
             food: food,
             Portions: food['data'].Portions
         })
+        let currentAmountOfFood = await this.currentAmountOfFood(food)
+        console.log(currentAmountOfFood)
+        if(currentAmountOfFood <= 0) {
+            console.log(food)
+            Firebase.database().ref('FoodList/').child('' + food['data'].FromWhatOrder).remove()
+        }
         Firebase.database().ref('BookedFood/').child('' + food.key).remove()
     }
 

@@ -37,8 +37,6 @@ class Maps extends Component {
         },
         resturantData: [],
         allRestaurantKeys: [],
-        foodData: [],
-        allItemsKeys: [],
         isModalVisible: false,
         currentPressedRestaurant: 0,
         currentPressedRestaurantsFood: [],
@@ -90,7 +88,6 @@ class Maps extends Component {
         let newPortions = item['data'].Portions - value
         var foodListRef = Firebase.database().ref('FoodList/' + item['key'])
         foodListRef.update({Portions : newPortions})
-//        console.log(Firebase.auth().currentUser.uid)
         this.addPartOfFood(item, value)
         this.loadFood()
         this._toggleModal(0,0)
@@ -126,6 +123,7 @@ class Maps extends Component {
     }
 
     async _toggleModal(modalRestData, index) {
+        await this.loadFood()
         let foods = await this.checkIfRestaurantHaveFood(index)
         this.setState({
           isModalVisible: !this.state.isModalVisible,
@@ -136,25 +134,22 @@ class Maps extends Component {
     }
 
     async loadFood() {
-        let allFood = [];
-        let allItemsKeysTemp = []
         var food = {}
         var testFoodList = []
         await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-                food = {
-                    data: childSnapshot.val(),
-                    key:  childSnapshot.key
+                let data = childSnapshot.val()
+
+                if(data.Portions > 0) {
+
+                    food = {
+                        data: childSnapshot.val(),
+                        key:  childSnapshot.key
+                    }
+                    testFoodList.push(food)
                 }
-                testFoodList.push(food)
-                var childKey = childSnapshot.key;
-                childData = childSnapshot.val();
-                allItemsKeysTemp.push(childKey)
-                allFood.push(childData);
             });
             this.setState ( {
-              foodData: allFood,
-              allItemsKeys: allItemsKeysTemp,
               food:testFoodList
             })
         }.bind(this));
@@ -314,7 +309,7 @@ class Maps extends Component {
             resizeMode="cover"
           />
           <View style={styles.textContent}>
-            <Text numberOfLines={1} style={styles.cardtitle}>{marker.fname}</Text>
+            <Text numberOfLines={1} style={styles.cardtitle}>{marker.orgname}</Text>
             <Text numberOfLines={1} style={styles.cardDescription}>
               {marker.description}
             </Text>
@@ -350,8 +345,7 @@ class Maps extends Component {
             backdropTransitionOutTiming={1000}>
             <ScrollView>
                 <View style={styles.modalContent}>
-                    <Text> {this.state.currentPressedRestaurant.fname} </Text>
-                    <Text> {this.state.currentPressedRestaurant.lname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.orgname} </Text>
                     <Text> {this.state.currentPressedRestaurant.description} </Text>
                     {this.state.currentPressedRestaurantsFood.map((marker, index) => (
                     <View>

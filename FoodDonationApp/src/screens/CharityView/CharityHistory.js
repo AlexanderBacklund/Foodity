@@ -22,11 +22,10 @@ export default class CharityHistory extends Component {
         await Firebase.database().ref('History/').once('value', function(snapshot){
             var myUid = Firebase.auth().currentUser.uid;
             var tempPortions = 0;
-            console.log(snapshot.val())
             snapshot.forEach(function(childSnapshot){
                 var data = childSnapshot.val()
                 if(data.user === myUid) {
-                    tempPortions = tempPortions + data.Portions
+                    tempPortions = (tempPortions + data.Portions)
                 }
             })
             this.setState({
@@ -39,9 +38,7 @@ export default class CharityHistory extends Component {
        return(
             <View style= {{flex:1}}>
                 <View style={styles.container}>
-                    <Text style={styles.Text}> Number of portions donated: {this.state.numberOfPortions} </Text>
-
-
+                    <Text style={styles.Text}> Number of portions given to people in need: {this.state.numberOfPortions} </Text>
                 </View>
                 <MyFooter navigation={this.props.navigation}/>
             </View>

@@ -16,9 +16,6 @@ export default class Browse extends Component {
                 lng:null
             },
             error:null,
-            // allFood: [],
-            // restaurantKeysWithFood: [],
-            // restaurantWithFood: [],
             ItemsWithCoordinates: [],
             refreshing: false,
             orderedFood: {
@@ -55,6 +52,32 @@ export default class Browse extends Component {
         this.setState({error: err.message})
     }
 
+    _handleBookFood = (item) => {
+        let bookedPortions = item['data'].Portions
+        var foodListRef = Firebase.database().ref('FoodList/' + item['key'])
+        foodListRef.update({Portions: 0 })
+        this.addPartOfFood(item)
+        this.loadFood()
+    }
+
+    addPartOfFood = (item) => {
+        Firebase.database().ref('BookedFood/').push({
+            Name: item['data'].Name,
+            Description: item['data'].Description,
+            Weight: item['data'].Weight,
+            Picture: item['data'].Picture,
+            Portions: parseInt(item['data'].Portions),
+            Taken: !item['data'].Taken,
+            Restaurant: item['data'].Restaurant,
+            Charity: Firebase.auth().currentUser.uid,
+            FromWhatOrder: item.key
+        }).then((data) => {
+            console.log('Success')
+        }).catch((error) => {
+            console.log('error', error)
+        })
+    }
+
     async loadFood() {
         let allFood = [];
         var food = {}
@@ -72,10 +95,6 @@ export default class Browse extends Component {
                 restaurantsWithFoodTemp.push(childSnapshot.val().Restaurant)
                 tempFoodList.push(food)
             });
-            // this.setState ( {
-            //   allFood:tempFoodList,
-            //   restaurantsKeysWithFood: restaurantsWithFoodTemp
-            // })
         }.bind(this));
 
         await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
@@ -88,24 +107,23 @@ export default class Browse extends Component {
                     tempRestaurantList.push(restaurantTemp)
                 }
             });
-            // this.setState ({
-            //     restaurantsWithFood:tempRestaurantList
-            // })
         }.bind(this));
 
         var newWayOfRepFoodItem = {}
         var listOfNewWayOfRepItem = []
         try {
             tempFoodList.map((foodItem,index) => {
-                var tempCoord = this.getCoordinatesForItem(foodItem['data'], tempRestaurantList)
-                var hyp = this.pythagoras(tempCoord)
-                newWayOfRepFoodItem = {
-                    key: foodItem.key,
-                    data: foodItem.data,
-                    coordinates: tempCoord,
-                    hyponusa: hyp
+                if(foodItem['data'].Portions > 0) {
+                    var tempCoord = this.getCoordinatesForItem(foodItem['data'], tempRestaurantList)
+                    var hyp = this.pythagoras(tempCoord)
+                    newWayOfRepFoodItem = {
+                        key: foodItem.key,
+                        data: foodItem.data,
+                        coordinates: tempCoord,
+                        hyponusa: hyp
+                    }
+                    listOfNewWayOfRepItem.push(newWayOfRepFoodItem)
                 }
-                listOfNewWayOfRepItem.push(newWayOfRepFoodItem)
         })
         listOfNewWayOfRepItem.sort(function(a, b){return a.hyponusa-b.hyponusa})
         this.setState ({
@@ -116,7 +134,6 @@ export default class Browse extends Component {
         } finally {
 
         }
-
     }
 
     getCoordinatesForItem = (item, restaurants) => {
@@ -147,7 +164,6 @@ export default class Browse extends Component {
             lat: this.state.where.lat,
             lng: this.state.where.lng
        }
-//       console.log(currentPosition)
         var hyp = Math.sqrt(Math.pow((currentPosition.lat - coordinates.lat),2) + Math.pow((currentPosition.lng - coordinates.lng),2))
         return(hyp)
     }
@@ -155,15 +171,15 @@ export default class Browse extends Component {
     myFood = () => {
         if (this.state.ItemsWithCoordinates.length != 0) {
             return this.state.ItemsWithCoordinates.map(function(food, i){
-//                console.log(food)
             return(
                 <Card title={food['data'].Name}>
                     <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
                     <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
-                    <Text style={styles.Text}>Hyp: {food['hyponusa']}</Text>
+                    <Button title="Book" type="solid" onPress={() => this._handleBookFood(food)} />
+
                 </Card>
                 );
-            });
+            }.bind(this));
         } else {
             return(
                 <Text style={styles.TextNoFood}> There are no food for grab</Text>
@@ -180,8 +196,7 @@ export default class Browse extends Component {
                     refreshing={this.state.refreshing}
                     _onRefresh={this._onRefresh}
                 />
-            }
-            >
+            }>
 
          {this.myFood()}
         </ScrollView>
