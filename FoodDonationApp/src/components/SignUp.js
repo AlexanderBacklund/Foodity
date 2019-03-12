@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
       borderRadius:10,
       borderBottomWidth: 1,
       width:'80%',
-      height:38,
+      height:36,
       marginBottom:5,
       flexDirection: 'row',
       alignItems:'center'
@@ -243,7 +243,7 @@ containerTwo: {
   justifyContent: 'center',
   alignItems: 'center',
   marginBottom:20,
-  marginTop:20,
+  marginTop:10,
   
   height: 45,
   // width:250,
