@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
+import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight,Image, TouchableOpacity } from 'react-native';
 import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
+import { Avatar } from 'react-native-elements';
 import MyHeader from './../../components/MyHeader';
 import firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
@@ -12,37 +13,37 @@ export default class RestaurantProfile extends Component {
 
   state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
 
-  componentDidMount() {
-    var user = firebase.auth().currentUser.uid;
-    let itemsRef = firebase.database().ref('UsersList/'+user);
-    itemsRef.on('value', snapshot => {
-      let data = snapshot.val();
-      let items = data;
-      this.setState({ items });
-      this.state.currentData = this.state.items
-    })
-  }
+  // componentDidMount() {
+  //   var user = firebase.auth().currentUser.uid;
+  //   let itemsRef = firebase.database().ref('UsersList/'+user);
+  //   itemsRef.on('value', snapshot => {
+  //     let data = snapshot.val();
+  //     let items = data;
+  //     this.setState({ items });
+  //     this.state.currentData = this.state.items
+  //   })
+  // }
   writeUserData = () => {
-        
-  console.log(this.state.items);
-  console.log(this.state.currentData);
-    var user = firebase.auth().currentUser;
-    firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
-      .then((data)=>{
-      this.state.items = this.state.items
-      // this.setState({currentData: this.state.currentData})
-      this.setState({...this.state, items: this.state.items})
-      this.setState({...this.state, currentData: this.state.items})
-      this.state.currentData = this.state.items
-      console.log('data ' , this.state)
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-    })
+    console.log("this.state.items");   
+  // console.log(this.state.items);
+  // console.log(this.state.currentData);
+  //   var user = firebase.auth().currentUser;
+  //   firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
+  //     .then((data)=>{
+  //     this.state.items = this.state.items
+  //     // this.setState({currentData: this.state.currentData})
+  //     this.setState({...this.state, items: this.state.items})
+  //     this.setState({...this.state, currentData: this.state.items})
+  //     this.state.currentData = this.state.items
+  //     console.log('data ' , this.state)
+  //   }).catch((error)=>{
+  //       //error callback
+  //       console.log('error ' , error)
+  //   })
   }
   handleAddress = (text) => {
     this.setState({currentData: {...this.state.currentData, address: text}})
-    this.getData(text);
+    // this.getData(text);
   }
 
   getData(address) {
@@ -61,9 +62,13 @@ export default class RestaurantProfile extends Component {
       <View style={styles.container}>
         <MyHeader />
           <ScrollView>
-            {/* <Text>In RestaurantProfile</Text> */}
             <View style={[styles.card2, { backgroundColor: 'white' }]}>
            <Text style={styles.title}>Profile</Text>
+           
+           <TouchableOpacity onPress={this.writeUserData}>
+           <Image style={styles.avatar}
+                  source={{uri: 'https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg'}}/>
+          </TouchableOpacity>
            <Sae
              style={styles.input}
              inputStyle={{color:'slategrey',}}
@@ -227,6 +232,15 @@ const styles = StyleSheet.create({
     width:'100%',
     borderRadius:5,
   //   marginLeft:'20%',
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom:10,
+    alignSelf: 'center',
   },
   saveButton: {
     marginTop: 20,
