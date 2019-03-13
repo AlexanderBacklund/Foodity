@@ -112,7 +112,7 @@ export default class Signup extends React.Component {
               placeholder="First Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              selectionColor= '#848987'
+              placeholderTextColor='#585B5A'
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -120,6 +120,7 @@ export default class Signup extends React.Component {
               placeholder="Last Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(lname) => this.setState({lname})}/>
         </View>
         
@@ -128,6 +129,7 @@ export default class Signup extends React.Component {
               placeholder="Organisation Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(orgname) => this.setState({orgname})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -135,6 +137,7 @@ export default class Signup extends React.Component {
               placeholder="Address"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={this.handleAddress}/>
         </View>
         <View style={styles.inputContainer}>
@@ -142,6 +145,7 @@ export default class Signup extends React.Component {
               placeholder="Description"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(description) => this.setState({description})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -149,6 +153,7 @@ export default class Signup extends React.Component {
               placeholder="Email"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -156,6 +161,7 @@ export default class Signup extends React.Component {
               placeholder="Password"
               secureTextEntry={true}
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(password) => this.setState({password})}/>
         </View>
         {console.log(this.props.navigation.getParam('text', 'nothing sent'))}
@@ -187,7 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6FDB88',
   },
   inputContainer: {
-      borderBottomColor: '#848987',
+      borderBottomColor: '#585B5A', 
       backgroundColor: '#6FDB88',
       borderRadius:10,
       borderBottomWidth: 1,
