@@ -14,6 +14,7 @@ import RNFetchBlob from 'react-native-fetch-blob';
 // firebase storage is where the profile image will be saved
 const storage = firebase.storage();
 
+
 // Prepare Blob support for image
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
@@ -53,12 +54,22 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
 export default class RestaurantProfile extends Component {
   
   
-  state = {uploadURL:'https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg',
+  state = {uploadURL:'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2Fdefault.jpg?alt=media&token=b662115c-e3f7-438b-beab-715463f3d7a9',
   currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
- 
+  
+
+  onResolve(foundURL) { 
+  //stuff 
+  } 
+  onReject(error){ 
+  //fill not found
+  console.log(error.code); 
+  }
   selectImage() {
     this.setState({ uploadURL: '' })
-
+    var user = firebase.auth().currentUser;
+    // const imageRef = storage.ref('images/'+user.uid)
+    // storage.ref('images').child(user.uid).getDownloadURL().then(onResolve, onReject);
     ImagePicker.launchImageLibrary({}, response  => {
       uploadImage(response.uri)
         .then(url => this.setState({ uploadURL: url }))
@@ -111,7 +122,9 @@ export default class RestaurantProfile extends Component {
         }
   render() {
     return (
+      
       <View style={styles.container}>
+        
         <MyHeader />
           <ScrollView>
             <View style={[styles.card2, { backgroundColor: 'white' }]}>
@@ -124,6 +137,19 @@ export default class RestaurantProfile extends Component {
               case '':
                 return <ActivityIndicator />
               default:
+              var user = firebase.auth().currentUser;
+              var imageUrl = storage.ref('images').child(`${user.uid}`).getDownloadURL().then((url) => {
+                // console.log(url)
+                this.setState({ uploadURL: url })
+                // return url;
+              })
+              .catch((error) => {
+                // console.log(error)
+                // this.setState({ uploadURL: 'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2Fdefault.jpg?alt=media&token=b662115c-e3f7-438b-beab-715463f3d7a9' })
+            });
+            // console.log(imageUrl)
+              // 
+              // console.log(this.state.uploadURL)
                 return (
                   <TouchableOpacity onPress={ () => this.selectImage() }>
                   {/* {console.log(this.state.uploadURL)} */}
@@ -300,11 +326,11 @@ const styles = StyleSheet.create({
   //   marginLeft:'20%',
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
+    width: 150,
+    height: 150,
+    borderRadius: 10,
     borderWidth: 4,
-    borderColor: "white",
+    borderColor: "slategrey",
     marginBottom:10,
     alignSelf: 'center',
   },
