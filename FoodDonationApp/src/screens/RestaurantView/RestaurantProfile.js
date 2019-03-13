@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight,Image, TouchableOpacity } from 'react-native';
+import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight,Image, TouchableOpacity,
+  ActivityIndicator } from 'react-native';
 import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
 import { Avatar } from 'react-native-elements';
 import MyHeader from './../../components/MyHeader';
@@ -8,42 +9,93 @@ import Geocoder from 'react-native-geocoding';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import {Sae} from 'react-native-textinput-effects';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
+// firebase storage is where the profile image will be saved
+const storage = firebase.storage();
+
+// Prepare Blob support for image
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
+
+
+const uploadImage = (uri, mime = 'application/octet-stream') => {
+  return new Promise((resolve, reject) => {
+    const uploadUri = uri
+    const sessionId = new Date().getTime()
+    let uploadBlob = null
+    var user = firebase.auth().currentUser;
+    const imageRef = storage.ref('images/'+user.uid)
+
+    fs.readFile(uploadUri, 'base64')
+      .then((data) => {
+        return Blob.build(data, { type: `${mime};BASE64` })
+      })
+      .then((blob) => {
+        uploadBlob = blob
+        return imageRef.put(blob, { contentType: mime })
+      })
+      .then(() => {
+        uploadBlob.close()
+        return imageRef.getDownloadURL()
+      })
+      .then((url) => {
+        resolve(url)
+      })
+      .catch((error) => {
+        reject(error)
+    })
+  })
+}
+
 export default class RestaurantProfile extends Component {
   
+  
+  state = {uploadURL:'https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg',
+  currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
+ 
+  selectImage() {
+    this.setState({ uploadURL: '' })
 
-  state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
-
-  // componentDidMount() {
-  //   var user = firebase.auth().currentUser.uid;
-  //   let itemsRef = firebase.database().ref('UsersList/'+user);
-  //   itemsRef.on('value', snapshot => {
-  //     let data = snapshot.val();
-  //     let items = data;
-  //     this.setState({ items });
-  //     this.state.currentData = this.state.items
-  //   })
-  // }
+    ImagePicker.launchImageLibrary({}, response  => {
+      uploadImage(response.uri)
+        .then(url => this.setState({ uploadURL: url }))
+        .catch(error => console.log(error))
+    })
+  }
+  componentDidMount() {
+    var user = firebase.auth().currentUser.uid;
+    let itemsRef = firebase.database().ref('UsersList/'+user);
+    itemsRef.on('value', snapshot => {
+      let data = snapshot.val();
+      let items = data;
+      this.setState({ items });
+      this.state.currentData = this.state.items
+    })
+  }
   writeUserData = () => {
-    console.log("this.state.items");   
-  // console.log(this.state.items);
-  // console.log(this.state.currentData);
-  //   var user = firebase.auth().currentUser;
-  //   firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
-  //     .then((data)=>{
-  //     this.state.items = this.state.items
-  //     // this.setState({currentData: this.state.currentData})
-  //     this.setState({...this.state, items: this.state.items})
-  //     this.setState({...this.state, currentData: this.state.items})
-  //     this.state.currentData = this.state.items
-  //     console.log('data ' , this.state)
-  //   }).catch((error)=>{
-  //       //error callback
-  //       console.log('error ' , error)
-  //   })
+    // console.log("this.state.items");   
+  console.log(this.state.items);
+  console.log(this.state.currentData);
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('UsersList/'+user.uid).update(this.state.currentData)
+      .then((data)=>{
+      this.state.items = this.state.items
+      // this.setState({currentData: this.state.currentData})
+      this.setState({...this.state, items: this.state.items})
+      this.setState({...this.state, currentData: this.state.items})
+      this.state.currentData = this.state.items
+      console.log('data ' , this.state)
+    }).catch((error)=>{
+        //error callback
+        console.log('error ' , error)
+    })
   }
   handleAddress = (text) => {
     this.setState({currentData: {...this.state.currentData, address: text}})
-    // this.getData(text);
+    this.getData(text);
   }
 
   getData(address) {
@@ -64,11 +116,25 @@ export default class RestaurantProfile extends Component {
           <ScrollView>
             <View style={[styles.card2, { backgroundColor: 'white' }]}>
            <Text style={styles.title}>Profile</Text>
-           
-           <TouchableOpacity onPress={this.writeUserData}>
+           {
+          (() => {
+            switch (this.state.uploadURL) {
+              case null:
+                return null
+              case '':
+                return <ActivityIndicator />
+              default:
+                return (
+                  <TouchableOpacity onPress={ () => this.selectImage() }>
+                  {/* {console.log(this.state.uploadURL)} */}
            <Image style={styles.avatar}
-                  source={{uri: 'https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg'}}/>
+                  source={{uri: this.state.uploadURL}}/>
           </TouchableOpacity>
+                )
+            }
+          })()
+        }
+           
            <Sae
              style={styles.input}
              inputStyle={{color:'slategrey',}}
