@@ -8,9 +8,10 @@ import firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-import {Sae} from 'react-native-textinput-effects';
+import {Sae, Kaede} from 'react-native-textinput-effects';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
+
 // firebase storage is where the profile image will be saved
 const storage = firebase.storage();
 
@@ -25,7 +26,6 @@ window.Blob = Blob
 const uploadImage = (uri, mime = 'application/octet-stream') => {
   return new Promise((resolve, reject) => {
     const uploadUri = uri
-    const sessionId = new Date().getTime()
     let uploadBlob = null
     var user = firebase.auth().currentUser;
     const imageRef = storage.ref('images/'+user.uid)
@@ -58,13 +58,6 @@ export default class RestaurantProfile extends Component {
   currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
   
 
-  onResolve(foundURL) { 
-  //stuff 
-  } 
-  onReject(error){ 
-  //fill not found
-  console.log(error.code); 
-  }
   selectImage() {
     this.setState({ uploadURL: '' })
     var user = firebase.auth().currentUser;
@@ -114,9 +107,15 @@ export default class RestaurantProfile extends Component {
           .then(json => {
               var lat = json.results[0].geometry.location.lat;
               var lng = json.results[0].geometry.location.lng;
+              
               this.setState({currentData: {...this.state.currentData, lat: lat}});
               this.setState({currentData: {...this.state.currentData, lng: lng}});
-              
+              // Check if lat or lng not set correctly, then reset to old value
+              if(this.state.currentData.lng == '' || this.state.currentData.lat == '') {
+                this.setState({currentData: {...this.state.currentData, lat: this.state.items.lng}});
+                this.setState({currentData: {...this.state.currentData, lat: this.state.items.lat}});
+                this.setState({currentData: {...this.state.currentData, address: this.state.items.address}});
+              }
           })
           .catch(error => console.warn(error));
         }
@@ -160,89 +159,116 @@ export default class RestaurantProfile extends Component {
             }
           })()
         }
+           <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'First Name'}
+              inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.fname}
+              onChangeText={(fname) => this.setState({currentData: {...this.state.currentData, fname: fname}} )}
+            />
+            <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'Last Name'}
+              inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.lname}
+              onChangeText={(lname) => this.setState({currentData: { ...this.state.currentData, lname: lname} } )}
+            />
+            <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'Organization Name'}
+              inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.orgname}
+              onChangeText={(orgname) => this.setState({currentData: {...this.state.currentData, orgname: orgname}})}
+            />
+            <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'Address'}
+              inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.address}
+              onChangeText={this.handleAddress}
+            />
+            <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'Description'}
+              inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.description}
+              onChangeText={(description) => this.setState({currentData: {...this.state.currentData, description: description}})}
+              />
+            <Kaede
+              style={styles.input}
+              inputStyle={{color:'slategrey',}}
+              label={'Email'}
+             inputPadding={16}
+              labelStyle={{
+              // color: 'white',
+              backgroundColor: '#eaeaea',
+              }}
+              inputStyle={{
+                color: 'slategrey',
+                borderWidth: 2,
+                borderColor: 'slategrey',
+                // backgroundColor: '#ededed',
+              }}
+              defaultValue={this.state.items.email}
+              onChangeText={(email) => this.setState({currentData: {...this.state.currentData, email: email}})}
+              />
+            
            
-           <Sae
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'First Name'}
-             placeholder=""
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.fname}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={(fname) => this.setState({currentData: {...this.state.currentData, fname: fname}} )}
-           />
-           <Sae
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'Last Name'}
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.lname}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={(lname) => this.setState({currentData: { ...this.state.currentData, lname: lname} } )}
-           />
-           <Sae
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'Organization Name'}
-             placeholder=""
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.orgname}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={(orgname) => this.setState({currentData: {...this.state.currentData, orgname: orgname}})}
-           />
-           <Sae
-             
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'Address'}
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.address}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={this.handleAddress}
-           />
-           <Sae
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'Description'}
-             placeholder=""
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.description}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={(description) => this.setState({currentData: {...this.state.currentData, description: description}})}
-           />
-           <Sae
-             style={styles.input}
-             inputStyle={{color:'slategrey',}}
-             label={'Email'}
-             iconClass={FontAwesomeIcon}
-             iconName={'pencil'}
-             iconColor={'slategrey'}
-             labelStyle={{color:'slategrey',}}
-            //  placeholder={this.state.items.email}
-             keyboardType="email-address"
-             underlineColorAndroid='transparent'
-             onChangeText={(email) => this.setState({currentData: {...this.state.currentData, email: email}})}
-           />
            <TouchableHighlight style={[styles.buttonContainer, styles.saveButton]} onPress={this.writeUserData}>
               <Text style={styles.saveText}>Save</Text>
             </TouchableHighlight>
@@ -250,7 +276,7 @@ export default class RestaurantProfile extends Component {
            
           </ScrollView>
           <View>
-            <RestaurantFooterFooter navigation={this.props.navigation}/>
+            {/* <RestaurantFooterFooter navigation={this.props.navigation}/> */}
           </View>
         </View>
     );
@@ -272,7 +298,7 @@ const styles = StyleSheet.create({
       paddingVertical: 16,
     },
     card2: {
-      padding: 16,
+      padding: 0,
     },
     input: {
       marginTop: 2,
