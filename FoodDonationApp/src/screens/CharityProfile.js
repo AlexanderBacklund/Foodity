@@ -116,9 +116,6 @@ export default class RestaurantProfile extends Component {
           </TouchableHighlight>
         </View>
         </ScrollView>
-        <View>
-          <CharityFooter navigation={this.props.navigation}/>
-        </View>
       </View>
     );
   }

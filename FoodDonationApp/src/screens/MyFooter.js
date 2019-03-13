@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { Button, View, Text, StyleSheet, AppState} from 'react-native';
 import {Footer, Icon, Container} from 'native-base';
 import {Header} from 'react-native-elements';
+//import * as c from '../Styles/ColorScheme.js'
 
 
 export default class MyFooter extends React.Component {
@@ -21,15 +22,18 @@ export default class MyFooter extends React.Component {
       })
     }
 
+  
+
+
   render() {
        return (
-          <View style={styles.container.flex}>
+          <View style={styles.container}>
             <Footer>
 
                 <Button
                 title="Discover"
                 color = {this.state.DiscoverColor}
-                onPress={() => {this.setState({DiscoverColor : 'black'}), this.props.navigation.navigate('Maps')} }
+                onPress={() => { this.props.navigation.navigate('Maps')} }
 
               />
 
@@ -37,7 +41,7 @@ export default class MyFooter extends React.Component {
                 <Button
                 title="Browse"
                 color = {this.state.BrowseColor}
-                onPress={() => {this.setState({BrowseColor : 'black'}), this.props.navigation.navigate('Browse')}}
+                onPress={() => { this.props.navigation.navigate('Browse')}}
               />
 
 
@@ -45,13 +49,13 @@ export default class MyFooter extends React.Component {
                 <Button
                 title="Orders"
                 color = {this.state.OrdersColor}
-                onPress={() => {this.setState({OrdersColor : 'black'}), this.props.navigation.navigate('Orders')}}
+                onPress={() => { this.props.navigation.navigate('Orders')}}
               />
 
                 <Button
                 title="Account"
                 color = {this.state.AccountColor}
-                onPress={() => {this.setState({AccountColor : 'black'}), this.props.navigation.navigate('CharityProfile')}}
+                onPress={() => { this.props.navigation.navigate('CharityProfile')}}
               />
             </Footer>
           </View>
@@ -63,7 +67,8 @@ export default class MyFooter extends React.Component {
 
 const styles = StyleSheet.create({
   container:{
-    flex:1,
+    //flex:1,
+    width: 300,
     justifyContent: 'center',
   }
 });

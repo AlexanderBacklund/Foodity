@@ -4,7 +4,6 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 //import firebase from 'firebase';
 import Modal from "react-native-modal";
-import MyFooter from './../../../screens/MyFooter.js'
 import Firebase from './../../../config/FirebaseConfig';
 
 const images = [
@@ -332,7 +331,6 @@ class Maps extends Component {
             </Modal>
 
 
-        <MyFooter navigation={this.props.navigation} />
           </View>
 
 

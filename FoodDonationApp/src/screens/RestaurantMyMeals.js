@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
-import RestaurantFooterFooter from './RestaurantFooter';
 import MyHeader from './MyHeader';
 import RestaurantAddMeal from './RestaurantAddMeal';
 import firebase from 'firebase';
@@ -108,10 +107,6 @@ export default class RestaurantMyMeals extends Component {
 
          {this.myFood()}
         </ScrollView>
-
-        <View>
-          <RestaurantFooterFooter navigation={this.props.navigation}/>
-        </View>
       </View>
     );
   }
