@@ -7,6 +7,9 @@ import MyFooter from './../../components/CharityComponents/MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 
 export default class CharityHistory extends Component {
+    static navigationOptions = {
+        header: null,
+        };
     constructor() {
         super();
         this.state = {

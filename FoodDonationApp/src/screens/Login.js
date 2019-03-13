@@ -8,8 +8,6 @@ import Loading from './../components/Loading';
 import Browse from './CharityView/Browse';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Input } from 'react-native-elements';
-import HideWithKeyboard from 'react-native-hide-with-keyboard';
-
 
 export default class Login extends React.Component {
   static navigationOptions = {
@@ -46,11 +44,9 @@ export default class Login extends React.Component {
       
         <KeyboardAvoidingView style={styles.container}>
         <View style={styles.logocontainer}>
-        <HideWithKeyboard>
         <Image style={styles.logo}
         source={require('./../../images/FoodityWhite.png')}>
         </Image>
-        </HideWithKeyboard>
       </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
@@ -59,12 +55,14 @@ export default class Login extends React.Component {
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              
               onChangeText={(email) => this.setState({email})}/>
         </View>
         
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Password"
+
               // leftIcon={{ type:'antdesign', name: 'lock' ,color: 'grey'}}
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               // rightIcon={{type:'antdesign', name: 'eye' ,color: 'grey'}}
@@ -89,10 +87,10 @@ export default class Login extends React.Component {
 
           <View style={styles.containerTwo}>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Restaurant' })}>
-            <Text style={styles.loginText}>Restaurant</Text>
+            <Text>Restaurant</Text>
         </TouchableHighlight>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Charity' })}>
-            <Text style={styles.loginText}>Charity</Text>
+            <Text>Charity</Text>
         </TouchableHighlight>
         </View>
       </KeyboardAvoidingView>
@@ -119,20 +117,21 @@ const styles = StyleSheet.create({
     // width:250,
     borderRadius:30,
     backgroundColor: '#6FDB88',
+    
   },
   inputContainer: {
-      borderBottomColor: '#848987',
-      backgroundColor: '#6FDB88',
+      borderBottomColor: '#4076ce',
+      backgroundColor: '#FFFFFF',
       borderRadius:10,
       borderBottomWidth: 1,
       width:250,
-      height:40,
+      height:45,
       marginBottom:20,
       flexDirection: 'row',
       alignItems:'center'
   },
   inputs:{
-      height:40,
+      height:45,
       marginLeft:16,
       borderBottomColor: '#FFFFFF',
       flex:1,
@@ -153,17 +152,16 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   registerButton: {
-    backgroundColor: '#5BB26F',
+    backgroundColor: 'rgba(13, 65, 168,0.4)',
     width:'30%',
     height:40,
-    borderRadius:10,
+    borderRadius:30,
     justifyContent: 'center',
     alignItems: 'center',
     margin:15,
   },
   loginButton: {
-    backgroundColor: "#5BB26F",
-    borderRadius:10
+    backgroundColor: "#00b5ec",
   },
   loginText: {
     color: 'white',

@@ -6,6 +6,9 @@ import {List, ListItem, ListView, Card, Button} from 'react-native-elements';
 
 
 export default class Orders extends Component {
+    static navigationOptions = {
+        header: null,
+        };
     constructor() {
         super();
         this.state = {

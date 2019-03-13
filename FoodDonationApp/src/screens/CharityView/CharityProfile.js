@@ -5,7 +5,9 @@ import Firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 
 export default class RestaurantProfile extends Component {
-
+  static navigationOptions = {
+    header: null,
+    };
 
   state = {currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
 
