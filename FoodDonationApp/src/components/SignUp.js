@@ -51,10 +51,17 @@ export default class Signup extends React.Component {
   }
   
     signUpHandler = () => {
+      if(this.state.lat == '' || this.state.lng == '') {
+        this.setState({ errorMessage: "Please be more specific on the address" })
+      } else {
       Firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,
+        .then((res) => {
+          if(this.state.lat == '' || this.state.lng == '') {
+            this.setState({ errorMessage: "Please be more specific on the address" })
+          } else {
+          this.writeUserData(this.state.email,
           this.state.fname,
           this.state.lname,
           this.state.orgname,
@@ -63,8 +70,10 @@ export default class Signup extends React.Component {
           this.state.description,
           this.state.lat,
           this.state.lng,
-          res))
+          res)}
+        })
         .catch(error => this.setState({ errorMessage: error.message }))
+      }
       console.log('signUpHandler')
     }
 
