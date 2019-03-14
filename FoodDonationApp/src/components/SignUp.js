@@ -51,7 +51,11 @@ export default class Signup extends React.Component {
   }
   
     signUpHandler = () => {
-      if(this.state.lat == '' || this.state.lng == '') {
+      if(this.state.fname == '' || this.state.lname == '' || this.state.orgname == '' || this.state.address == '' || this.state.description == ''
+      || this.state.email == '' || this.state.password == ''){
+        this.setState({ errorMessage: "All fields are required to be filled out!" })
+      }
+      else if(this.state.lat == '' || this.state.lng == '') {
         this.setState({ errorMessage: "Please be more specific on the address" })
       } else {
       Firebase
@@ -117,6 +121,7 @@ export default class Signup extends React.Component {
     
     <View style={{height: '0%'}}></View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="First Name"
               keyboardType="email-address"
@@ -125,6 +130,7 @@ export default class Signup extends React.Component {
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Last Name"
               keyboardType="email-address"
@@ -134,6 +140,7 @@ export default class Signup extends React.Component {
         </View>
         
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Organisation Name"
               keyboardType="email-address"
@@ -142,6 +149,7 @@ export default class Signup extends React.Component {
               onChangeText={(orgname) => this.setState({orgname})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Address"
               keyboardType="email-address"
@@ -150,6 +158,7 @@ export default class Signup extends React.Component {
               onChangeText={this.handleAddress}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Description"
               keyboardType="email-address"
@@ -158,6 +167,7 @@ export default class Signup extends React.Component {
               onChangeText={(description) => this.setState({description})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -166,6 +176,7 @@ export default class Signup extends React.Component {
               onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Password"
               secureTextEntry={true}
