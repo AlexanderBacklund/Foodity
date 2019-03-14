@@ -21,7 +21,9 @@ const images = [
 
 
 class Maps extends Component {
-    state ={
+    constructor() {
+    super();
+    this.state ={
         focusLocation: {
             latitude: 59.838601,
             longitude: 17.6113775,
@@ -44,7 +46,11 @@ class Maps extends Component {
         slideValue: 0,
         food: {},
         restaurant: [],
+        currentImage: "",
+        uri: "",
     }
+    this.getImage = this.getImage.bind(this)
+}
     static navigationOptions = {
       header: null,
       };
@@ -164,6 +170,18 @@ class Maps extends Component {
         }.bind(this));
     }
 
+    getImage = (key) => {
+        var user = key
+        var imageRefTmp = ""
+        const imageRef = Firebase.storage().ref('images').child(`${user}`).getDownloadURL().then((url) => {
+            console.log(url)
+            imageRefTmp = url
+            return(url)
+        })
+        console.log(imageRef)
+        return (imageRefTmp)
+    }
+
     async loadRestaurants() {
         await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
             let allResturant = [];
@@ -172,9 +190,17 @@ class Maps extends Component {
             let allRestaurantKeysTemp = []
             snapshot.forEach(function(childSnapshot) {
                 if (childSnapshot.val().typeOfUser === 'Restaurant'){
+                    // var urlTmp = ""
+                    // var imageRef = Firebase.storage().ref('images').child(`${childSnapshot.key}`).getDownloadURL().then((url) => {
+                    //     urlTmp = url
+                    //     console.log(url)
+                    // })
+                    var key = childSnapshot.key
+                    var urlTmp = this.getImage(key);
                     restaurantTemp = {
                         data: childSnapshot.val(),
-                        key: childSnapshot.key
+                        key: childSnapshot.key,
+                        urlDB: urlTmp
                     }
                     listRestaurant.push(restaurantTemp)
                     var childKey = childSnapshot.key;
@@ -182,7 +208,7 @@ class Maps extends Component {
                     allResturant.push(childData);
                     allRestaurantKeysTemp.push(childKey)
                 }
-            })
+            }.bind(this))
             this.setState ({
               resturantData: allResturant,
               allRestaurantKeys: allRestaurantKeysTemp,
@@ -191,12 +217,15 @@ class Maps extends Component {
         }.bind(this))
     }
 
+
+
     async componentWillMount() {
         this.index = 0;
         this.animation = new Animated.Value(0);
 
         await this.loadFood();
         await this.loadRestaurants();
+        console.log(this.state.restaurant   )
     }
 
     componentDidMount() {
@@ -311,15 +340,13 @@ class Maps extends Component {
       contentContainerStyle={styles.endPadding}
     >
       {this.state.restaurant.map((marker, index) => (
-
         <View style={styles.card} key={index} onPress>
           <Image
-            source={marker['data'].image}
+            source={{uri: marker.url}} //marker['data'].image}
             style={styles.cardImage}
             resizeMode="cover"
           />
           <View style={styles.textContent}>
-            {console.log(marker)}
             <Text numberOfLines={1} style={styles.cardtitle}>{marker['data'].orgname}</Text>
             <Text numberOfLines={1} style={styles.cardDescription}>
               {marker['data'].description}
