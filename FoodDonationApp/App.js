@@ -20,31 +20,8 @@ import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
 import RestaurantProfile from './src/screens/RestaurantProfile' ;
 import CharityProfile from './src/screens/CharityProfile' ;
 import Loading from './src/screens/Loading' ;
-//import * as c from './src/Styles/ColorScheme';
 
 console.disableYellowBox = true;
-
-/*const AppNavigator = createStackNavigator(
-  {
-    Home,
-    Maps,
-    Browse,
-    Account,
-    Discover,
-    Orders,
-    SignUp,
-    Login,
-    RestaurantAddMeal,
-    RestaurantHistory,
-    RestaurantMyMeals,
-    RestaurantProfile,
-    CharityProfile,
-    Loading
-  },
-  {
-    initialRouteName: 'Browse'
-  }
-);*/
 
 const CharityTabNavigator = createBottomTabNavigator({
   Maps: {screen: Maps,
@@ -120,21 +97,6 @@ const AuthStack = createStackNavigator({
   Login: Login,
   SignUp: SignUp,
   Loading: Loading,
-  //RestaurantMyMeals: RestaurantMyMeals,
-  //Browse: Browse
-    /*Maps,
-    Browse,
-    Account,
-    Discover,
-    Orders,
-    SignUp,
-    Login,
-    RestaurantAddMeal,
-    RestaurantHistory,
-    RestaurantMyMeals,
-    RestaurantProfile,
-    CharityProfile,
-    Loading*/
   },
   {
     initialRouteName: 'Login'
@@ -153,14 +115,6 @@ export default class App extends React.Component {
     return <AppContainer/>;
   }
 }
-
-/*const AppContainer = createAppContainer(AppNavigator);
-
-export default class App extends React.Component {
-  render() {
-    return <AppContainer/>;
-  }
-}*/
 
 
 
