@@ -25,7 +25,7 @@ constructor(props) {
         Name: '',
         Description: '',
         Weight: 0,
-        Picture: '',
+        Picture: 'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2Fimages.png?alt=media&token=b27ac614-9f7a-4260-ac17-3e7c73af47bb',
         Portions: 0,
         Taken: false,
         Restaurant: '',
