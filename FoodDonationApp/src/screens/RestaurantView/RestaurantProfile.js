@@ -126,7 +126,7 @@ export default class RestaurantProfile extends Component {
         
         <MyHeader />
           <ScrollView>
-            <View style={[styles.card2, { backgroundColor: 'white' }]}>
+            <View style={[styles.card2]}>
            <Text style={styles.title}>Profile</Text>
            {
           (() => {
@@ -151,7 +151,7 @@ export default class RestaurantProfile extends Component {
               // console.log(this.state.uploadURL)
                 return (
                   <TouchableOpacity onPress={ () => this.selectImage() }>
-                  {/* {console.log(this.state.uploadURL)} */}
+                  
            <Image style={styles.avatar}
                   source={{uri: this.state.uploadURL}}/>
           </TouchableOpacity>
@@ -165,13 +165,13 @@ export default class RestaurantProfile extends Component {
               label={'First Name'}
               inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+              color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
                 color: 'slategrey',
-                borderWidth: 2,
-                borderColor: 'slategrey',
+                // borderWidth: 2,
+                // borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
               defaultValue={this.state.items.fname}
@@ -183,13 +183,13 @@ export default class RestaurantProfile extends Component {
               label={'Last Name'}
               inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+                color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
                 color: 'slategrey',
-                borderWidth: 2,
-                borderColor: 'slategrey',
+                // borderWidth: 2,
+                // borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
               defaultValue={this.state.items.lname}
@@ -201,13 +201,13 @@ export default class RestaurantProfile extends Component {
               label={'Organization Name'}
               inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+                color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
                 color: 'slategrey',
-                borderWidth: 2,
-                borderColor: 'slategrey',
+                // borderWidth: 2,
+                // borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
               defaultValue={this.state.items.orgname}
@@ -219,13 +219,13 @@ export default class RestaurantProfile extends Component {
               label={'Address'}
               inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+                color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
                 color: 'slategrey',
-                borderWidth: 2,
-                borderColor: 'slategrey',
+                // borderWidth: 2,
+                // borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
               defaultValue={this.state.items.address}
@@ -237,12 +237,12 @@ export default class RestaurantProfile extends Component {
               label={'Description'}
               inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+                color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
-                color: 'slategrey',
-                borderWidth: 2,
+                // color: 'slategrey',
+                // borderWidth: 2,
                 borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
@@ -255,13 +255,13 @@ export default class RestaurantProfile extends Component {
               label={'Email'}
              inputPadding={16}
               labelStyle={{
-              // color: 'white',
-              backgroundColor: '#eaeaea',
+                color: 'black',
+              backgroundColor: '#5BB26F',
               }}
               inputStyle={{
                 color: 'slategrey',
-                borderWidth: 2,
-                borderColor: 'slategrey',
+                // borderWidth: 2,
+                // borderColor: 'slategrey',
                 // backgroundColor: '#ededed',
               }}
               defaultValue={this.state.items.email}
@@ -276,7 +276,7 @@ export default class RestaurantProfile extends Component {
            
           </ScrollView>
           <View>
-            {/* <RestaurantFooterFooter navigation={this.props.navigation}/> */}
+            <RestaurantFooterFooter navigation={this.props.navigation}/>
           </View>
         </View>
     );
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     },
     card2: {
       padding: 0,
+      backgroundColor: '#6FDB88',
     },
     input: {
       marginTop: 2,
@@ -323,18 +324,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop: 15,
     },
-    inputContainer: {
-      borderBottomColor: '#0e8bce',
-      backgroundColor: '#FFFFFF',
-      borderRadius:5,
-      borderBottomWidth: 1,
-      width:'85%',
-      height:45,
-      marginBottom: 10,
-      flexDirection: 'row',
-      alignItems:'center',
-      justifyContent: 'center',
-  },
+    
   inputs:{
       height:45,
       marginLeft:16,
@@ -356,13 +346,16 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
     borderWidth: 4,
-    borderColor: "slategrey",
+    borderColor: "#5BB26F",
     marginBottom:10,
     alignSelf: 'center',
   },
   saveButton: {
     marginTop: 20,
-    backgroundColor: "slategrey",
+    width: '40%',
+    alignSelf: 'center',
+    backgroundColor: "#5BB26F",
+    borderRadius:10
   },
   saveText: {
     color: 'white',
