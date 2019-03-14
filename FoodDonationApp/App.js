@@ -8,8 +8,8 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Maps from './src/components/CharityComponents/Maps';
 import Browse from './src/screens/CharityView/Browse';
 import CharityProfile from './src/screens/CharityView/CharityProfile';
-import Discover from './src/screens/CharityView/Discover';
 import Orders from './src/screens/CharityView/Orders';
+import CharityHistory from './src/screens/CharityView/CharityHistory';
 import Login from './src/screens/Login';
 import SignUp from './src/components/SignUp';
 import RestaurantAddMeal from './src/components/RestaurantComponents/RestaurantAddMeal' ;
@@ -18,14 +18,15 @@ import RestaurantMyMeals from './src/screens/RestaurantView/RestaurantMyMeals' ;
 import RestaurantProfile from './src/screens/RestaurantView/RestaurantProfile' ;
 import RestaurantEditMeal from './src/components/RestaurantComponents/RestaurantEditMeal';
 import Loading from './src/components/Loading' ;
+import Splash from './src/screens/Splash' ;
 
 console.disableYellowBox = true;
 
 const AppNavigator = createStackNavigator(
   {
+    Splash,
     Maps,
     Browse,
-    Discover,
     Orders,
     SignUp,
     Login,
@@ -35,10 +36,11 @@ const AppNavigator = createStackNavigator(
     RestaurantProfile,
     CharityProfile,
     RestaurantEditMeal,
-    Loading
+    Loading,
+    CharityHistory
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: 'Splash'
   }
 );
 

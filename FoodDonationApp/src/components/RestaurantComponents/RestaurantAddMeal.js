@@ -96,7 +96,7 @@ constructor(props) {
 
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Weight"
+              placeholder="Weight per portion"
               keyboardType="number-pad"
               underlineColorAndroid='transparent'
               onChangeText={(Weight) => this.setState({Weight})}/>

@@ -37,8 +37,6 @@ class Maps extends Component {
         },
         resturantData: [],
         allRestaurantKeys: [],
-        foodData: [],
-        allItemsKeys: [],
         isModalVisible: false,
         currentPressedRestaurant: 0,
         currentPressedRestaurantsFood: [],
@@ -47,6 +45,9 @@ class Maps extends Component {
         food: {},
         restaurant: {},
     }
+    static navigationOptions = {
+      header: null,
+      };
 
     pickLocationHandler = event => {
       const coords = event.nativeEvent.coordinate;
@@ -90,9 +91,9 @@ class Maps extends Component {
         let newPortions = item['data'].Portions - value
         var foodListRef = Firebase.database().ref('FoodList/' + item['key'])
         foodListRef.update({Portions : newPortions})
-        console.log(Firebase.auth().currentUser.uid)
         this.addPartOfFood(item, value)
         this.loadFood()
+        this._toggleModal(0,0)
     }
 
     addPartOfFood = (item, value) => {
@@ -103,33 +104,15 @@ class Maps extends Component {
             Picture: item['data'].Picture,
             Portions: value,
             Taken: !item['data'].Taken,
-            Restaurant: Firebase.auth().currentUser.uid
+            Restaurant: item['data'].Restaurant,
+            Charity: Firebase.auth().currentUser.uid,
+            FromWhatOrder: item.key
         }).then((data) => {
             console.log('Success')
         }).catch((error) => {
             console.log('error', error)
         })
     }
-
-writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
-    firebase.database().ref('FoodList/').push({
-        Name,
-        Description,
-        Weight,
-        Picture,
-        Portions,
-        Taken,
-        Restaurant
-
-    }).then((data)=>{
-        this.props.navigation.navigate('RestaurantMyMeals')
-
-    }).catch((error)=>{
-        console.log('error' , error)
-    })
-   }
-
-
 
     checkIfRestaurantHaveFood = (index) => {
         let foodList = []
@@ -143,6 +126,7 @@ writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
     }
 
     async _toggleModal(modalRestData, index) {
+        await this.loadFood()
         let foods = await this.checkIfRestaurantHaveFood(index)
         this.setState({
           isModalVisible: !this.state.isModalVisible,
@@ -153,25 +137,22 @@ writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
     }
 
     async loadFood() {
-        let allFood = [];
-        let allItemsKeysTemp = []
         var food = {}
         var testFoodList = []
         await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
-                food = {
-                    data: childSnapshot.val(),
-                    key:  childSnapshot.key
+                let data = childSnapshot.val()
+
+                if(data.Portions > 0) {
+
+                    food = {
+                        data: childSnapshot.val(),
+                        key:  childSnapshot.key
+                    }
+                    testFoodList.push(food)
                 }
-                testFoodList.push(food)
-                var childKey = childSnapshot.key;
-                childData = childSnapshot.val();
-                allItemsKeysTemp.push(childKey)
-                allFood.push(childData);
             });
             this.setState ( {
-              foodData: allFood,
-              allItemsKeys: allItemsKeysTemp,
               food:testFoodList
             })
         }.bind(this));
@@ -331,7 +312,7 @@ writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
             resizeMode="cover"
           />
           <View style={styles.textContent}>
-            <Text numberOfLines={1} style={styles.cardtitle}>{marker.fname}</Text>
+            <Text numberOfLines={1} style={styles.cardtitle}>{marker.orgname}</Text>
             <Text numberOfLines={1} style={styles.cardDescription}>
               {marker.description}
             </Text>
@@ -365,30 +346,30 @@ writeFoodData(Name, Description, Weight, Picture, Portions, Taken, Restaurant) {
             animationOutTiming={1000}
             backdropTransitionInTiming={1000}
             backdropTransitionOutTiming={1000}>
-            <View style={styles.modalContent}>
-                <Text> {this.state.currentPressedRestaurant.fname} </Text>
-                <Text> {this.state.currentPressedRestaurant.lname} </Text>
-                <Text> {this.state.currentPressedRestaurant.description} </Text>
-                {this.state.currentPressedRestaurantsFood.map((marker, index) => (
-                <View style={styles.modalCard}>
-                    <Card style={styles.card} title={marker['data'].Name}>
-                        <Text style={styles.modalText}>{marker['data'].Description}</Text>
-                        <Text style={styles.modalText}>Total ammount of portions: {marker['data'].Portions}</Text>
-                        <Slider
-                            value={0}
-                            maximumValue={marker['data'].Portions}
-                            step={1}
-                            onValueChange={value => {this.setState({ value: value })}}
-                            />
-                        <Text>Portions: {this.state.value}</Text>
-                        <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker, this.state.value)}/>
-                    </Card>
-                    </View>
-                ))}
-                <Button title="Hide Modal" onPress={() => this._toggleModal(0, 0)} type="outline"
-                style={backgroundColor= "#000000"}/>
-
-            </View>
+            <ScrollView>
+                <View style={styles.modalContent}>
+                    <Text> {this.state.currentPressedRestaurant.orgname} </Text>
+                    <Text> {this.state.currentPressedRestaurant.description} </Text>
+                    {this.state.currentPressedRestaurantsFood.map((marker, index) => (
+                    <View>
+                        <Card style={styles.modalcard} title={marker['data'].Name}>
+                            <Text style={styles.modalText}>{marker['data'].Description}</Text>
+                            <Text style={styles.modalText}>Total ammount of portions: {marker['data'].Portions}</Text>
+                            <Slider
+                                value={0}
+                                maximumValue={marker['data'].Portions}
+                                step={1}
+                                onValueChange={value => {this.setState({ value: value })}}
+                                />
+                            <Text>Portions: {this.state.value}</Text>
+                            <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker, this.state.value)}/>
+                        </Card>
+                        </View>
+                    ))}
+                    <Button title="Hide Modal" onPress={() => this._toggleModal(0, 0)} type="outline"
+                    buttonStyle={backgroundColor= "#000000"}/>
+                </View>
+            </ScrollView>
         </Modal>
 
 
@@ -452,7 +433,7 @@ const styles = StyleSheet.create({
 
     card: {
         flex:1,
-        padding: 10,
+        padding: 3,
         elevation: 2,
         backgroundColor: "#FFF",
         marginHorizontal: 10,
@@ -505,20 +486,20 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         backgroundColor: "rgba(230, 245, 223, 1)",
-        padding: 22,
+        padding: 2,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 4,
         borderColor: "rgba(0, 0, 0, 0.1)",
     },
     modalCard: {
-        padding: 10,
+        padding: 5,
         //elevation: 2,
-        marginHorizontal: 10,
+        marginHorizontal: 13,
         height: cardHeight,
         width: cardWidth,
         overflow: "hidden",
-        borderRadius: 10,
+        borderRadius: 5,
     },
     modalText: {
         fontSize: 14,
