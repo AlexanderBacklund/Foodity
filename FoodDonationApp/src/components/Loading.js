@@ -4,6 +4,9 @@ import firebase from 'firebase'
 import RestaurantMyMeals from './../screens/RestaurantView/RestaurantMyMeals'
 
 export default class Loading extends React.Component {
+  static navigationOptions = {
+    header: null,
+    };
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
           var myUid = firebase.auth().currentUser.uid;
@@ -16,7 +19,7 @@ export default class Loading extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Loading</Text>
+        <Text style={styles.loadingText}>Loading</Text>
         <ActivityIndicator size="large" />
       </View>
     )
@@ -27,5 +30,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#6FDB88',
+  },
+  loadingText: {
+    fontSize: 20,
+    fontWeight: '500'
   }
+
 })
