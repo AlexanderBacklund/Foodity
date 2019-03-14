@@ -169,7 +169,7 @@ class Maps extends Component {
             })
         }.bind(this));
     }
-
+    // No longer needed
     getImage = (key) => {
         var user = key
         var imageRefTmp = ""
@@ -196,11 +196,11 @@ class Maps extends Component {
                     //     console.log(url)
                     // })
                     var key = childSnapshot.key
-                    var urlTmp = this.getImage(key);
+                    // var urlTmp = this.getImage(key);
                     restaurantTemp = {
                         data: childSnapshot.val(),
                         key: childSnapshot.key,
-                        urlDB: urlTmp
+                        // urlDB: urlTmp
                     }
                     listRestaurant.push(restaurantTemp)
                     var childKey = childSnapshot.key;
@@ -342,7 +342,8 @@ class Maps extends Component {
       {this.state.restaurant.map((marker, index) => (
         <View style={styles.card} key={index} onPress>
           <Image
-            source={{uri: marker.url}} //marker['data'].image}
+            // Added firebase download url with key embedded into it. This gets the image belonging to the specified restaurant  
+           source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2F"+marker.key+"?alt=media"}} //marker['data'].image}
             style={styles.cardImage}
             resizeMode="cover"
           />
