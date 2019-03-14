@@ -43,7 +43,7 @@ class Maps extends Component {
         value: 0,
         slideValue: 0,
         food: {},
-        restaurant: {},
+        restaurant: [],
     }
     static navigationOptions = {
       header: null,
@@ -127,12 +127,18 @@ class Maps extends Component {
 
     async _toggleModal(modalRestData, index) {
         await this.loadFood()
+        let restaurantData = 0
+        if (modalRestData != 0) {
+            restaurantData = modalRestData['data']
+        } else {
+            restaurantData = 0
+        }
         let foods = await this.checkIfRestaurantHaveFood(index)
         this.setState({
-          isModalVisible: !this.state.isModalVisible,
-          currentPressedRestaurant: modalRestData,
-          currentPressedRestaurantsFood: foods,
-          value: 0
+            isModalVisible: !this.state.isModalVisible,
+            currentPressedRestaurant: restaurantData,
+            currentPressedRestaurantsFood: foods,
+            value: 0
         })
     }
 
@@ -304,17 +310,19 @@ class Maps extends Component {
       style={styles.scrollView}
       contentContainerStyle={styles.endPadding}
     >
-      {this.state.resturantData.map((marker, index) => (
+      {this.state.restaurant.map((marker, index) => (
+
         <View style={styles.card} key={index} onPress>
           <Image
-            source={marker.image}
+            source={marker['data'].image}
             style={styles.cardImage}
             resizeMode="cover"
           />
           <View style={styles.textContent}>
-            <Text numberOfLines={1} style={styles.cardtitle}>{marker.orgname}</Text>
+            {console.log(marker)}
+            <Text numberOfLines={1} style={styles.cardtitle}>{marker['data'].orgname}</Text>
             <Text numberOfLines={1} style={styles.cardDescription}>
-              {marker.description}
+              {marker['data'].description}
             </Text>
           </View>
 
