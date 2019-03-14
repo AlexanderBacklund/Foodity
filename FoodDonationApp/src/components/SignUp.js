@@ -51,10 +51,12 @@ export default class Signup extends React.Component {
   }
   
     signUpHandler = () => {
+      // Check if any field empty
       if(this.state.fname == '' || this.state.lname == '' || this.state.orgname == '' || this.state.address == '' || this.state.description == ''
       || this.state.email == '' || this.state.password == ''){
         this.setState({ errorMessage: "All fields are required to be filled out!" })
       }
+      //  check if latitude and longitude set. If not, return request to get specific address.
       else if(this.state.lat == '' || this.state.lng == '') {
         this.setState({ errorMessage: "Please be more specific on the address" })
       } else {
