@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight,RefreshControl} from 'react-native';
+import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight,RefreshControl, ImageBackground} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 import Modal from "react-native-modal";
@@ -36,6 +36,7 @@ export default class Browse extends Component {
         fetchData().then(()=>{
             this.setState({refreshing:false})
         });
+        this.loadFood()
     }
 
     async componentWillMount() {
@@ -178,26 +179,18 @@ export default class Browse extends Component {
             return this.state.ItemsWithCoordinates.map(function(food, i){
             return(
                 <View style={{flex:1}} key={i} >
-                    <View style={styles.test}>
-                        <Image
-                        // img https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2FTeOG3anY7ZM0WrOQiGtYY0euIpX2?alt=media&token=fa056ca1-5546-4dba-9e95-35bf866b2a81
-                        // mea https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2F-L_hf89cl8TObShax63a?alt=media&token=3241115a-d6ab-42d4-991a-d041d2cf1373
+                    <View style={styles.imageContainer}>
+                        <ImageBackground
                         source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2F"+food.key+"?alt=media&token=3241115a-d6ab-42d4-991a-d041d2cf1373"}}
-                        //style={styles.cardImage}
-                        style={{
-                            flex: 1,
-                            alignSelf: 'stretch',
-                            width: undefined,
-                            height: undefined
-                        }}
-                        //resizeMode="cover"
-                        />
-                    </View>
-                    <View style={{ flex: 1, backgroundColor: 'rgba(54, 54, 54, 0.5)' }}>
-                        <Text style={styles.titleText}>{food['data'].Name}</Text>
-                        <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
-                        <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
-                        <Button title="Book" type="solid" onPress={() => this._handleBookFood(food)} />
+                        style={styles.cardImage}
+                        >
+                        <View style={styles.textContainer}>
+                            <Text style={styles.titleText}>{food['data'].Name}</Text>
+                            <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
+                            <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
+                            <Button title="Book" type="clear" titleStyle={{color:"#6FDB88"}} onPress={() => this._handleBookFood(food)} />
+                        </View>
+                    </ImageBackground>
                     </View>
 
                 </View>
@@ -214,9 +207,15 @@ export default class Browse extends Component {
     return (
      <View style={styles.container}>
         <ScrollView style={{flex:1}}
+            RefreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    _onRefresh={this._onRefresh}
+                />
+            }
         >
 
-         {this.myFood()}
+            {this.myFood()}
         </ScrollView>
 
         <View>
@@ -237,7 +236,7 @@ const styles = StyleSheet.create({
     },
     Text: {
         fontSize: 14,
-        color: "#444",
+        color: "#ffffff",
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
@@ -258,8 +257,9 @@ const styles = StyleSheet.create({
         paddingBottom: 7,
     },
     cardImage: {
-        flex: 3,
-        //width: "100%",
+        flex: 1,
+        alignSelf: 'stretch',
+        width: width,
         //height: "100%",
         //alignSelf: "center",
     },
@@ -269,16 +269,21 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
 
-    test: {
+    imageContainer: {
       marginTop:10,
       width: width,
-      height: 100,
-      borderRadius: 10,
-      borderWidth: 2,
-      borderColor: "#e2e2e2",
-      marginBottom:10,
+      height: 250,
+//      marginBottom:10,
       alignSelf: 'center',
-      overflow: 'hidden',
+//      overflow: 'hidden',
 
     },
+
+    textContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(54, 54, 54, 0.4)',
+        width:width,
+        position: 'absolute',
+        bottom: 0
+    }
 });

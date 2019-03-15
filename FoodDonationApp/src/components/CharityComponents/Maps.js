@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {ImageBackground, Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 import Modal from "react-native-modal";
@@ -335,21 +335,34 @@ class Maps extends Component {
                     <Text> {this.state.currentPressedRestaurant.orgname} </Text>
                     <Text> {this.state.currentPressedRestaurant.description} </Text>
                     {this.state.currentPressedRestaurantsFood.map((marker, index) => (
-                    <View>
-                        <Card style={styles.modalcard} title={marker['data'].Name}>
-                            <Text style={styles.modalText}>{marker['data'].Description}</Text>
-                            <Text style={styles.modalText}>Total ammount of portions: {marker['data'].Portions}</Text>
-                            <Slider
+                    <View style={{flex:1}}>
+                        <View style={styles.imageContainer}>
+                            <ImageBackground
+                            source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2F"+marker.key+"?alt=media&token=3241115a-d6ab-42d4-991a-d041d2cf1373"}}
+                            style={styles.cardImage}
+                            >
+                                <View style={styles.textContainer}>
+
+                                    <Text style={styles.modalTitle}> {marker['data'].Name} </Text>
+                                    <Text style={styles.modalText}>{marker['data'].Description}</Text>
+                                    <Text style={styles.modalText}>Total ammount of portions: {marker['data'].Portions}</Text>
+
+                                    <Text style={styles.modalText}>Portions: {this.state.value}</Text>
+                                <Slider
+                                style={{width: 300, justifyContent: 'center', textAlign: 'center',marginLeft: 50}}
                                 value={0}
                                 maximumValue={marker['data'].Portions}
                                 step={1}
                                 onValueChange={value => {this.setState({ value: value })}}
                                 />
-                            <Text>Portions: {this.state.value}</Text>
-                            <Button raised title="Book" type="outline" onPress={() => this._handleModalPress(marker, this.state.value)}/>
-                        </Card>
+                                <Button title="Book" type="clear" titleStyle={{color:"#6FDB88"}} onPress={() => this._handleModalPress(marker, this.state.value)}/>
+                                </View>
+                            </ImageBackground>
                         </View>
+                    </View>
                     ))}
+
+
                     <Button title="Hide Modal" onPress={() => this._toggleModal(0, 0)} type="outline"
                     buttonStyle={backgroundColor= "#000000"}/>
                 </View>
@@ -467,7 +480,7 @@ const styles = StyleSheet.create({
     },
 
     modalContent: {
-        backgroundColor: "rgba(230, 245, 223, 1)",
+        backgroundColor: "rgba(205, 205, 205, 1)",
         padding: 2,
         justifyContent: "center",
         alignItems: "center",
@@ -486,11 +499,35 @@ const styles = StyleSheet.create({
 
     modalText: {
         fontSize: 14,
-        color: "#444",
+        color: "#ffffff",
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
-    }
+    },
+    imageContainer: {
+      marginTop:10,
+      width: width,
+      height: 300,
+//      marginBottom:10,
+      alignSelf: 'center',
+//      overflow: 'hidden',
+
+    },
+
+    textContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(54, 54, 54, 0.4)',
+        width:width,
+        position: 'absolute',
+        bottom: 0
+    },
+    modalTitle: {
+        fontSize: 24,
+        color: "#ffffff",
+        justifyContent: 'center',
+        textAlign: 'center',
+        paddingBottom: 7,
+    },
 });
 
 export default Maps;
