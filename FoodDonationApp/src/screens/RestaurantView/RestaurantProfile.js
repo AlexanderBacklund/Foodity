@@ -51,11 +51,13 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
 }
 
 export default class RestaurantProfile extends Component {
-  
-  
+  static navigationOptions = {
+    header: null,
+    };
+
   state = {uploadURL:'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2Fdefault.jpg?alt=media&token=b662115c-e3f7-438b-beab-715463f3d7a9',
   currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
-  
+
 
   selectImage() {
     this.setState({ uploadURL: '' })
@@ -79,7 +81,7 @@ export default class RestaurantProfile extends Component {
     })
   }
   writeUserData = () => {
-    // console.log("this.state.items");   
+    // console.log("this.state.items");
   console.log(this.state.items);
   console.log(this.state.currentData);
     var user = firebase.auth().currentUser;
@@ -106,7 +108,7 @@ export default class RestaurantProfile extends Component {
           .then(json => {
               var lat = json.results[0].geometry.location.lat;
               var lng = json.results[0].geometry.location.lng;
-              
+
               this.setState({currentData: {...this.state.currentData, lat: lat}});
               this.setState({currentData: {...this.state.currentData, lng: lng}});
               // Check if lat or lng not set correctly, then reset to old value
@@ -120,9 +122,9 @@ export default class RestaurantProfile extends Component {
         }
   render() {
     return (
-      
+
       <View style={styles.container}>
-        
+
         <MyHeader />
           <ScrollView>
             <View style={[styles.card2]}>
@@ -146,12 +148,13 @@ export default class RestaurantProfile extends Component {
                 // this.setState({ uploadURL: 'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2Fdefault.jpg?alt=media&token=b662115c-e3f7-438b-beab-715463f3d7a9' })
             });
             // console.log(imageUrl)
-              // 
+              //
               // console.log(this.state.uploadURL)
                 return (
-                  <TouchableOpacity onPress={ () => this.selectImage() }>
-                  
+                  <TouchableOpacity onPress={ () => this.selectImage() } style={styles.avatarContainer}>
+
            <Image style={styles.avatar}
+           resizeMode="stretch"
                   source={{uri: this.state.uploadURL}}/>
           </TouchableOpacity>
                 )
@@ -266,13 +269,13 @@ export default class RestaurantProfile extends Component {
               defaultValue={this.state.items.email}
               onChangeText={(email) => this.setState({currentData: {...this.state.currentData, email: email}})}
               />
-            
-           
+
+
            <TouchableHighlight style={[styles.buttonContainer, styles.saveButton]} onPress={this.writeUserData}>
               <Text style={styles.saveText}>Save</Text>
             </TouchableHighlight>
          </View>
-           
+
           </ScrollView>
         </View>
     );
@@ -320,7 +323,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginTop: 15,
     },
-    
+
   inputs:{
       height:45,
       marginLeft:16,
@@ -337,14 +340,21 @@ const styles = StyleSheet.create({
     borderRadius:5,
   //   marginLeft:'20%',
   },
-  avatar: {
+  avatarContainer: {
+    marginTop:10,
     width: 150,
     height: 150,
     borderRadius: 10,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: "#5BB26F",
     marginBottom:10,
     alignSelf: 'center',
+    overflow: 'hidden',
+    // resizeMode: 'contain',
+  },
+  avatar: {
+    width: 150,
+    height: 150,
   },
   saveButton: {
     marginTop: 20,

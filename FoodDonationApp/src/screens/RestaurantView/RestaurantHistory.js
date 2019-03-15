@@ -7,6 +7,9 @@ import {List, ListItem, ListView, Card} from 'react-native-elements';
 
 
 export default class RestaurantHistory extends Component {
+    static navigationOptions = {
+        header: null,
+        };
     constructor(props) {
         super(props);
         this.state = {
