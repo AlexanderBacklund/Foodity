@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
-import MyFooter from './../../components/CharityComponents/MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 import {List, ListItem, ListView, Card, Button} from 'react-native-elements';
 
@@ -109,7 +108,6 @@ export default class Orders extends Component {
          {this.myFood()}
 
         </ScrollView>
-        <MyFooter navigation={this.props.navigation}/>
     </View>
     );
   }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight } from 'react-native';
-import CharityFooter from './../../components/CharityComponents/MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 import Geocoder from 'react-native-geocoding';
 
@@ -153,9 +152,6 @@ export default class RestaurantProfile extends Component {
               </TouchableHighlight>
             </View>
           </ScrollView>
-        </View>
-        <View>
-          <CharityFooter navigation={this.props.navigation}/>
         </View>
       </View>
     );

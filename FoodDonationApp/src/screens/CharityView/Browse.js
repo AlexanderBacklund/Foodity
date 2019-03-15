@@ -3,7 +3,6 @@ import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimension
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 import Modal from "react-native-modal";
-import MyFooter from './../../components/CharityComponents/MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 
  const {width, height} = Dimensions.get("window");
@@ -217,10 +216,6 @@ export default class Browse extends Component {
 
             {this.myFood()}
         </ScrollView>
-
-        <View>
-          <MyFooter navigation={this.props.navigation}/>
-        </View>
       </View>
     );
   }

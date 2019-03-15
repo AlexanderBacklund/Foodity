@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet, TextInput, TouchableHighlight,Image, TouchableOpacity,
   ActivityIndicator } from 'react-native';
-import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
 import { Avatar } from 'react-native-elements';
 import MyHeader from './../../components/MyHeader';
 import firebase from './../../config/FirebaseConfig';
@@ -278,9 +277,6 @@ export default class RestaurantProfile extends Component {
          </View>
 
           </ScrollView>
-          <View>
-            <RestaurantFooterFooter navigation={this.props.navigation}/>
-          </View>
         </View>
     );
   }

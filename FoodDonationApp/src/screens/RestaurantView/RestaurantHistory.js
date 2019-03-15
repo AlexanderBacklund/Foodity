@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {ScrollView, View, Text, StyleSheet } from 'react-native';
-import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
 import MyHeader from './../../components/MyHeader';
 import firebase from 'firebase';
 import {List, ListItem, ListView, Card} from 'react-native-elements';
@@ -75,9 +74,6 @@ export default class RestaurantHistory extends Component {
           <ScrollView >
              {this.myFood()}
           </ScrollView>
-          <View>
-             <RestaurantFooterFooter navigation={this.props.navigation}/>
-          </View>
       </View>
     );
   }

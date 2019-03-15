@@ -10,6 +10,7 @@ export default class Loading extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
           var myUid = firebase.auth().currentUser.uid;
+          
           firebase.database().ref('UsersList/' + myUid).once('value').then(function(snapshot){
                 this.props.navigation.navigate((snapshot.val().typeOfUser === 'Charity') ? 'Maps' : 'RestaurantMyMeals')
               }.bind(this));

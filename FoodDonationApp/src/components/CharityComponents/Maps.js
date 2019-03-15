@@ -3,7 +3,6 @@ import {ImageBackground, Platform, StyleSheet, Text, View, ScrollView, Animated,
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
 import Modal from "react-native-modal";
-import MyFooter from './MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 
   const {width, height} = Dimensions.get("window");
@@ -370,7 +369,6 @@ class Maps extends Component {
         </Modal>
 
 
-    <MyFooter navigation={this.props.navigation} />
       </View>
       );
     }

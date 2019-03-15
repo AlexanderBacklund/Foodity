@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import {Button, ScrollView, View, Text, StyleSheet, RefreshControl, TouchableOpacity, Image} from 'react-native';
-import MyHeader from './../../components/MyHeader';
-import RestaurantAddMeal from './../../components/RestaurantComponents/RestaurantAddMeal';
+import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
+import MyHeader from './MyHeader';
+import RestaurantAddMeal from './RestaurantAddMeal';
 import firebase from 'firebase';
 import {List, ListItem, ListView, Card} from 'react-native-elements';
 
 
 export default class RestaurantMyMeals extends Component {
-    static navigationOptions = {
-        header: null,
-        };
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +14,6 @@ export default class RestaurantMyMeals extends Component {
             refreshing: false,
         }
         this.myFood = this.myFood.bind(this);
-
 
 
 }
@@ -37,10 +33,7 @@ export default class RestaurantMyMeals extends Component {
             snapshot.forEach(function(childSnapshot){
 
                var validItem = (childSnapshot.val().Restaurant === myUid)
-               var data = {
-                   data : childSnapshot.val(),
-                   key :childSnapshot.key
-               }
+               var data = childSnapshot.val()
                {validItem ? (
                   tempList.push(data)
                   //this.state.ListOfFood.push(data)
@@ -51,6 +44,7 @@ export default class RestaurantMyMeals extends Component {
             }.bind(this));
 
             this.setState({ListOfFood: tempList});
+            console.log(this.state.ListOfFood);
             this.forceUpdate();
          }.bind(this))
 
@@ -62,34 +56,28 @@ export default class RestaurantMyMeals extends Component {
 
     myFood() {
         return this.state.ListOfFood.map(function(food, i){
-            if(food.data.Picture == ""){
-                food.data.Picture = "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2Fimages.png?alt=media&token=b27ac614-9f7a-4260-ac17-3e7c73af47bb";
-            }
-            return(
+        return(
 
             <Card
-                title={food.data.Name}
+                title={food.Name}
                 >
-                <TouchableOpacity  style={styles.avatarContainer}>
-
-                  <Image
-                  style={styles.avatar}
-                  resizeMode="stretch"
-                         source={{uri: food.data.Picture}}/>
-                 </TouchableOpacity>
-                <Text>{food.data.Description}</Text>
+                <Text>{food.Description}</Text>
                 <Button
                 title="Edit"
-                onPress={() => {this.props.navigation.navigate('RestaurantEditMeal', {food}) }}
                 >
                 </Button>
 
 
 
             </Card>
-
+          /*<View key={i}>
+            <Text>{food.Name}</Text>
+            <View>
+              <Text>{food.Weight}</Text>
+            </View>
+          </View>*/
         );
-      }.bind(this));
+      });
     }
 
 
@@ -104,7 +92,7 @@ export default class RestaurantMyMeals extends Component {
      <View style={styles.container}>
       <MyHeader />
       <Button
-         title = 'Add meal'
+         title = 'Add new food'
          onPress={() => {this.props.navigation.navigate('RestaurantAddMeal') }}
          >
       </Button>
@@ -131,27 +119,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ebebeb'
-  },
-  avatarContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#e2e2e2",
-    marginBottom:10,
-    alignSelf: 'center',
-    overflow: 'hidden',
-    // resizeMode: 'contain',
-  },
-  avatar: {
-    width: 150,
-    height: 150,
-    // borderRadius: 10,
-    // borderWidth: 2,
-    // borderColor: "#5BB26F",
-    // marginBottom:10,
-    // alignSelf: 'center',
-    // overflow: 'hidden',
-    // resizeMode: 'contain',
   }
 });

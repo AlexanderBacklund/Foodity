@@ -3,7 +3,8 @@ import {Platform, StyleSheet, Text, View, Button, ScrollView, Animated, Image, D
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import {PermissionsAndroid} from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+import {createStackNavigator, createAppContainer, createBottomTabNavigator, TabBarBottom, createSwitchNavigator, createMaterialBottomTabNavigator} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Maps from './src/components/CharityComponents/Maps';
 import Browse from './src/screens/CharityView/Browse';
@@ -21,34 +22,103 @@ import Splash from './src/screens/Splash' ;
 
 console.disableYellowBox = true;
 
-const AppNavigator = createStackNavigator(
+const CharityTabNavigator = createBottomTabNavigator({
+  Maps: {screen: Maps,
+      navigationOptions: {
+        tabBarLabel: 'Discover',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'globe'} size={25} color={tintColor} />
+        }
+      },
+  Browse: {screen: Browse,
+      navigationOptions: {
+        tabBarLabel: 'Browse',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'bars'} size={25} color={tintColor} />
+        }
+      },
+  Orders: {screen: Orders,
+      navigationOptions: {
+        tabBarLabel: 'Orders',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'cutlery'} size={25} color={tintColor} />
+        }
+      },
+  Profile: {screen: CharityProfile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'user'} size={25} color={tintColor} />
+        }
+      }
+  },
   {
-    Splash,
-    Maps,
-    Browse,
-    Orders,
-    SignUp,
-    Login,
-    RestaurantAddMeal,
-    RestaurantHistory,
-    RestaurantMyMeals,
-    RestaurantProfile,
-    CharityProfile,
-    RestaurantEditMeal,
-    Loading,
+
+    initialRouteName: 'Browse',
+    swipeEnabled: true,
+    animationEnabled: true,
+    tabBarOptions: {
+      activeTintColor: '#448E55',
+      inactiveTintColor: '#848987',
+      activeBackgroundColor: 'white',
+      inactiveBackgroundColor: 'white',
+    },
+  });
+
+const RestaurantTabNavigator = createBottomTabNavigator({
+  RestaurantMyMeals: {screen: RestaurantMyMeals,
+      navigationOptions: {
+        tabBarLabel: 'My Meals',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'cutlery'} size={25} color={tintColor} />
+        }
+      },
+  RestaurantHistory: {screen: RestaurantHistory,
+      navigationOptions: {
+        tabBarLabel: 'History',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'history'} size={25} color={tintColor} />
+        }
+      },
+  RestaurantProfile: {screen: RestaurantProfile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon:({focused, tintColor}) => <Icon name={'user'} size={25} color={tintColor} />
+        }
+      }
+  },
+  {
+    initialRouteName: 'RestaurantMyMeals',
+    swipeEnabled: true,
+    animationEnabled: true,
+    tabBarOptions: {
+      activeTintColor: '#448E55',
+      inactiveTintColor: '#848987',
+      activeBackgroundColor: 'white',
+      inactiveBackgroundColor: 'white',
+    },
+  });
+
+const AuthStack = createStackNavigator({
+  Login: Login,
+  SignUp: SignUp,
+  Loading: Loading,
+  Splash: Splash
   },
   {
     initialRouteName: 'Splash'
-  }
-);
+  });
 
-const AppContainer = createAppContainer(AppNavigator);
+
+const AppContainer = createAppContainer(createSwitchNavigator({
+  Restaurant: RestaurantTabNavigator,
+  Charity: CharityTabNavigator,
+  auth: AuthStack},
+  {
+    initialRouteName: 'auth'
+  }));
 
 export default class App extends React.Component {
   render() {
     return <AppContainer/>;
   }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
