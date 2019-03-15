@@ -2,23 +2,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, ScrollView, Animated, Image, Dimensions, TouchableOpacity, TouchableHighlight} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import { Button, Card, Slider } from 'react-native-elements';
-//import firebase from 'firebase';
 import Modal from "react-native-modal";
 import MyFooter from './MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 
-const images = [
-    {uri: "https://icase.azureedge.net/imagevaultfiles/id_124661/cf_259/blomkalsris-med-solrosfron-719531-liten.jpg"},
-    {uri: "https://icase.azureedge.net/imagevaultfiles/id_131896/cf_259/amaranth-romsas-720001-liten.jpg"},
-    {uri: "https://icase.azureedge.net/imagevaultfiles/id_109160/cf_259/kramig-soppa-med-broccoli-palsternacka-och-adelost.png"},
-    {uri: "https://icase.azureedge.net/imagevaultfiles/id_86557/cf_259/jultallrik-med-sill-717057.png"}
-  ]
-
   const {width, height} = Dimensions.get("window");
-
   const cardHeight = height / 3.5;
   const cardWidth = width - 50;
-
 
 class Maps extends Component {
     constructor() {
@@ -46,11 +36,9 @@ class Maps extends Component {
         slideValue: 0,
         food: {},
         restaurant: [],
-        currentImage: "",
-        uri: "",
     }
-    this.getImage = this.getImage.bind(this)
 }
+
     static navigationOptions = {
       header: null,
       };
@@ -73,7 +61,6 @@ class Maps extends Component {
         };
       });
     }
-
 
     getLocationHandler = () => {
       navigator.geolocation.getCurrentPosition(pos => {
@@ -154,9 +141,7 @@ class Maps extends Component {
         await Firebase.database().ref('FoodList/').once('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
                 let data = childSnapshot.val()
-
                 if(data.Portions > 0) {
-
                     food = {
                         data: childSnapshot.val(),
                         key:  childSnapshot.key
@@ -169,18 +154,6 @@ class Maps extends Component {
             })
         }.bind(this));
     }
-    // No longer needed
-    getImage = (key) => {
-        var user = key
-        var imageRefTmp = ""
-        const imageRef = Firebase.storage().ref('images').child(`${user}`).getDownloadURL().then((url) => {
-            console.log(url)
-            imageRefTmp = url
-            return(url)
-        })
-        console.log(imageRef)
-        return (imageRefTmp)
-    }
 
     async loadRestaurants() {
         await Firebase.database().ref('UsersList/').once('value', function(snapshot) {
@@ -190,17 +163,10 @@ class Maps extends Component {
             let allRestaurantKeysTemp = []
             snapshot.forEach(function(childSnapshot) {
                 if (childSnapshot.val().typeOfUser === 'Restaurant'){
-                    // var urlTmp = ""
-                    // var imageRef = Firebase.storage().ref('images').child(`${childSnapshot.key}`).getDownloadURL().then((url) => {
-                    //     urlTmp = url
-                    //     console.log(url)
-                    // })
                     var key = childSnapshot.key
-                    // var urlTmp = this.getImage(key);
                     restaurantTemp = {
                         data: childSnapshot.val(),
                         key: childSnapshot.key,
-                        // urlDB: urlTmp
                     }
                     listRestaurant.push(restaurantTemp)
                     var childKey = childSnapshot.key;
@@ -217,15 +183,12 @@ class Maps extends Component {
         }.bind(this))
     }
 
-
-
     async componentWillMount() {
         this.index = 0;
         this.animation = new Animated.Value(0);
 
         await this.loadFood();
         await this.loadRestaurants();
-        console.log(this.state.restaurant   )
     }
 
     componentDidMount() {
@@ -233,14 +196,12 @@ class Maps extends Component {
     // We should just debounce the event listener here
     this.animation.addListener(({ value }) => {
       let index = Math.floor(value / cardWidth + 0.3); // animate 30% away from landing on the next item
-
       if (index >= this.state.resturantData.length) {
         index = this.state.resturantData.length - 1;
       }
       if (index <= 0) {
         index = 0;
       }
-
       clearTimeout(this.regionTimeout);
       this.regionTimeout = setTimeout(() => {
         if (this.index !== index) {
@@ -258,14 +219,10 @@ class Maps extends Component {
         }
       }, 10);
     });
-
   }
 
     render() {
-
-
       let marker = null;
-
       if (this.state.locationChosen) {
         marker = <MapView.Marker coordinate={this.state.focusLocation} />
       }
@@ -296,7 +253,6 @@ class Maps extends Component {
          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
          style={styles.map}
          initialRegion={this.state.focusLocation}
-         //region={this.state.focusLocation}
          onPress={this.pickLocationHandler}
          ref={ref => this.map = ref}
         >
@@ -304,20 +260,15 @@ class Maps extends Component {
         {this.state.resturantData.map((marker, index) => {
           return (
             <MapView.Marker key={index} coordinate={{latitude: marker.lat, longitude: marker.lng}}>
-
-
-            <Animated.View style={styles.markerWrap}>
-              <View >
-              <Image source={require('./../../../images/FoodityIcon2.png')} style={{width: 50, height: 50}}/>
-              </View>
-            </Animated.View>
-
+                <Animated.View style={styles.markerWrap}>
+                    <View >
+                    <Image source={require('./../../../images/FoodityIcon2.png')} style={{width: 50, height: 50}}/>
+                    </View>
+                </Animated.View>
             </MapView.Marker>
           )
         })}
-
-
-       </MapView>
+        </MapView>
 
        <Animated.ScrollView
       horizontal
@@ -342,8 +293,8 @@ class Maps extends Component {
       {this.state.restaurant.map((marker, index) => (
         <View style={styles.card} key={index} onPress>
           <Image
-            // Added firebase download url with key embedded into it. This gets the image belonging to the specified restaurant  
-           source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2F"+marker.key+"?alt=media"}} //marker['data'].image}
+            // Added firebase download url with key embedded into it. This gets the image belonging to the specified restaurant
+           source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2F"+marker.key+"?alt=media"}}
             style={styles.cardImage}
             resizeMode="cover"
           />
@@ -360,9 +311,6 @@ class Maps extends Component {
             >
               <Text>More info</Text>
             </TouchableOpacity>
-
-
-
         </View>
       ))}
     </Animated.ScrollView>
@@ -411,10 +359,6 @@ class Maps extends Component {
 
     <MyFooter navigation={this.props.navigation} />
       </View>
-
-
-
-
       );
     }
   }
@@ -482,6 +426,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 10,
     },
+
     cardImage: {
         flex: 3,
         width: "100%",
@@ -520,6 +465,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+
     modalContent: {
         backgroundColor: "rgba(230, 245, 223, 1)",
         padding: 2,
@@ -528,23 +474,23 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderColor: "rgba(0, 0, 0, 0.1)",
     },
+
     modalCard: {
         padding: 5,
-        //elevation: 2,
         marginHorizontal: 13,
         height: cardHeight,
         width: cardWidth,
         overflow: "hidden",
         borderRadius: 5,
     },
+
     modalText: {
         fontSize: 14,
         color: "#444",
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
-
     }
 });
 
-      export default Maps;
+export default Maps;
