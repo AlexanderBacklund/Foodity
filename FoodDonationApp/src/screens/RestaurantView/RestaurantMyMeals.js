@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, ScrollView, View, Text, StyleSheet, RefreshControl } from 'react-native';
+import {Button, ScrollView, View, Text, StyleSheet, RefreshControl, TouchableOpacity, Image } from 'react-native';
 import RestaurantFooterFooter from './../../components/RestaurantComponents/RestaurantFooter';
 import MyHeader from './../../components/MyHeader';
 import RestaurantAddMeal from './../../components/RestaurantComponents/RestaurantAddMeal';
@@ -60,11 +60,21 @@ export default class RestaurantMyMeals extends Component {
 
     myFood() {
         return this.state.ListOfFood.map(function(food, i){
-        return(
-
+            if(food.data.Picture == ""){
+                food.data.Picture = "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2Fimages.png?alt=media&token=b27ac614-9f7a-4260-ac17-3e7c73af47bb";
+            }
+            return(
+            
             <Card
                 title={food.data.Name}
                 >
+                <TouchableOpacity  style={styles.avatarContainer}>
+                  
+                  <Image
+                  style={styles.avatar}
+                  resizeMode="stretch"
+                         source={{uri: food.data.Picture}}/>
+                 </TouchableOpacity>
                 <Text>{food.data.Description}</Text>
                 <Button
                 title="Edit"
@@ -123,5 +133,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ebebeb'
+  },
+  avatarContainer: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#e2e2e2",
+    marginBottom:10,
+    alignSelf: 'center',
+    overflow: 'hidden',
+    // resizeMode: 'contain',
+  },
+  avatar: {
+    width: 150,
+    height: 150,
+    // borderRadius: 10,
+    // borderWidth: 2,
+    // borderColor: "#5BB26F",
+    // marginBottom:10,
+    // alignSelf: 'center',
+    // overflow: 'hidden',
+    // resizeMode: 'contain',
   }
 });

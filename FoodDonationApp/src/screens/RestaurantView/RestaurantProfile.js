@@ -150,9 +150,10 @@ export default class RestaurantProfile extends Component {
               //
               // console.log(this.state.uploadURL)
                 return (
-                  <TouchableOpacity onPress={ () => this.selectImage() }>
+                  <TouchableOpacity onPress={ () => this.selectImage() } style={styles.avatarContainer}>
 
            <Image style={styles.avatar}
+           resizeMode="stretch"
                   source={{uri: this.state.uploadURL}}/>
           </TouchableOpacity>
                 )
@@ -341,14 +342,21 @@ const styles = StyleSheet.create({
     borderRadius:5,
   //   marginLeft:'20%',
   },
-  avatar: {
+  avatarContainer: {
+    marginTop:10,
     width: 150,
     height: 150,
     borderRadius: 10,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: "#5BB26F",
     marginBottom:10,
     alignSelf: 'center',
+    overflow: 'hidden',
+    // resizeMode: 'contain',
+  },
+  avatar: {
+    width: 150,
+    height: 150,
   },
   saveButton: {
     marginTop: 20,

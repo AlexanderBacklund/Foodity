@@ -291,10 +291,10 @@ class Maps extends Component {
       contentContainerStyle={styles.endPadding}
     >
       {this.state.restaurant.map((marker, index) => (
-        <View style={styles.card} key={index} onPress>
+        <View style={styles.card} key={index} >
           <Image
             // Added firebase download url with key embedded into it. This gets the image belonging to the specified restaurant
-           source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2F"+marker.key+"?alt=media"}}
+            source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2F"+marker.key+"?alt=media"}}
             style={styles.cardImage}
             resizeMode="cover"
           />
