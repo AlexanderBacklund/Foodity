@@ -8,6 +8,9 @@ import {List, ListItem, ListView, Card} from 'react-native-elements';
 
 
 export default class RestaurantMyMeals extends Component {
+    static navigationOptions = {
+        header: null,
+        };
     constructor(props) {
         super(props);
         this.state = {
