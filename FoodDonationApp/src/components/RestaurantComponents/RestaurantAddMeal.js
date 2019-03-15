@@ -1,5 +1,5 @@
 import React from 'react';
-import {CheckBox, StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView, TouchableOpacity, 
+import {CheckBox, StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView, TouchableOpacity,
   ActivityIndicator} from 'react-native';
 import firebase from 'firebase';
 import Login from './../../screens/Login';
@@ -25,15 +25,32 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
+export default class RestaurantAddMeals extends React.Component {
 
-const uploadImage = (uri, mime = 'application/octet-stream') => {
+constructor(props) {
+    super(props);
+    this.state = {
+        Name: '',
+        Description: '',
+        Weight: 0,
+        Picture: 'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2Fimages.png?alt=media&token=b27ac614-9f7a-4260-ac17-3e7c73af47bb',
+        Portions: 0,
+        Taken: false,
+        Restaurant: '',
+        errorMessage: null
+    }
+    this.writeFoodData = this.writeFoodData.bind(this);
+}
+
+uploadImage = (uri, mime = 'application/octet-stream') => {
   return new Promise((resolve, reject) => {
     const uploadUri = uri
     let uploadBlob = null
     // var user = firebase.auth().currentUser;
+    var user = this.props.navigation.state.params.food.key;
     const sessionId = new Date().getTime()
-    
-    const imageRef = storage.ref('meals').child(`${sessionId}`)
+
+    const imageRef = storage.ref('meals').child(`${user}`)
    console.log("Image ref", sessionId);
 
     fs.readFile(uploadUri, 'base64')
@@ -59,32 +76,13 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
   })
 }
 
-export default class RestaurantAddMeals extends React.Component {
-
-
-
-
-constructor(props) {
-    super(props);
-    this.state = {
-        Name: '',
-        Description: '',
-        Weight: 0,
-        Picture: 'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2Fimages.png?alt=media&token=b27ac614-9f7a-4260-ac17-3e7c73af47bb',
-        Portions: 0,
-        Taken: false,
-        Restaurant: '',
-        errorMessage: null
-    }
-    this.writeFoodData = this.writeFoodData.bind(this);
-}
 selectImage() {
   this.setState({ uploadURL: '' })
   // var user = firebase.auth().currentUser;
   // const imageRef = storage.ref('images/'+user.uid)
   // storage.ref('images').child(user.uid).getDownloadURL().then(onResolve, onReject);
   ImagePicker.launchImageLibrary({}, response  => {
-  uploadImage(response.uri)
+  this.uploadImage(response.uri)
       .then(url => {this.setState({ uploadURL: url });this.setState({Picture: url})})
       .catch(error => console.log(error))
   })
@@ -140,7 +138,7 @@ selectImage() {
                     default:
                         return (
                             <TouchableOpacity  style={styles.avatarContainer} onPress={ () => this.selectImage() }>
-                        
+
                             <Image
                             style={styles.avatar}
                                 resizeMode="stretch"
@@ -150,7 +148,7 @@ selectImage() {
                         }
                     })()
                 }
-               
+
         </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}

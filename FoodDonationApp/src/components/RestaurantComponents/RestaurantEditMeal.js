@@ -15,16 +15,34 @@ const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob = Blob
 
+export default class RestaurantEditMeals extends React.Component{
 
-const uploadImage = (uri, mime = 'application/octet-stream') => {
+
+constructor(props) {
+    super(props);
+    this.state = {
+        Name: '',
+        Description: '',
+        Weight: 0,
+        Picture: '',
+        Portions: 0,
+        Taken: false,
+        Restaurant: '',
+        errorMessage: null
+    }
+    this.changeFood= this.changeFood.bind(this);
+}
+
+uploadImage = (uri, mime = 'application/octet-stream') => {
   return new Promise((resolve, reject) => {
     const uploadUri = uri
     let uploadBlob = null
-    // var user = firebase.auth().currentUser;
+    var user = this.props.navigation.state.params.food.key;
+    //var user = firebase.auth().currentUser.uid;
     const sessionId = new Date().getTime()
-    
-    const imageRef = storage.ref('meals').child(`${sessionId}`)
-   console.log("Image ref", sessionId);
+
+    const imageRef = storage.ref('meals').child(`${user}`)
+   console.log("Image ref", user);
 
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
@@ -49,30 +67,13 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
   })
 }
 
-export default class RestaurantEditMeals extends React.Component{
-
-constructor(props) {
-    super(props);
-    this.state = {
-        Name: '',
-        Description: '',
-        Weight: 0,
-        Picture: '',
-        Portions: 0,
-        Taken: false,
-        Restaurant: '',
-        errorMessage: null
-    }
-    this.changeFood= this.changeFood.bind(this);
-}
-
     selectImage() {
         this.setState({ uploadURL: '' })
         // var user = firebase.auth().currentUser;
         // const imageRef = storage.ref('images/'+user.uid)
         // storage.ref('images').child(user.uid).getDownloadURL().then(onResolve, onReject);
         ImagePicker.launchImageLibrary({}, response  => {
-        uploadImage(response.uri)
+        this.uploadImage(response.uri)
             .then(url => {this.setState({ uploadURL: url });this.setState({Picture: url})})
             .catch(error => console.log(error))
         })
@@ -127,7 +128,7 @@ constructor(props) {
                     default:
                         return (
                             <TouchableOpacity  style={styles.avatarContainer} onPress={ () => this.selectImage() }>
-                        
+
                             <Image
                             style={styles.avatar}
                                 resizeMode="stretch"
@@ -137,7 +138,7 @@ constructor(props) {
                         }
                     })()
                 }
-               
+
                 </View>
                 <View>
                     <Card title={this.props.navigation.state.params.food.data.Name} >
@@ -234,4 +235,3 @@ const styles = StyleSheet.create ({
 
 
 })
-
