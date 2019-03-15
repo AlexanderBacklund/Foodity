@@ -6,6 +6,8 @@ import Modal from "react-native-modal";
 import MyFooter from './../../components/CharityComponents/MyFooter.js'
 import Firebase from './../../config/FirebaseConfig';
 
+ const {width, height} = Dimensions.get("window");
+
 export default class Browse extends Component {
     static navigationOptions = {
         header: null,
@@ -175,12 +177,30 @@ export default class Browse extends Component {
         if (this.state.ItemsWithCoordinates.length != 0) {
             return this.state.ItemsWithCoordinates.map(function(food, i){
             return(
-                <Card title={food['data'].Name}>
-                    <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
-                    <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
-                    <Button title="Book" type="solid" onPress={() => this._handleBookFood(food)} />
+                <View style={{flex:1}} key={i} >
+                    <View style={styles.test}>
+                        <Image
+                        // img https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2FTeOG3anY7ZM0WrOQiGtYY0euIpX2?alt=media&token=fa056ca1-5546-4dba-9e95-35bf866b2a81
+                        // mea https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2F-L_hf89cl8TObShax63a?alt=media&token=3241115a-d6ab-42d4-991a-d041d2cf1373
+                        source={{uri: "https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/meals%2F"+food.key+"?alt=media&token=3241115a-d6ab-42d4-991a-d041d2cf1373"}}
+                        //style={styles.cardImage}
+                        style={{
+                            flex: 1,
+                            alignSelf: 'stretch',
+                            width: undefined,
+                            height: undefined
+                        }}
+                        //resizeMode="cover"
+                        />
+                    </View>
+                    <View style={{ flex: 1, backgroundColor: 'rgba(54, 54, 54, 0.5)' }}>
+                        <Text style={styles.titleText}>{food['data'].Name}</Text>
+                        <Text style={styles.Text}>Descriptions: {food['data'].Description}</Text>
+                        <Text style={styles.Text}>Portions: {food['data'].Portions}</Text>
+                        <Button title="Book" type="solid" onPress={() => this._handleBookFood(food)} />
+                    </View>
 
-                </Card>
+                </View>
                 );
             }.bind(this));
         } else {
@@ -193,13 +213,8 @@ export default class Browse extends Component {
   render() {
     return (
      <View style={styles.container}>
-        <ScrollView
-            RefreshControl={
-                <RefreshControl
-                    refreshing={this.state.refreshing}
-                    _onRefresh={this._onRefresh}
-                />
-            }>
+        <ScrollView style={{flex:1}}
+        >
 
          {this.myFood()}
         </ScrollView>
@@ -219,10 +234,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ebebeb'
-},
+    },
     Text: {
         fontSize: 14,
         color: "#444",
+        justifyContent: 'center',
+        textAlign: 'center',
+        paddingBottom: 7,
+    },
+    titleText: {
+        fontSize: 24,
+        color: "#ffffff",
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
@@ -234,5 +256,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         paddingBottom: 7,
-    }
+    },
+    cardImage: {
+        flex: 3,
+        //width: "100%",
+        //height: "100%",
+        //alignSelf: "center",
+    },
+    card: {
+        flex:1,
+        padding: 3,
+        marginHorizontal: 20,
+    },
+
+    test: {
+      marginTop:10,
+      width: width,
+      height: 100,
+      borderRadius: 10,
+      borderWidth: 2,
+      borderColor: "#e2e2e2",
+      marginBottom:10,
+      alignSelf: 'center',
+      overflow: 'hidden',
+
+    },
 });

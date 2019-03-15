@@ -51,10 +51,23 @@ export default class Signup extends React.Component {
   }
   
     signUpHandler = () => {
+      // Check if any field empty
+      if(this.state.fname == '' || this.state.lname == '' || this.state.orgname == '' || this.state.address == '' || this.state.description == ''
+      || this.state.email == '' || this.state.password == ''){
+        this.setState({ errorMessage: "All fields are required to be filled out!" })
+      }
+      //  check if latitude and longitude set. If not, return request to get specific address.
+      else if(this.state.lat == '' || this.state.lng == '') {
+        this.setState({ errorMessage: "Please be more specific on the address" })
+      } else {
       Firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => this.writeUserData(this.state.email,
+        .then((res) => {
+          if(this.state.lat == '' || this.state.lng == '') {
+            this.setState({ errorMessage: "Please be more specific on the address" })
+          } else {
+          this.writeUserData(this.state.email,
           this.state.fname,
           this.state.lname,
           this.state.orgname,
@@ -63,8 +76,10 @@ export default class Signup extends React.Component {
           this.state.description,
           this.state.lat,
           this.state.lng,
-          res))
+          res)}
+        })
         .catch(error => this.setState({ errorMessage: error.message }))
+      }
       console.log('signUpHandler')
     }
 
@@ -108,6 +123,7 @@ export default class Signup extends React.Component {
     
     <View style={{height: '0%'}}></View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="First Name"
               keyboardType="email-address"
@@ -116,6 +132,7 @@ export default class Signup extends React.Component {
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Last Name"
               keyboardType="email-address"
@@ -125,6 +142,7 @@ export default class Signup extends React.Component {
         </View>
         
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Organisation Name"
               keyboardType="email-address"
@@ -133,6 +151,7 @@ export default class Signup extends React.Component {
               onChangeText={(orgname) => this.setState({orgname})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Address"
               keyboardType="email-address"
@@ -141,6 +160,7 @@ export default class Signup extends React.Component {
               onChangeText={this.handleAddress}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Description"
               keyboardType="email-address"
@@ -149,6 +169,7 @@ export default class Signup extends React.Component {
               onChangeText={(description) => this.setState({description})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -157,6 +178,7 @@ export default class Signup extends React.Component {
               onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.inputContainer}>
+        <Text style={{ color: 'red' }}>*</Text>
           <TextInput style={styles.inputs}
               placeholder="Password"
               secureTextEntry={true}
