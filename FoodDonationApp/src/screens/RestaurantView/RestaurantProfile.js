@@ -52,7 +52,9 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
 }
 
 export default class RestaurantProfile extends Component {
-
+  static navigationOptions = {
+    header: null,
+    };
 
   state = {uploadURL:'https://firebasestorage.googleapis.com/v0/b/food-donation-bcce1.appspot.com/o/images%2Fdefault.jpg?alt=media&token=b662115c-e3f7-438b-beab-715463f3d7a9',
   currentData: {email: '', lname: '', fname: '', orgname: '', address: '', description: '',lat: '', lng: ''}, items: []};
