@@ -4,13 +4,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import firebase from 'firebase';
 import Geocoder from 'react-native-geocoding';
 import Loading from './Loading';
-import Browse from './Browse';
+import Browse from './../screens/CharityView/Browse';
+import HideWithKeyboard from 'react-native-hide-with-keyboard';
+
 
 import Firebase from './../config/FirebaseConfig';
-
-
+// Fix for geocoder. Should go in config file.
+Geocoder.init('AIzaSyBkp2QPE4lCbTotHM5VCk97vT4Sgpeu41Q');
 export default class Signup extends React.Component {
-
+  static navigationOptions = {
+    header: null,
+    };
   state = { email: '', password: '', lname: '', fname: '', orgname: '', address: '', description: '', errorMessage: null, lat: '',
   lng: '' }
   
@@ -66,10 +70,13 @@ export default class Signup extends React.Component {
 
     handleAddress = (text) => {
       this.setState({ address: text })
+      // console.log("inside handleAddress:",text);
       this.getData(text);
     }
 
     getData(address) {
+      // console.log("inside geocoder:",address);
+      // console.log("state:",this.state);
       Geocoder.from(address)
             .then(json => {
                 var lat = json.results[0].geometry.location.lat;
@@ -82,7 +89,6 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-        
         // <KeyboardAvoidingView style={styles.container}>
         <KeyboardAwareScrollView
       style={{ backgroundColor: '#5eb56a' }}
@@ -90,12 +96,23 @@ export default class Signup extends React.Component {
       contentContainerStyle={styles.container}
       scrollEnabled={true}
     >
-    <View style={{height: '25%'}}></View>
+    
+    <View style={styles.logocontainer}>
+      <HideWithKeyboard>
+        <Image style={styles.logo}
+        source={require('./../../images/FoodityWhite.png')}>
+        </Image>
+        </HideWithKeyboard>
+      </View>
+      
+    
+    <View style={{height: '0%'}}></View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="First Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(fname) => this.setState({fname})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -103,6 +120,7 @@ export default class Signup extends React.Component {
               placeholder="Last Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(lname) => this.setState({lname})}/>
         </View>
         
@@ -111,6 +129,7 @@ export default class Signup extends React.Component {
               placeholder="Organisation Name"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(orgname) => this.setState({orgname})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -118,6 +137,7 @@ export default class Signup extends React.Component {
               placeholder="Address"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={this.handleAddress}/>
         </View>
         <View style={styles.inputContainer}>
@@ -125,6 +145,7 @@ export default class Signup extends React.Component {
               placeholder="Description"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(description) => this.setState({description})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -132,6 +153,7 @@ export default class Signup extends React.Component {
               placeholder="Email"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(email) => this.setState({email})}/>
         </View>
         <View style={styles.inputContainer}>
@@ -139,6 +161,7 @@ export default class Signup extends React.Component {
               placeholder="Password"
               secureTextEntry={true}
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(password) => this.setState({password})}/>
         </View>
         {console.log(this.props.navigation.getParam('text', 'nothing sent'))}
@@ -147,9 +170,14 @@ export default class Signup extends React.Component {
           <Text style={{ color: 'red', marginLeft: 40, marginRight: 20, marginBottom: 20 }}>
             {this.state.errorMessage}
           </Text>}
+          <View style={styles.containerTwo}>
         <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={this.signUpHandler}>
           <Text style={styles.signUpText}>Register</Text>
         </TouchableHighlight>
+        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.props.navigation.navigate('Login')}>
+          <Text style={styles.signUpText}>Back</Text>
+        </TouchableHighlight>
+        </View>
         </KeyboardAwareScrollView>
       
     );
@@ -162,21 +190,21 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
   },
   inputContainer: {
-      borderBottomColor: '#0e8bce',
-      backgroundColor: '#FFFFFF',
+      borderBottomColor: '#585B5A', 
+      backgroundColor: '#6FDB88',
       borderRadius:10,
       borderBottomWidth: 1,
       width:'80%',
-      height:45,
+      height:36,
       marginBottom:5,
       flexDirection: 'row',
       alignItems:'center'
   },
   inputs:{
-      height:45,
+      height:40,
       marginLeft:16,
       borderBottomColor: '#FFFFFF',
       flex:1,
@@ -188,19 +216,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonContainer: {
-    height:45,
-    flexDirection: 'row',
+    backgroundColor: '#5BB26F',
+    width:'30%',
+    height:40,
+    borderRadius:10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
+    margin:15,
   },
+  
   signupButton: {
     marginTop: 20,
-    backgroundColor: "#c415bb",
+    backgroundColor: "#5BB26F",
   },
   signUpText: {
     color: 'white',
-  }
+  },
+  logocontainer: {
+    backgroundColor: '#6FDB88',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+logo: {
+    width: 128,
+    height: 70,
+},
+containerTwo: {
+  // flex: 1,
+  // flexDirection: 'row',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom:20,
+  marginTop:10,
+  
+  height: 45,
+  // width:250,
+  borderRadius:30,
+  backgroundColor: '#6FDB88',
+},
 });

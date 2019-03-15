@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {ScrollView, Button, View, Text, StyleSheet } from 'react-native';
-import {Footer, Icon, Container} from 'native-base'
+import {Icon, Container} from 'native-base'
 
 import Maps from './../components/maps/maps/Maps';
 import MyHeader from './MyHeader'

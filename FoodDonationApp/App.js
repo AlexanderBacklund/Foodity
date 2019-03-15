@@ -6,20 +6,20 @@ import {PermissionsAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer, createBottomTabNavigator, TabBarBottom, createSwitchNavigator, createMaterialBottomTabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Maps from './src/components/maps/maps/Maps';
-import Home from './src/screens/Home';
-import Browse from './src/screens/Browse';
-import Account from './src/screens/Account';
-import Discover from './src/screens/Discover';
-import Orders from './src/screens/Orders';
+import Maps from './src/components/CharityComponents/Maps';
+import Browse from './src/screens/CharityView/Browse';
+import CharityProfile from './src/screens/CharityView/CharityProfile';
+import Orders from './src/screens/CharityView/Orders';
+import CharityHistory from './src/screens/CharityView/CharityHistory';
 import Login from './src/screens/Login';
-import SignUp from './src/screens/SignUp';
-import RestaurantAddMeal from './src/screens/RestaurantAddMeal' ;
-import RestaurantHistory from './src/screens/RestaurantHistory' ;
-import RestaurantMyMeals from './src/screens/RestaurantMyMeals' ;
-import RestaurantProfile from './src/screens/RestaurantProfile' ;
-import CharityProfile from './src/screens/CharityProfile' ;
-import Loading from './src/screens/Loading' ;
+import SignUp from './src/components/SignUp';
+import RestaurantAddMeal from './src/components/RestaurantComponents/RestaurantAddMeal' ;
+import RestaurantHistory from './src/screens/RestaurantView/RestaurantHistory' ;
+import RestaurantMyMeals from './src/screens/RestaurantView/RestaurantMyMeals' ;
+import RestaurantProfile from './src/screens/RestaurantView/RestaurantProfile' ;
+import RestaurantEditMeal from './src/components/RestaurantComponents/RestaurantEditMeal';
+import Loading from './src/components/Loading' ;
+import Splash from './src/screens/Splash' ;
 
 console.disableYellowBox = true;
 
@@ -42,14 +42,15 @@ const CharityTabNavigator = createBottomTabNavigator({
         tabBarIcon:({focused, tintColor}) => <Icon name={'cutlery'} size={25} color={tintColor} />
         }
       },
-  Account: {screen: Account,
+  Profile: {screen: CharityProfile,
       navigationOptions: {
-        tabBarLabel: 'Account',
+        tabBarLabel: 'Profile',
         tabBarIcon:({focused, tintColor}) => <Icon name={'user'} size={25} color={tintColor} />
         }
       }
   },
   {
+
     initialRouteName: 'Browse',
     swipeEnabled: true,
     animationEnabled: true,
@@ -97,10 +98,12 @@ const AuthStack = createStackNavigator({
   Login: Login,
   SignUp: SignUp,
   Loading: Loading,
+  Splash: Splash
   },
   {
-    initialRouteName: 'Login'
-  })
+    initialRouteName: 'Splash'
+  });
+
 
 const AppContainer = createAppContainer(createSwitchNavigator({
   Restaurant: RestaurantTabNavigator, 

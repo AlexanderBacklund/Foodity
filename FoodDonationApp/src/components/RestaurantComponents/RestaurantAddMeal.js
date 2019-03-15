@@ -1,9 +1,8 @@
 import React from 'react';
 import {CheckBox, StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,KeyboardAvoidingView} from 'react-native';
 import firebase from 'firebase';
-import Loading from './Loading';
-import Login from './Login';
-import RestaurantMyMeals from './RestaurantMyMeals';
+import Login from './../../screens/Login';
+import RestaurantMyMeals from './../../screens/RestaurantView/RestaurantMyMeals';
 // const firebaseConfig = {
 //   apiKey: "AIzaSyCDNg-6wLAG9uO695FAyMlvWlnjWEBsY50",
 //   authDomain: "food-donation-bcce1.firebaseapp.com",
@@ -97,7 +96,7 @@ constructor(props) {
 
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
-              placeholder="Weight"
+              placeholder="Weight per portion"
               keyboardType="number-pad"
               underlineColorAndroid='transparent'
               onChangeText={(Weight) => this.setState({Weight})}/>

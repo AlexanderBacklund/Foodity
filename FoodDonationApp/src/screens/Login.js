@@ -3,14 +3,16 @@ import {StyleSheet,Text,View,TextInput,Button,TouchableHighlight,Image,Alert,Key
 
 import Firebase from './../config/FirebaseConfig';
 
-import SignUp from './SignUp';
-import Loading from './Loading';
-import Browse from './Browse';
+import SignUp from './../components/SignUp';
+import Loading from './../components/Loading';
+import Browse from './CharityView/Browse';
 // import Icon from 'react-native-vector-icons/AntDesign';
 import { Input } from 'react-native-elements';
 
 export default class Login extends React.Component {
-
+  static navigationOptions = {
+    header: null,
+    };
   state = { email: '', password: '', errorMessage: null }
   loginHandler = () => {
     const { email, password } = this.state
@@ -39,8 +41,13 @@ export default class Login extends React.Component {
 
   render() {
     return (
-        
+      
         <KeyboardAvoidingView style={styles.container}>
+        <View style={styles.logocontainer}>
+        <Image style={styles.logo}
+        source={require('./../../images/FoodityWhite.png')}>
+        </Image>
+      </View>
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Email"
@@ -48,18 +55,21 @@ export default class Login extends React.Component {
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               keyboardType="email-address"
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(email) => this.setState({email})}/>
         </View>
         
         <View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Password"
+
               // leftIcon={{ type:'antdesign', name: 'lock' ,color: 'grey'}}
               // leftIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               // rightIcon={{type:'antdesign', name: 'eye' ,color: 'grey'}}
               // rightIconContainerStyle={{marginLeft:0, marginBottom: 3, marginRight: 5}}
               secureTextEntry={true}
               underlineColorAndroid='transparent'
+              placeholderTextColor='#585B5A'
               onChangeText={(password) => this.setState({password})}/>
         </View>
         
@@ -78,10 +88,10 @@ export default class Login extends React.Component {
 
           <View style={styles.containerTwo}>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Restaurant' })}>
-            <Text>Restaurant</Text>
+            <Text style={styles.loginText}>Restaurant</Text>
         </TouchableHighlight>
         <TouchableHighlight style={[styles.registerButton]} onPress={() => this.props.navigation.navigate('SignUp', {text: 'Charity' })}>
-            <Text>Charity</Text>
+            <Text style={styles.loginText}>Charity</Text>
         </TouchableHighlight>
         </View>
       </KeyboardAvoidingView>
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
   },
   containerTwo: {
     // flex: 1,
@@ -107,16 +117,16 @@ const styles = StyleSheet.create({
     height: 45,
     // width:250,
     borderRadius:30,
-    backgroundColor: '#5eb56a',
+    backgroundColor: '#6FDB88',
     
   },
   inputContainer: {
-      borderBottomColor: '#4076ce',
-      backgroundColor: '#FFFFFF',
+      borderBottomColor: '#585B5A',
+      backgroundColor: '#6FDB88',
       borderRadius:10,
       borderBottomWidth: 1,
       width:250,
-      height:45,
+      height:40,
       marginBottom:20,
       flexDirection: 'row',
       alignItems:'center'
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
   },
   inputIcon:{
     width:30,
-    height:30,
+    height:40,
     // marginLeft:15,
     justifyContent: 'center'
   },
@@ -143,18 +153,30 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   registerButton: {
-    backgroundColor: 'rgba(13, 65, 168,0.4)',
+    backgroundColor: '#5BB26F',
     width:'30%',
     height:40,
-    borderRadius:30,
+    borderRadius:10,
     justifyContent: 'center',
     alignItems: 'center',
     margin:15,
   },
   loginButton: {
-    backgroundColor: "#00b5ec",
+    backgroundColor: "#5BB26F",
+    borderRadius:10
   },
   loginText: {
     color: 'white',
-  }
+  },
+  logocontainer: {
+    backgroundColor: '#6FDB88',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+logo: {
+    width: 128,
+    height: 70,
+    marginBottom: 3,
+}
 });
