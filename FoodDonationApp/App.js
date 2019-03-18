@@ -61,8 +61,17 @@ const CharityTabNavigator = createBottomTabNavigator({
     },
   });
 
+const MyMealsStack = createStackNavigator({
+  RestaurantAddMeal: RestaurantAddMeal,
+  RestaurantEditMeal: RestaurantEditMeal,
+  RestaurantMyMeals: RestaurantMyMeals
+  },
+  {
+    initialRouteName: 'RestaurantMyMeals'
+  });
+
 const RestaurantTabNavigator = createBottomTabNavigator({
-  RestaurantMyMeals: {screen: RestaurantMyMeals,
+  RestaurantMyMeals: {screen: MyMealsStack,
       navigationOptions: {
         tabBarLabel: 'My Meals',
         tabBarIcon:({focused, tintColor}) => <Icon name={'cutlery'} size={25} color={tintColor} />
@@ -107,7 +116,8 @@ const AuthStack = createStackNavigator({
 const AppContainer = createAppContainer(createSwitchNavigator({
   Restaurant: RestaurantTabNavigator,
   Charity: CharityTabNavigator,
-  auth: AuthStack},
+  auth: AuthStack
+  },
   {
     initialRouteName: 'auth'
   }));
