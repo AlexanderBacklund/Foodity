@@ -31,16 +31,19 @@ export default class Browse extends Component {
     }
 
     _onRefresh = () => {
+      console.log("HEJ")
+      this.loadFood()
     this.setState({refreshing:true});
         fetchData().then(()=>{
             this.setState({refreshing:false})
         });
-        this.loadFood()
     }
 
     async componentWillMount() {
         await navigator.geolocation.getCurrentPosition(this.geo_success, this.geo_error, geoOptions);
-        await this.loadFood()
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+           this.loadFood()
+        });
         let geoOptions = {
             timeOut: 20000,
         };
