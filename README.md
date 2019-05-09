@@ -22,6 +22,7 @@
 ## Prerequisite
   - Node
   - React native
+  - add a firebase config file to FoodDonationApp/src/config/FirebaseConfig.js
 
 ## How do you use it?
   First you will need to install all the packages this project is using, use the following command:
